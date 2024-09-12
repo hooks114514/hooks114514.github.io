@@ -1,0 +1,21 @@
+/* 导航栏样式 */  
+.navbar {  
+  overflow: hidden;  
+  background-color: #333; /* 导航栏背景颜色 */  
+}  
+  
+/* 导航栏链接样式 */  
+.navbar a {  
+  float: left; /* 使链接浮动以并排显示 */  
+  font-size: 16px; /* 字体大小 */  
+  color: white; /* 链接文字颜色 */  
+  text-align: center; /* 文本居中 */  
+  padding: 14px 20px; /* 内边距 */  
+  text-decoration: none; /* 去除下划线 */  
+}  
+  
+/* 鼠标悬停时链接样式 */  
+.navbar a:hover {  
+  background-color: #ddd; /* 背景颜色变为灰色 */  
+  color: black; /* 文字颜色变为黑色 */  
+}
