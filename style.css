@@ -18,17 +18,6 @@
 .navbar a:hover {  
   background-color: #ddd; /* 背景颜色变为灰色 */  
   color: black; /* 文字颜色变为黑色 */  
-}
-body {  
-    margin: 0;  
-    padding: 0;  
-    display: flex;  
-    justify-content: center;  
-    align-items: center;  
-    height: 100vh;  
-    background-color: #f0f0f0;  
-}  
-  
 .animate-in {  
     opacity: 0;  
     transform: translateY(50px);  
