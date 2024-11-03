@@ -12,7 +12,7 @@ const translations = {
   
 function changeLanguage(lang) {  
     document.getElementById('title').textContent = translations[lang].title;  
-    document.getElementById('description').textContent = translations[lang].description;  
+    document.getElementById('link').textContent = translations[lang].link;  
 }
 document.addEventListener('DOMContentLoaded', () => {  
     const navbarToggle = document.getElementById('navbar-toggle');  
