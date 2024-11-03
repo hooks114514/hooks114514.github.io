@@ -78,3 +78,13 @@ body {
         display: flex;  
     }  
 }
+.language-switcher {  
+    margin-bottom: 20px;  
+}  
+  
+.language-switcher button {  
+    margin-right: 10px;  
+    padding: 10px 20px;  
+    font-size: 16px;  
+    cursor: pointer;  
+}
