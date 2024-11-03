@@ -1,0 +1,80 @@
+body {  
+    margin: 0;  
+    font-family: Arial, sans-serif;  
+}  
+  
+.navbar {  
+    background-color: #333;  
+    overflow: hidden;  
+}  
+  
+.navbar-container {  
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center;  
+    padding: 14px 20px;  
+}  
+  
+.navbar-brand {  
+    color: white;  
+    text-decoration: none;  
+    font-size: 24px;  
+}  
+  
+.navbar-menu {  
+    list-style-type: none;  
+    margin: 0;  
+    padding: 0;  
+    display: flex;  
+}  
+  
+.navbar-item {  
+    margin: 0 10px;  
+}  
+  
+.navbar-item a {  
+    color: white;  
+    text-decoration: none;  
+    padding: 14px 20px;  
+    display: block;  
+    transition: background-color 0.3s;  
+}  
+  
+.navbar-item a:hover {  
+    background-color: #575757;  
+}  
+  
+.navbar-toggle {  
+    display: none;  
+    flex-direction: column;  
+    cursor: pointer;  
+}  
+  
+.navbar-toggle span {  
+    background-color: white;  
+    height: 3px;  
+    width: 25px;  
+    margin: 4px 0;  
+    transition: all 0.3s ease-in-out;  
+}  
+  
+/* 响应式设计 */  
+@media (max-width: 768px) {  
+    .navbar-menu {  
+        flex-direction: column;  
+        display: none;  
+        width: 100%;  
+    }  
+  
+    .navbar-menu li {  
+        width: 100%;  
+    }  
+  
+    .navbar-menu.active {  
+        display: flex;  
+    }  
+  
+    .navbar-toggle {  
+        display: flex;  
+    }  
+}
