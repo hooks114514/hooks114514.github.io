@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="个人网站">
-    <title>hooks1的个人网站</title>
+    <title id="web-page-title">hooks1的个人网站</title>
     <link rel="stylesheet" href="styles2.css"> <!-- 这里可以链接一个外部CSS文件 -->
     <style>
         body {
@@ -74,7 +74,7 @@
     <nav>
         <a href="https://hooks114514.github.io" id="home-link">首页</a>
         <a href="#about" id="about-link">关于我</a>
-        <span class="language-switcher" onclick="switchLanguage()">切换语言</span>
+        <span class="language-switcher" onclick="switchLanguage()" id="switch-language">切换语言</span>
     </nav>
 
     <div class="container">
@@ -104,9 +104,11 @@
             
     <script>
         const enText = {
+            "web-page-title": "hooks1's Personal Website",
             "blog-title": "Welcome to hooks1's Personal Website",
             "home-link": "Home",
             "about-link": "About Me",
+            "switch-language": "Switch Language"
             "about-title": "About Me",
             "about-text": "Hi, I'm hooks1.",
             "articles-title": "My Personal Link.",
@@ -118,10 +120,12 @@
         };
 
         const zhText = {
+            "web-page-title": "hooks1的个人网站",
             "blog-title": "欢迎来到的hooks1个人网站",
             "home-link": "首页",
             "about-link": "关于我",
             "about-title": "关于我",
+            "switch-language": "切换语言"
             "about-text": "你好，我是hooks1。",
             "articles-title": "我的个人链接",
             "article-title-1": "BiliBili",
