@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="个人网站">
-    <title>hooks1个人网站</title>
-    <link rel="stylesheet" href="styles2.css"> <!-- 这里可以链接一个外部CSS文件 -->
+    <meta name="description" content="个人博客">
+    <title>我的个人博客</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 这里可以链接一个外部CSS文件 -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -32,6 +32,12 @@
         }
         nav a:hover {
             text-decoration: underline;
+        }
+        .language-switcher {
+            margin-left: 20px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
         }
         .container {
             width: 80%;
@@ -62,37 +68,107 @@
 </head>
 <body>
     <header>
-        <h1>欢迎来到hooks1个人网站</h1>
+        <h1 id="blog-title">欢迎来到我的个人博客</h1>
     </header>
 
     <nav>
-        <a href="https://hooks114514.github.io/test-2">首页</a>
-        <a href="#about">关于我</a>
+        <a href="#" id="home-link">首页</a>
+        <a href="#about" id="about-link">关于我</a>
+        <a href="#articles" id="articles-link">文章</a>
+        <a href="#" id="contact-link">联系我</a>
+        <span class="language-switcher" onclick="switchLanguage()">切换语言</span>
     </nav>
 
     <div class="container">
         <!-- 首页内容 -->
         <section id="about">
-            <h2>关于我</h2>
-            <p>你好，我是[hooks1]。</p>
+            <h2 id="about-title">关于我</h2>
+            <p id="about-text">你好，我是[你的名字]，一个热爱编程与技术的博客作者。在这里，我将分享我的学习经历、技术文章和生活感悟。</p>
         </section>
 
         <!-- 文章内容 -->
         <section id="articles">
-            <h2>我的个人链接</h2>
+            <h2 id="articles-title">我的最新文章</h2>
             <div class="article">
-                <h3>BiliBili</h3>
-                <p>这是我的BiliBili账号。<a href="https://space.bilibili.com/1312125285">阅读全文</a></p>
+                <h3 id="article-title-1">文章标题 1</h3>
+                <p id="article-summary-1">这是文章内容的简介。<a href="#">阅读全文</a></p>
             </div>
             <div class="article">
-                <h3>网易云音乐</h3>
-                <p>这是我的网易云音乐账号。<a href="https://music.163.com/#/user/home?id=3307535618">阅读全文</a></p>
+                <h3 id="article-title-2">文章标题 2</h3>
+                <p id="article-summary-2">这是文章内容的简介。<a href="#">阅读全文</a></p>
+            </div>
+            <div class="article">
+                <h3 id="article-title-3">文章标题 3</h3>
+                <p id="article-summary-3">这是文章内容的简介。<a href="#">阅读全文</a></p>
             </div>
         </section>
     </div>
 
     <footer>
-        <p>&copy; 2024 hook1个人网站 | All rights reserved.</p>
+        <p id="footer-text">&copy; 2024 我的个人博客 | All rights reserved.</p>
     </footer>
+
+    <script>
+        const enText = {
+            "blog-title": "Welcome to My Personal Blog",
+            "home-link": "Home",
+            "about-link": "About Me",
+            "articles-link": "Articles",
+            "contact-link": "Contact Me",
+            "about-title": "About Me",
+            "about-text": "Hi, I'm [Your Name], a tech enthusiast and blogger. On this blog, I share my learning experiences, technical articles, and life insights.",
+            "articles-title": "My Latest Articles",
+            "article-title-1": "Article Title 1",
+            "article-summary-1": "This is a summary of the article content. <a href='#'>Read more</a>",
+            "article-title-2": "Article Title 2",
+            "article-summary-2": "This is a summary of the article content. <a href='#'>Read more</a>",
+            "article-title-3": "Article Title 3",
+            "article-summary-3": "This is a summary of the article content. <a href='#'>Read more</a>",
+            "footer-text": "&copy; 2024 My Personal Blog | All rights reserved."
+        };
+
+        const zhText = {
+            "blog-title": "欢迎来到我的个人博客",
+            "home-link": "首页",
+            "about-link": "关于我",
+            "articles-link": "文章",
+            "contact-link": "联系我",
+            "about-title": "关于我",
+            "about-text": "你好，我是[你的名字]，一个热爱编程与技术的博客作者。在这里，我将分享我的学习经历、技术文章和生活感悟。",
+            "articles-title": "我的最新文章",
+            "article-title-1": "文章标题 1",
+            "article-summary-1": "这是文章内容的简介。<a href='#'>阅读全文</a>",
+            "article-title-2": "文章标题 2",
+            "article-summary-2": "这是文章内容的简介。<a href='#'>阅读全文</a>",
+            "article-title-3": "文章标题 3",
+            "article-summary-3": "这是文章内容的简介。<a href='#'>阅读全文</a>",
+            "footer-text": "&copy; 2024 我的个人博客 | All rights reserved."
+        };
+
+        let isChinese = true; // 默认语言为中文
+
+        function switchLanguage() {
+            isChinese = !isChinese; // 切换语言状态
+
+            // 根据语言状态更新页面内容
+            const text = isChinese ? zhText : enText;
+
+            document.getElementById("blog-title").innerHTML = text["blog-title"];
+            document.getElementById("home-link").innerHTML = text["home-link"];
+            document.getElementById("about-link").innerHTML = text["about-link"];
+            document.getElementById("articles-link").innerHTML = text["articles-link"];
+            document.getElementById("contact-link").innerHTML = text["contact-link"];
+            document.getElementById("about-title").innerHTML = text["about-title"];
+            document.getElementById("about-text").innerHTML = text["about-text"];
+            document.getElementById("articles-title").innerHTML = text["articles-title"];
+            document.getElementById("article-title-1").innerHTML = text["article-title-1"];
+            document.getElementById("article-summary-1").innerHTML = text["article-summary-1"];
+            document.getElementById("article-title-2").innerHTML = text["article-title-2"];
+            document.getElementById("article-summary-2").innerHTML = text["article-summary-2"];
+            document.getElementById("article-title-3").innerHTML = text["article-title-3"];
+            document.getElementById("article-summary-3").innerHTML = text["article-summary-3"];
+            document.getElementById("footer-text").innerHTML = text["footer-text"];
+        }
+    </script>
 </body>
 </html>
