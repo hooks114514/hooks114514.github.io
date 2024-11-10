@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="个人博客">
+    <title>我的个人博客</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 这里可以链接一个外部CSS文件 -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .article {
+            margin-bottom: 20px;
+        }
+        .article h2 {
+            color: #333;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>欢迎来到我的个人博客</h1>
+    </header>
+
+    <nav>
+        <a href="#">首页</a>
+        <a href="#about">关于我</a>
+        <a href="#articles">文章</a>
+        <a href="#">联系我</a>
+    </nav>
+
+    <div class="container">
+        <!-- 首页内容 -->
+        <section id="about">
+            <h2>关于我</h2>
+            <p>你好，我是[你的名字]，一个热爱编程与技术的博客作者。在这里，我将分享我的学习经历、技术文章和生活感悟。</p>
+        </section>
+
+        <!-- 文章内容 -->
+        <section id="articles">
+            <h2>我的最新文章</h2>
+            <div class="article">
+                <h3>文章标题 1</h3>
+                <p>这是文章内容的简介。<a href="#">阅读全文</a></p>
+            </div>
+            <div class="article">
+                <h3>文章标题 2</h3>
+                <p>这是文章内容的简介。<a href="#">阅读全文</a></p>
+            </div>
+            <div class="article">
+                <h3>文章标题 3</h3>
+                <p>这是文章内容的简介。<a href="#">阅读全文</a></p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 我的个人博客 | All rights reserved.</p>
+    </footer>
+</body>
+</html>
