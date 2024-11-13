@@ -76,30 +76,20 @@
             color: #333;
         }
 
-        /* 页脚动画 */
         footer {
             background-color: #333;
-            color: #fff;
-            padding: 15px 0;
+            color: white;
             text-align: center;
-            animation: slideInFromTop 3s ease-out; /* 为头部设置从上到下的渐变进入效果 */
-        }
-
-        @keyframes slideInFromBottom {
-            0% {
-                opacity: 0;
-                transform: translateY(100%); /* 初始位置在视口下方 */
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0); /* 最终位置恢复原位 */
-            }
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            animation: slideInFromTop 6s ease-out; /* 为页脚设置从上到下的渐变进入效果 */
         }
 
         footer p {
             margin: 0;
         }
-
     </style>
 </head>
 <body>
