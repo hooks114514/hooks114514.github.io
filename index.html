@@ -7,7 +7,7 @@
     <title>hooks1的个人网站</title>
     <link rel="stylesheet" href="styles2.css"> <!-- 这里可以链接一个外部CSS文件 -->
     <style>
-        body {
+		 body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
@@ -23,31 +23,38 @@
                 opacity: 1;
             }
         }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
         header {
             background-color: #333;
             color: #fff;
             padding: 15px 0;
             text-align: center;
-            animation: fadeIn 3s ease-out; /* 为头部设置渐变效果 */
         }
 
         nav {
             background-color: #444;
             padding: 10px 0;
             text-align: center;
-            animation: fadeIn 4s ease-out; /* 为导航设置渐变效果 */
         }
 
         nav a {
             color: white;
             margin: 0 15px;
-            text-decoration: none;
+            text-decoration: none; /* 去除下划线 */
             font-size: 18px;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease; /* 平滑过渡背景颜色 */
         }
 
         nav a:hover {
-            text-decoration: underline;
+            background-color: #666; /* 鼠标悬停时背景颜色变为灰色 */
+            text-decoration: none; /* 确保去掉下划线 */
         }
 
         .language-switcher {
@@ -63,7 +70,6 @@
             background-color: white;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 5s ease-out; /* 为容器设置渐变效果 */
         }
 
         .article {
@@ -74,7 +80,7 @@
             color: #333;
         }
 
-        footer {
+         footer {
             background-color: #333;
             color: white;
             text-align: center;
@@ -88,11 +94,12 @@
         footer p {
             margin: 0;
         }
+
     </style>
 </head>
 <body>
     <header>
-        <h1 id="blog-title">欢迎来到的hooks1个人网站</h1>
+        <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
     </header>
 
     <nav>
@@ -133,7 +140,7 @@
             "about-link": "About Me",
             "about-title": "About Me",
             "about-text": "Hi, I'm hooks1.",
-            "articles-title": "My Personal Link",
+            "articles-title": "My Personal Link.",
             "article-title-1": "BiliBili",
             "article-summary-1": "<a href='https://space.bilibili.com/1312125285'>This is My BiliBili Account</a>",
             "article-title-2": "NetEase CloudMusic",
