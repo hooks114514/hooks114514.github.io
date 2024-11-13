@@ -76,20 +76,22 @@
             color: #333;
         }
 
+        /* 修复页脚进入动画 */
         footer {
             background-color: #333;
             color: white;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
             width: 100%;
-            bottom: 0;
-            animation: slideInFromTop 6s ease-out; /* 为页脚设置从上到下的渐变进入效果 */
+            position: absolute; /* 设置为绝对定位 */
+            bottom: -100px; /* 初始位置在视口外 */
+            animation: slideInFromTop 6s ease-out 1s forwards; /* 延迟1秒开始动画 */
         }
 
         footer p {
             margin: 0;
         }
+
     </style>
 </head>
 <body>
