@@ -79,14 +79,10 @@
         /* 页脚动画 */
         footer {
             background-color: #333;
-            color: white;
+            color: #fff;
+            padding: 15px 0;
             text-align: center;
-            padding: 10px 0;
-            width: 100%;
-            position: fixed; /* 固定在底部 */
-            bottom: -100px; /* 初始位置在视口外 */
-            left: 0;
-            animation: slideInFromBottom 2s ease-out 1s forwards; /* 设置动画：从底部滑入 */
+            animation: slideInFromTop 3s ease-out; /* 为头部设置从上到下的渐变进入效果 */
         }
 
         @keyframes slideInFromBottom {
