@@ -76,23 +76,23 @@
             color: #333;
         }
 
-        /* 修复页脚进入动画 */
+        /* 页脚动画 */
         footer {
             background-color: #333;
             color: white;
             text-align: center;
             padding: 10px 0;
             width: 100%;
-            position: fixed; /* 保持固定定位 */
+            position: fixed; /* 固定在底部 */
             bottom: -100px; /* 初始位置在视口外 */
-            left: 0; /* 确保页脚占满整个底部 */
-            animation: slideInFromBottom 6s ease-out 1s forwards; /* 设置动画：从底部滑入 */
+            left: 0;
+            animation: slideInFromBottom 2s ease-out 1s forwards; /* 设置动画：从底部滑入 */
         }
 
         @keyframes slideInFromBottom {
             0% {
                 opacity: 0;
-                transform: translateY(100px); /* 初始位置在视口下方 */
+                transform: translateY(100%); /* 初始位置在视口下方 */
             }
             100% {
                 opacity: 1;
