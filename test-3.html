@@ -83,9 +83,21 @@
             text-align: center;
             padding: 10px 0;
             width: 100%;
-            position: absolute; /* 设置为绝对定位 */
+            position: fixed; /* 保持固定定位 */
             bottom: -100px; /* 初始位置在视口外 */
-            animation: slideInFromTop 6s ease-out 1s forwards; /* 延迟1秒开始动画 */
+            left: 0; /* 确保页脚占满整个底部 */
+            animation: slideInFromBottom 6s ease-out 1s forwards; /* 设置动画：从底部滑入 */
+        }
+
+        @keyframes slideInFromBottom {
+            0% {
+                opacity: 0;
+                transform: translateY(100px); /* 初始位置在视口下方 */
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0); /* 最终位置恢复原位 */
+            }
         }
 
         footer p {
