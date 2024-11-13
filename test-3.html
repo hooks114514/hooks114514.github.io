@@ -12,15 +12,17 @@
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            animation: fadeIn 2s ease-out; /* 为整个页面设置缓慢进入效果 */
+            animation: slideInFromTop 2s ease-out; /* 为整个页面设置从上到下的进入效果 */
         }
 
-        @keyframes fadeIn {
+        @keyframes slideInFromTop {
             0% {
                 opacity: 0;
+                transform: translateY(-50px); /* 初始位置在上方 */
             }
             100% {
                 opacity: 1;
+                transform: translateY(0); /* 最终位置恢复原位 */
             }
         }
 
@@ -29,14 +31,14 @@
             color: #fff;
             padding: 15px 0;
             text-align: center;
-            animation: fadeIn 3s ease-out; /* 为头部设置渐变效果 */
+            animation: slideInFromTop 3s ease-out; /* 为头部设置从上到下的渐变进入效果 */
         }
 
         nav {
             background-color: #444;
             padding: 10px 0;
             text-align: center;
-            animation: fadeIn 4s ease-out; /* 为导航设置渐变效果 */
+            animation: slideInFromTop 4s ease-out; /* 为导航设置从上到下的渐变进入效果 */
         }
 
         nav a {
@@ -63,7 +65,7 @@
             background-color: white;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 5s ease-out; /* 为容器设置渐变效果 */
+            animation: slideInFromTop 5s ease-out; /* 为容器设置从上到下的渐变进入效果 */
         }
 
         .article {
@@ -82,7 +84,7 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-            animation: fadeIn 6s ease-out; /* 为页脚设置渐变效果 */
+            animation: slideInFromTop 6s ease-out; /* 为页脚设置从上到下的渐变进入效果 */
         }
 
         footer p {
@@ -138,7 +140,7 @@
             "article-summary-1": "<a href='https://space.bilibili.com/1312125285'>This is My BiliBili Account</a>",
             "article-title-2": "NetEase CloudMusic",
             "article-summary-2": "<a href='https://music.163.com/#/user/home?id=3307535618'>This is My NetEase Cloud Music Account</a>",
-            "footer-text": "&copy; 2024 hooks1's Personal Website | All rights reserved."
+            "footer-text": "&copy; 2024 My Personal Blog | All rights reserved."
         };
 
         const zhText = {
