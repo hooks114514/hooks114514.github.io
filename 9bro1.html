@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="个人网站">
-    <title>hooks1的个人网站</title>
+    <title>宿舍九结义的网站</title>
     <link rel="stylesheet" href="styles2.css"> <!-- 这里可以链接一个外部CSS文件 -->
     <style>
 		 body {
@@ -99,92 +99,40 @@
 </head>
 <body>
     <header>
-        <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
+        <h1>欢迎来到宿舍九结义的网站</h1>
     </header>
 
     <nav>
-        <a href="https://hooks1.rth1.xyz/" id="home-link">首页</a>
-        <a href="https://hooks1.rth1.xyz/about" id="about-link">关于我</a>
-        <span class="language-switcher" onclick="switchLanguage()">切换语言</span>
+        <a href="https://hooks1.rth1.xyz/9bro">首页</a>
+        <a href="https://hooks1.rth1.xyz/9bro-activities">活动</a>
     </nav>
 
     <div class="container" style="text-align: center;">
         <!-- 首页内容 -->
         <section id="about">
-            <h2 id="about-title">关于我</h2>
-            <p id="about-text">你好，我是hooks1。</p>
-        </section>
-
-        <!-- 文章内容 -->
-        <section id="articles">
-            <h2 id="articles-title">我的个人链接</h2>
-            <div class="article" style="text-align: center;">
-                <h3 id="article-title-1">BiliBili</h3>
-                <p id="article-summary-1"><a href="https://space.bilibili.com/1312125285" target="_blank">这是我的BiliBili账号</a></p>
-            </div>
-            <div class="article" style="text-align: center;">
-                <h3 id="article-title-2">网易云音乐</h3>
-                <p id="article-summary-2"><a href="https://music.163.com/#/user/home?id=3307535618">这是我的网易云音乐账号</a></p>
-            </div>
-        </section>
+            <h2>关于我们</h2>
+            <p>Welcome to 宿舍九结义，在这里，您可以选择九位英雄。</p>
+			<p style="font-weight: bold;">先说好，如有Bug,那么就是特性，作者懒得修复。</p>
+			<p>好了，该说的也说了，不该说的也说了，<u>何况我最讨厌说废话的人了。</u></p>
+			<p style="font-weight: bold;font-size: 40px;">首先，有请第一位英雄————周思裕</p>
+			<p>他是九个人当中学习最FW的，还是我们九结义中的大哥。</p>
+			<p>正所谓大哥都没做好榜样，所以早晚有一天让他当二哥。</p>
+			<p style="font-weight: bold;font-size: 25px;">一技能：竖根中根</p>
+			<p>眩晕敌人一秒，CD三秒，偶尔无CD。</p>
+			<p style="font-weight: bold;font-size: 25px;">二技能：从背后抱住敌人，然后用······去顶敌人</p>
+			<p>伤害为0。</p>
+			<p style="font-weight: bold;font-size: 25px;">大招:全军立战</p>
+            <p>召唤另外八个人，一起攻击敌人，被动减伤40%，普攻时会有霸体，CD为60秒。</p>
+			<p>对了，忘记介绍普攻，也就是大嘴巴子。定位为辅助战士，推荐指数三星半</p>
+			<p style="font-weight: bold;font-size: 40px;">第二位英雄————冯文瑞</p>
+			<p>他是九个人中跑步最好，最为富有的，他是我们九结义中的<u>二头</u>(?),<br>他的学习比大哥好一些。</p>
+			<p style="font-weight: bold;font-size: 25px;">一技能：加速</p>
+			<p>时间10秒，期间霸体，CD30秒。</p>
     </div>
 
     <footer>
-        <p id="footer-text">&copy; 2024 hook1的个人网站 | All rights reserved.</p>
+        <p>&copy; 2024 宿舍九结义的网站 | All rights reserved.</p>
     </footer>
             
-    <script>
-        const enText = {
-            "blog-title": "Welcome to hooks1's Personal Website",
-            "home-link": "Home",
-            "about-link": "About Me",
-            "about-title": "About Me",
-            "about-text": "Hi, I'm hooks1.",
-            "articles-title": "My Personal Link.",
-            "article-title-1": "BiliBili",
-            "article-summary-1": "<a href='https://space.bilibili.com/1312125285'>This is My BiliBili Account</a>",
-            "article-title-2": "NetEase CloudMusic",
-            "article-summary-2": "<a href='https://music.163.com/#/user/home?id=3307535618'>This is My NetEase Cloud Music Account</a>",
-            "footer-text": "&copy; 2024 hooks1's Personal Website | All rights reserved."
-        };
-
-        const zhText = {
-            "blog-title": "欢迎来到的hooks1个人网站",
-            "home-link": "首页",
-            "about-link": "关于我",
-            "about-title": "关于我",
-            "about-text": "你好，我是hooks1。",
-            "articles-title": "我的个人链接",
-            "article-title-1": "BiliBili",
-            "article-summary-1": "<a href='https://space.bilibili.com/1312125285'>这是我的BiliBili账号</a>",
-            "article-title-2": "网易云音乐",
-            "article-summary-2": "<a href='https://music.163.com/#/user/home?id=3307535618'>这是我的网易云音乐账号</a>",
-            "footer-text": "&copy; 2024 hook1的个人网站 | All rights reserved."
-        };
-
-        let isChinese = true; // 默认语言为中文
-
-        function switchLanguage() {
-            isChinese = !isChinese; // 切换语言状态
-
-            // 根据语言状态更新页面内容
-            const text = isChinese ? zhText : enText;
-
-            // 更新语言
-            document.documentElement.lang = isChinese ? "zh-CN" : "en"; // 动态切换HTML的lang属性
-
-            document.getElementById("blog-title").innerHTML = text["blog-title"];
-            document.getElementById("home-link").innerHTML = text["home-link"];
-            document.getElementById("about-link").innerHTML = text["about-link"];
-            document.getElementById("about-title").innerHTML = text["about-title"];
-            document.getElementById("about-text").innerHTML = text["about-text"];
-            document.getElementById("articles-title").innerHTML = text["articles-title"];
-            document.getElementById("article-title-1").innerHTML = text["article-title-1"];
-            document.getElementById("article-summary-1").innerHTML = text["article-summary-1"];
-            document.getElementById("article-title-2").innerHTML = text["article-title-2"];
-            document.getElementById("article-summary-2").innerHTML = text["article-summary-2"];
-            document.getElementById("footer-text").innerHTML = text["footer-text"];
-        }
-    </script>
 </body>
 </html>
