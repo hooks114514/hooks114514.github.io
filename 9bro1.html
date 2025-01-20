@@ -7,103 +7,101 @@
     <title>宿舍九结义的网站</title>
     <link rel="stylesheet" href="styles2.css"> <!-- 这里可以链接一个外部CSS文件 -->
     <style>
-/* Reset some default browser styles */
-body, h1, h2, h3, p, ul, li, a {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-}
+        /* Reset some default browser styles */
+        body, h1, h2, h3, p, ul, li, a {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-decoration: none;
+        }
 
-/* Set the font and background color for the body */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
-}
+        /* Set the font and background color for the body */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 2s ease-out; /* 为整个页面设置缓慢进入效果 */
+        }
 
-/* Style the header */
-header {
-    background: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-}
+        /* Define the animation keyframes */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
 
-/* Style the navigation bar */
-nav {
-    background: #444;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-}
+        /* Style the header */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
 
-nav a {
-    color: #fff;
-    padding: 10px 20px;
-    display: inline-block;
-}
+        /* Style the navigation bar */
+        nav {
+            background-color: #444;
+            padding: 10px 0;
+            text-align: center;
+        }
 
-nav a:hover {
-    background: #555;
-}
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none; /* 去除下划线 */
+            font-size: 18px;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease; /* 平滑过渡背景颜色 */
+        }
 
-/* Style the main content area */
-.main-content {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        nav a:hover {
+            background-color: #666; /* 鼠标悬停时背景颜色变为灰色 */
+        }
 
-/* Style the footer */
-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
+        .language-switcher {
+            margin-left: 20px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
 
-/* Add some responsive design */
-@media (max-width: 768px) {
-    nav a {
-        display: block;
-        padding: 10px;
-    }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-    .main-content {
-        padding: 10px;
-    }
-}
+        .article {
+            margin-bottom: 20px;
+        }
 
-/* Define the animation keyframes */
-@keyframes slideInFromLeft {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
+        .article h2 {
+            color: #333;
+        }
 
-/* Style the animated element */
-.animated-box {
-    width: 200px;
-    height: 200px;
-    margin: 100px auto;
-    background-color: #3498db; /* Initial color */
-    animation: slideInFromLeft 2s ease-out; /* Apply the animation */
-}
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            animation: fadeIn 6s ease-out; /* 为页脚设置渐变效果 */
+        }
 
-/* Apply animation to content sections */
-.animated-content {
-    animation: slideInFromLeft 2s ease-out;
-}
+        footer p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -112,30 +110,30 @@ footer {
     </header>
 
     <nav>
-        <a href="https://hooks1.rth1.xyz/9bro">首页</a>
-        <a href="https://hooks1.rth1.xyz/9bro-activities">活动</a>
+        <a href="https://hooks114514.github.io/9bro1">首页</a>
+        <a href="https://hooks114514.github.io/9bro1-activities">活动</a>
     </nav>
 
-    <div class="container" style="text-align: center;">
+    <div class="container">
         <!-- 首页内容 -->
-        <section id="about" class="animated-content">
+        <section id="about">
             <h2>关于我们</h2>
             <p>Welcome to 宿舍九结义，在这里，您可以选择九位英雄。</p>
             <p style="font-weight: bold;">先说好，如有Bug,那么就是特性，作者懒得修复。</p>
             <p>好了，该说的也说了，不该说的也说了，<u>何况我最讨厌说废话的人了。</u></p>
-            <p style="font-weight: bold;font-size: 40px;">首先，有请第一位英雄————周思裕</p>
+            <p style="font-weight: bold; font-size: 40px;">首先，有请第一位英雄——周思裕</p>
             <p>他是九个人当中学习最FW的，还是我们九结义中的大哥。</p>
             <p>正所谓大哥都没做好榜样，所以早晚有一天让他当二哥。</p>
-            <p style="font-weight: bold;font-size: 25px;">一技能：竖根中根</p>
+            <p style="font-weight: bold; font-size: 25px;">一技能：竖根中根</p>
             <p>眩晕敌人一秒，CD三秒，偶尔无CD。</p>
-            <p style="font-weight: bold;font-size: 25px;">二技能：从背后抱住敌人，然后用······去顶敌人</p>
+            <p style="font-weight: bold; font-size: 25px;">二技能：从背后抱住敌人，然后用······去顶敌人</p>
             <p>伤害为0。</p>
-            <p style="font-weight: bold;font-size: 25px;">大招:全军立战</p>
+            <p style="font-weight: bold; font-size: 25px;">大招:全军立战</p>
             <p>召唤另外八个人，一起攻击敌人，被动减伤40%，普攻时会有霸体，CD为60秒。</p>
             <p>对了，忘记介绍普攻，也就是大嘴巴子。定位为辅助战士，推荐指数三星半</p>
-            <p style="font-weight: bold;font-size: 40px;">第二位英雄————冯文瑞</p>
+            <p style="font-weight: bold; font-size: 40px;">第二位英雄——冯文瑞</p>
             <p>他是九个人中跑步最好，最为富有的，他是我们九结义中的<u>二头</u>(?),<br>他的学习比大哥好一些。</p>
-            <p style="font-weight: bold;font-size: 25px;">一技能：加速</p>
+            <p style="font-weight: bold; font-size: 25px;">一技能：加速</p>
             <p>时间10秒，期间霸体，CD30秒。</p>
         </section>
     </div>
