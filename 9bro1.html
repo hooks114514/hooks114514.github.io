@@ -99,27 +99,6 @@
         footer p {
             margin: 0;
         }
-
-        /* Typing effect styles */
-        .typing-effect {
-            font-weight: bold;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: .15em solid orange;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-        }
-
-        /* The typing animation */
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        /* The cursor blink animation */
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: orange; }
-        }
     </style>
 </head>
 <body>
@@ -136,7 +115,7 @@
         <!-- 首页内容 -->
         <section id="about">
             <h2>关于我们</h2>
-            <p class="typing-effect">Welcome to 宿舍九结义，在这里，您可以选择九位英雄。</p>
+            <p>Welcome to 宿舍九结义，在这里，您可以选择九位英雄。</p>
             <p style="font-weight: bold;">先说好，如有Bug,那么就是特性，作者懒得修复。</p>
             <p>好了，该说的也说了，不该说的也说了，<u>何况我最讨厌说废话的人了。</u></p>
         </section>
