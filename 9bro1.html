@@ -80,6 +80,24 @@ footer {
         padding: 10px;
     }
 }
+	    /* Define the animation keyframes */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Style the animated element */
+.animated-box {
+    width: 200px;
+    height: 200px;
+    margin: 100px auto;
+    background-color: #3498db; /* Initial color */
+    animation: slideInFromLeft 2s ease-out; /* Apply the animation */
+}
     </style>
 </head>
 <body>
