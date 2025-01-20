@@ -23,7 +23,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            animation: fadeIn 2s ease-in-out;
+            animation: fadeIn 2s ease-in-out; /* Set the slow entry effect for the entire page */
         }
 
         /* Define the animation keyframes */
@@ -42,7 +42,7 @@
             color: #fff;
             padding: 15px 0;
             text-align: center;
-            animation: fadeIn 2s ease-in-out;
+            animation: fadeIn 2s ease-in-out; /* Add easing to the header fade-in effect */
         }
 
         /* Style the navigation bar */
@@ -55,14 +55,15 @@
         nav a {
             color: white;
             margin: 0 15px;
-            text-decoration: none;
+            text-decoration: none; /* Remove underline */
             font-size: 18px;
             padding: 5px 10px;
-            transition: background-color 0.3s ease-in-out;
+            transition: background-color 0.3s ease-in-out; /* Smooth transition background color with easing */
+            display: inline-block; /* Ensure links are displayed in a block format */
         }
 
         nav a:hover {
-            background-color: #666;
+            background-color: #666; /* Change background color to gray on hover */
         }
 
         .container {
@@ -72,7 +73,8 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            animation: fadeIn 2s ease-in-out;
+            animation: fadeIn 2s ease-in-out; /* Add easing to the container fade-in effect */
+            overflow: hidden; /* Prevent content overflow */
         }
 
         .article {
@@ -91,7 +93,7 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-            animation: fadeIn 6s ease-in-out;
+            animation: fadeIn 6s ease-in-out; /* Add easing to the footer fade-in effect */
         }
 
         footer p {
