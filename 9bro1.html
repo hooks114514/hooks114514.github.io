@@ -23,7 +23,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            animation: fadeIn 2s ease-in-out; /* Set the slow entry effect for the entire page with easing */
+            animation: fadeIn 2s ease-in-out;
         }
 
         /* Define the animation keyframes */
@@ -42,7 +42,7 @@
             color: #fff;
             padding: 15px 0;
             text-align: center;
-            animation: fadeIn 2s ease-in-out; /* Add easing to the header fade-in effect */
+            animation: fadeIn 2s ease-in-out;
         }
 
         /* Style the navigation bar */
@@ -55,22 +55,14 @@
         nav a {
             color: white;
             margin: 0 15px;
-            text-decoration: none; /* Remove underline */
+            text-decoration: none;
             font-size: 18px;
             padding: 5px 10px;
-            transition: background-color 0.3s ease-in-out; /* Smooth transition background color with easing */
+            transition: background-color 0.3s ease-in-out;
         }
 
         nav a:hover {
-            background-color: #666; /* Change background color to gray on hover */
-            text-decoration: none; /* Ensure underline is removed */
-        }
-
-        .language-switcher {
-            margin-left: 20px;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
+            background-color: #666;
         }
 
         .container {
@@ -80,7 +72,7 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            animation: fadeIn 2s ease-in-out; /* Add easing to the container fade-in effect */
+            animation: fadeIn 2s ease-in-out;
         }
 
         .article {
@@ -99,11 +91,32 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-            animation: fadeIn 6s ease-in-out; /* Add easing to the footer fade-in effect */
+            animation: fadeIn 6s ease-in-out;
         }
 
         footer p {
             margin: 0;
+        }
+
+        /* Typing effect styles */
+        .typing-effect {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: .15em solid orange;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        /* The typing animation */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        /* The cursor blink animation */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
         }
     </style>
 </head>
@@ -121,23 +134,9 @@
         <!-- 首页内容 -->
         <section id="about">
             <h2>关于我们</h2>
-            <p>Welcome to 宿舍九结义，在这里，您可以选择九位英雄。</p>
+            <p class="typing-effect">Welcome to 宿舍九结义，在这里，您可以选择九位英雄。</p>
             <p style="font-weight: bold;">先说好，如有Bug,那么就是特性，作者懒得修复。</p>
             <p>好了，该说的也说了，不该说的也说了，<u>何况我最讨厌说废话的人了。</u></p>
-            <p style="font-weight: bold; font-size: 40px;">首先，有请第一位英雄——周思裕</p>
-            <p>他是九个人当中学习最FW的，还是我们九结义中的大哥。</p>
-            <p>正所谓大哥都没做好榜样，所以早晚有一天让他当二哥。</p>
-            <p style="font-weight: bold; font-size: 25px;">一技能：竖根中根</p>
-            <p>眩晕敌人一秒，CD三秒，偶尔无CD。</p>
-            <p style="font-weight: bold; font-size: 25px;">二技能：从背后抱住敌人，然后用······去顶敌人</p>
-            <p>伤害为0。</p>
-            <p style="font-weight: bold; font-size: 25px;">大招:全军立战</p>
-            <p>召唤另外八个人，一起攻击敌人，被动减伤40%，普攻时会有霸体，CD为60秒。</p>
-            <p>对了，忘记介绍普攻，也就是大嘴巴子。定位为辅助战士，推荐指数三星半</p>
-            <p style="font-weight: bold; font-size: 40px;">第二位英雄——冯文瑞</p>
-            <p>他是九个人中跑步最好，最为富有的，他是我们九结义中的<u>二头</u>(?),<br>他的学习比大哥好一些。</p>
-            <p style="font-weight: bold; font-size: 25px;">一技能：加速</p>
-            <p>时间10秒，期间霸体，CD30秒。</p>
         </section>
     </div>
 
