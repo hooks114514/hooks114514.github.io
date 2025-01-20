@@ -23,7 +23,7 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            animation: fadeIn 2s ease-out; /* 为整个页面设置缓慢进入效果 */
+            animation: fadeIn 2s ease-in-out; /* Set the slow entry effect for the entire page with easing */
         }
 
         /* Define the animation keyframes */
@@ -42,6 +42,7 @@
             color: #fff;
             padding: 15px 0;
             text-align: center;
+            animation: fadeIn 2s ease-in-out; /* Add easing to the header fade-in effect */
         }
 
         /* Style the navigation bar */
@@ -54,14 +55,15 @@
         nav a {
             color: white;
             margin: 0 15px;
-            text-decoration: none; /* 去除下划线 */
+            text-decoration: none; /* Remove underline */
             font-size: 18px;
             padding: 5px 10px;
-            transition: background-color 0.3s ease; /* 平滑过渡背景颜色 */
+            transition: background-color 0.3s ease-in-out; /* Smooth transition background color with easing */
         }
 
         nav a:hover {
-            background-color: #666; /* 鼠标悬停时背景颜色变为灰色 */
+            background-color: #666; /* Change background color to gray on hover */
+            text-decoration: none; /* Ensure underline is removed */
         }
 
         .language-switcher {
@@ -78,6 +80,7 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            animation: fadeIn 2s ease-in-out; /* Add easing to the container fade-in effect */
         }
 
         .article {
@@ -96,7 +99,7 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-            animation: fadeIn 6s ease-out; /* 为页脚设置渐变效果 */
+            animation: fadeIn 6s ease-in-out; /* Add easing to the footer fade-in effect */
         }
 
         footer p {
@@ -110,8 +113,8 @@
     </header>
 
     <nav>
-        <a href="https://hooks114514.github.io/9bro1">首页</a>
-        <a href="https://hooks114514.github.io/9bro1-activities">活动</a>
+        <a href="https://hooks1.rth1.xyz/9bro">首页</a>
+        <a href="https://hooks1.rth1.xyz/9bro-activities">活动</a>
     </nav>
 
     <div class="container">
