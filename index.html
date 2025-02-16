@@ -6,6 +6,49 @@
     <meta name="description" content="hooks1的个人网站 - 分享技术心得、音乐爱好和生活感悟">
     <title>hooks1的个人网站</title>
     <style>
+        /* 加载进度条样式 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(51, 51, 51, 0.2);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #333;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .progress-text {
+            color: #333;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
         @keyframes fadeIn {
             0% { opacity: 0; }
             100% { opacity: 1; }
@@ -91,7 +134,7 @@
             }
         }
     </style>
-    <script type="application/ld+json">
+        <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -101,7 +144,14 @@
     </script>
 </head>
 <body>
-    <header>
+    <!-- 加载进度条 -->
+    <div class="loader" id="loader">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-text" id="progress-text">0%</div>
+    </div>
+<header>
         <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
     </header>
 
@@ -137,8 +187,67 @@
     <footer>
         <p id="footer-text">&copy; 2024 hooks1的个人网站 | All rights reserved.</p>
     </footer>
-
     <script>
+        // 加载进度控制逻辑
+        (function() {
+            const loader = document.getElementById('loader');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            // 模拟初始进度
+            let progress = 0;
+            const updateProgress = (target) => {
+                const speed = target > 80 ? 0.3 : 0.5; // 不同阶段不同速度
+                progress += (target - progress) * speed;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+                
+                if (progress < target) {
+                    requestAnimationFrame(() => updateProgress(target));
+                }
+            };
+
+            // 真实资源加载检测
+            const checkResources = () => {
+                const resources = window.performance.getEntriesByType('resource');
+                const loaded = resources.filter(r => r.duration > 0).length;
+                const total = resources.length;
+                return total > 0 ? Math.min(95, (loaded / total) * 100) : 0;
+            };
+
+            // 初始进度动画
+            updateProgress(25);
+
+            // 文档加载进度
+            document.onreadystatechange = () => {
+                if (document.readyState === 'interactive') {
+                    updateProgress(50);
+                }
+            };
+
+            // 资源加载检测
+            const resourceCheckInterval = setInterval(() => {
+                const realProgress = checkResources();
+                if (realProgress > progress) {
+                    updateProgress(realProgress);
+                }
+            }, 500);
+
+            // 最终加载完成
+            window.addEventListener('load', () => {
+                clearInterval(resourceCheckInterval);
+                updateProgress(100);
+                
+                // 隐藏加载界面
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    loader.addEventListener('transitionend', () => {
+                        loader.remove();
+                    }, { once: true });
+                }, 300);
+            });
+        })();
         let isChinese = localStorage.getItem('language') !== 'en';
 
         const enText = {
