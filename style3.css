@@ -1,0 +1,12 @@
+/* 关键实现技术 */
+.loader {
+  position: fixed; /* 固定定位覆盖全屏 */
+  z-index: 9999;   /* 确保在最顶层 */
+  transition: opacity 0.5s ease; /* 淡出动画 */
+}
+
+/* 高性能动画实现 */
+.dot-flashing {
+  will-change: background-color; /* 启用硬件加速 */
+  animation: dot-flashing 1s infinite linear alternate;
+}
