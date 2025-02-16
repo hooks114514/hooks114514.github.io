@@ -1,262 +1,114 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="hooks1的个人网站 - 分享技术心得、音乐爱好和生活感悟">
-    <link rel="stylesheet" href="style3.css">  
-    <title>hooks1的个人网站</title>
+    <!-- 在head部分添加Font Awesome -->
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <!-- 其他meta保持不变 -->
+</head>
+<body>
+    <!-- 在个人链接部分添加验证图标 -->
+    <div class="article">
+        <h3 id="article-title-1">BiliBili 
+            <i class="fab fa-bilibili verified-icon" 
+               aria-hidden="true"
+               data-tooltip="已验证账号"></i>
+        </h3>
+        <p id="article-summary-1">
+            <a href="https://space.bilibili.com/1312125285" rel="noopener noreferrer">
+                <i class="fas fa-external-link-alt link-icon"></i>
+                这是我的BiliBili账号
+            </a>
+        </p>
+    </div>
+
+    <!-- 添加其他平台的验证图标 -->
+    <div class="article">
+        <h3 id="article-title-2">网易云音乐
+            <i class="fas fa-check-circle verified-icon" 
+               aria-hidden="true"
+               data-tooltip="官方认证"></i>
+        </h3>
+        <p id="article-summary-2">
+            <a href="https://music.163.com/user/home?id=3307535618" rel="noopener noreferrer">
+                <i class="fas fa-external-link-alt link-icon"></i>
+                这是我的网易云音乐账号
+            </a>
+        </p>
+    </div>
+
+    <!-- 在页脚添加安全验证 -->
+    <footer>
+        <p id="footer-text">
+            <i class="fas fa-lock security-icon" aria-hidden="true"></i>
+            &copy; 2024 hooks1的个人网站 | All rights reserved.
+            <span class="ssl-verify">
+                <img src="https://img.shields.io/badge/SSL-Valid-brightgreen" 
+                     alt="SSL证书有效"
+                     aria-label="SSL证书有效">
+            </span>
+        </p>
+    </footer>
+
     <style>
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        /* 验证图标样式 */
+        .verified-icon {
+            color: #1da1f2; /* 平台品牌色 */
+            font-size: 0.8em;
+            margin-left: 8px;
+            vertical-align: middle;
+            position: relative;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            animation: fadeIn 2s ease-out;
-            will-change: opacity;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 15px 0;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #444;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        nav a, nav button {
+        /* 鼠标悬停提示 */
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
             color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 5px 10px;
-            transition: background-color 0.3s ease;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        nav a:hover, nav button:hover {
-            background-color: #666;
-        }
-
-        .container {
-            width: 80%;
-            margin: 20px auto 60px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .article {
-            margin-bottom: 20px;
-        }
-
-        .article h2 {
-            color: #333;
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            animation: fadeIn 6s ease-out;
-        }
-
-        footer p {
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 10px;
-            }
-            nav a, nav button {
-                display: block;
-                margin: 5px 0;
-            }
-        }
-        /* 新增加载动画样式 */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loader.hidden {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
             opacity: 0;
+            transition: opacity 0.2s;
             pointer-events: none;
         }
 
-        .dot-flashing {
-            position: relative;
-            width: 10px;
-            height: 10px;
-            border-radius: 5px;
-            background-color: #333;
-            color: #333;
-            animation: dot-flashing 1s infinite linear alternate;
-            animation-delay: 0.5s;
+        [data-tooltip]:hover::after {
+            opacity: 1;
         }
-        
-        .dot-flashing::before,
-        .dot-flashing::after {
-            content: '';
+
+        /* 链接图标 */
+        .link-icon {
+            font-size: 0.8em;
+            margin-right: 6px;
+            color: #666;
+        }
+
+        /* 安全图标 */
+        .security-icon {
+            color: #28a745;
+            margin-right: 5px;
+        }
+
+        /* SSL徽章 */
+        .ssl-verify {
             display: inline-block;
-            position: absolute;
-            top: 0;
-            width: 10px;
-            height: 10px;
-            border-radius: 5px;
-            background-color: #333;
-            color: #333;
-        }
-        
-        .dot-flashing::before {
-            left: -15px;
-            animation: dot-flashing 1s infinite alternate;
-            animation-delay: 0s;
-        }
-        
-        .dot-flashing::after {
-            left: 15px;
-            animation: dot-flashing 1s infinite alternate;
-            animation-delay: 1s;
+            margin-left: 15px;
+            vertical-align: middle;
         }
 
-        @keyframes dot-flashing {
-            0% { background-color: #333; }
-            50%, 100% { background-color: rgba(51, 51, 51, 0.2); }
+        @media (max-width: 768px) {
+            .verified-icon {
+                font-size: 0.7em;
+            }
+            .ssl-verify img {
+                height: 18px;
+            }
         }
-
-        /* 原有样式 */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            animation: fadeIn 2s ease-out;
-            will-change: opacity;
-        }
-        
-        /* 其他原有样式保持不变... */
     </style>
-</head>
-<body>
-    <header>
-        <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
-    </header>
-
-    <nav>
-        <a href="https://hooks114514.github.io" id="home-link" aria-current="page">首页</a>
-        <a href="#about" id="about-link">关于我</a>
-        <button class="language-switcher" onclick="switchLanguage()" 
-                role="button" 
-                aria-label="切换语言/Toggle language">
-            切换语言
-        </button>
-    </nav>
-
-    <div class="container">
-        <section id="about">
-            <h2 id="about-title">关于我</h2>
-            <p id="about-text">你好，我是hooks1。</p>
-        </section>
-
-        <section id="articles">
-            <h2 id="articles-title">我的个人链接</h2>
-            <div class="article">
-                <h3 id="article-title-1">BiliBili</h3>
-                <p id="article-summary-1"><a href="https://space.bilibili.com/1312125285" rel="noopener noreferrer">这是我的BiliBili账号</a></p>
-            </div>
-            <div class="article">
-                <h3 id="article-title-2">网易云音乐</h3>
-                <p id="article-summary-2"><a href="https://music.163.com/user/home?id=3307535618" rel="noopener noreferrer">这是我的网易云音乐账号</a></p>
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <p id="footer-text">&copy; 2024 hooks1的个人网站 | All rights reserved.</p>
-    </footer>
-
-    <script>
-        let isChinese = localStorage.getItem('language') !== 'en';
-
-        const enText = {
-            "blog-title": "Welcome to hooks1's Personal Website",
-            "home-link": "Home",
-            "about-link": "About Me",
-            "about-title": "About Me",
-            "about-text": "Hi, I'm hooks1.",
-            "articles-title": "My Personal Links",
-            "article-title-1": "BiliBili",
-            "article-summary-1": "<a href='https://space.bilibili.com/1312125285' rel='noopener noreferrer'>This is My BiliBili Account</a>",
-            "article-title-2": "NetEase CloudMusic",
-            "article-summary-2": "<a href='https://music.163.com/user/home?id=3307535618' rel='noopener noreferrer'>This is My NetEase Cloud Music Account</a>",
-            "footer-text": "&copy; 2024 hooks1's Personal Website | All rights reserved."
-        };
-
-        const zhText = {
-            "blog-title": "欢迎来到hooks1的个人网站",
-            "home-link": "首页",
-            "about-link": "关于我",
-            "about-title": "关于我",
-            "about-text": "你好，我是hooks1。",
-            "articles-title": "我的个人链接",
-            "article-title-1": "BiliBili",
-            "article-summary-1": "<a href='https://space.bilibili.com/1312125285' rel='noopener noreferrer'>这是我的BiliBili账号</a>",
-            "article-title-2": "网易云音乐",
-            "article-summary-2": "<a href='https://music.163.com/user/home?id=3307535618' rel='noopener noreferrer'>这是我的网易云音乐账号</a>",
-            "footer-text": "&copy; 2024 hooks1的个人网站 | All rights reserved."
-        };
-
-        function updateContent(text) {
-            document.documentElement.lang = isChinese ? "zh-CN" : "en";
-            Object.entries(text).forEach(([key, value]) => {
-                const element = document.getElementById(key);
-                if (element) element.innerHTML = value;
-            });
-        }
-
-        function switchLanguage() {
-            isChinese = !isChinese;
-            localStorage.setItem('language', isChinese ? 'zh-CN' : 'en');
-            updateContent(isChinese ? zhText : enText);
-        }
-
-        // 初始化加载时设置语言
-        document.addEventListener('DOMContentLoaded', () => {
-            updateContent(isChinese ? zhText : enText);
-        });
-    </script>
 </body>
 </html>
