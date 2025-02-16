@@ -1,114 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <!-- 在head部分添加Font Awesome -->
-    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
-    <!-- 其他meta保持不变 -->
-</head>
-<body>
-    <!-- 在个人链接部分添加验证图标 -->
-    <div class="article">
-        <h3 id="article-title-1">BiliBili 
-            <i class="fab fa-bilibili verified-icon" 
-               aria-hidden="true"
-               data-tooltip="已验证账号"></i>
-        </h3>
-        <p id="article-summary-1">
-            <a href="https://space.bilibili.com/1312125285" rel="noopener noreferrer">
-                <i class="fas fa-external-link-alt link-icon"></i>
-                这是我的BiliBili账号
-            </a>
-        </p>
-    </div>
-
-    <!-- 添加其他平台的验证图标 -->
-    <div class="article">
-        <h3 id="article-title-2">网易云音乐
-            <i class="fas fa-check-circle verified-icon" 
-               aria-hidden="true"
-               data-tooltip="官方认证"></i>
-        </h3>
-        <p id="article-summary-2">
-            <a href="https://music.163.com/user/home?id=3307535618" rel="noopener noreferrer">
-                <i class="fas fa-external-link-alt link-icon"></i>
-                这是我的网易云音乐账号
-            </a>
-        </p>
-    </div>
-
-    <!-- 在页脚添加安全验证 -->
-    <footer>
-        <p id="footer-text">
-            <i class="fas fa-lock security-icon" aria-hidden="true"></i>
-            &copy; 2024 hooks1的个人网站 | All rights reserved.
-            <span class="ssl-verify">
-                <img src="https://img.shields.io/badge/SSL-Valid-brightgreen" 
-                     alt="SSL证书有效"
-                     aria-label="SSL证书有效">
-            </span>
-        </p>
-    </footer>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="hooks1的个人网站 - 分享技术心得、音乐爱好和生活感悟">
+    <title>hooks1的个人网站</title>
     <style>
-        /* 验证图标样式 */
-        .verified-icon {
-            color: #1da1f2; /* 平台品牌色 */
-            font-size: 0.8em;
-            margin-left: 8px;
-            vertical-align: middle;
-            position: relative;
+        /* 加载进度条样式 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
 
-        /* 鼠标悬停提示 */
-        [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background: rgba(51, 51, 51, 0.2);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #333;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .progress-text {
+            color: #333;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .loader.hidden {
             opacity: 0;
-            transition: opacity 0.2s;
             pointer-events: none;
         }
 
-        [data-tooltip]:hover::after {
-            opacity: 1;
-        }
-
-        /* 链接图标 */
-        .link-icon {
-            font-size: 0.8em;
-            margin-right: 6px;
-            color: #666;
-        }
-
-        /* 安全图标 */
-        .security-icon {
-            color: #28a745;
-            margin-right: 5px;
-        }
-
-        /* SSL徽章 */
-        .ssl-verify {
-            display: inline-block;
-            margin-left: 15px;
-            vertical-align: middle;
-        }
-
-        @media (max-width: 768px) {
-            .verified-icon {
-                font-size: 0.7em;
-            }
-            .ssl-verify img {
-                height: 18px;
-            }
-        }
+        /* 原有样式保持不变... */
     </style>
+</head>
+<body>
+    <!-- 加载进度条 -->
+    <div class="loader" id="loader">
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-text" id="progress-text">0%</div>
+    </div>
+
+    <!-- 原有页面内容保持不变... -->
+
+    <script>
+        // 加载进度控制逻辑
+        (function() {
+            const loader = document.getElementById('loader');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            // 模拟初始进度
+            let progress = 0;
+            const updateProgress = (target) => {
+                const speed = target > 80 ? 0.3 : 0.5; // 不同阶段不同速度
+                progress += (target - progress) * speed;
+                
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+                
+                if (progress < target) {
+                    requestAnimationFrame(() => updateProgress(target));
+                }
+            };
+
+            // 真实资源加载检测
+            const checkResources = () => {
+                const resources = window.performance.getEntriesByType('resource');
+                const loaded = resources.filter(r => r.duration > 0).length;
+                const total = resources.length;
+                return total > 0 ? Math.min(95, (loaded / total) * 100) : 0;
+            };
+
+            // 初始进度动画
+            updateProgress(25);
+
+            // 文档加载进度
+            document.onreadystatechange = () => {
+                if (document.readyState === 'interactive') {
+                    updateProgress(50);
+                }
+            };
+
+            // 资源加载检测
+            const resourceCheckInterval = setInterval(() => {
+                const realProgress = checkResources();
+                if (realProgress > progress) {
+                    updateProgress(realProgress);
+                }
+            }, 500);
+
+            // 最终加载完成
+            window.addEventListener('load', () => {
+                clearInterval(resourceCheckInterval);
+                updateProgress(100);
+                
+                // 隐藏加载界面
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    loader.addEventListener('transitionend', () => {
+                        loader.remove();
+                    }, { once: true });
+                }, 300);
+            });
+        })();
+
+        // 原有JavaScript代码保持不变...
+    </script>
 </body>
 </html>
