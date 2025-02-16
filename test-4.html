@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="hooks1的个人网站 - 分享技术心得、音乐爱好和生活感悟">
+    <title>hooks1的个人网站</title>
+    <style>
+        /* 新增加载动画样式 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .dot-flashing {
+            position: relative;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #333;
+            color: #333;
+            animation: dot-flashing 1s infinite linear alternate;
+            animation-delay: 0.5s;
+        }
+        
+        .dot-flashing::before,
+        .dot-flashing::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #333;
+            color: #333;
+        }
+        
+        .dot-flashing::before {
+            left: -15px;
+            animation: dot-flashing 1s infinite alternate;
+            animation-delay: 0s;
+        }
+        
+        .dot-flashing::after {
+            left: 15px;
+            animation: dot-flashing 1s infinite alternate;
+            animation-delay: 1s;
+        }
+
+        @keyframes dot-flashing {
+            0% { background-color: #333; }
+            50%, 100% { background-color: rgba(51, 51, 51, 0.2); }
+        }
+
+        /* 原有样式 */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 2s ease-out;
+            will-change: opacity;
+        }
+        
+        /* 其他原有样式保持不变... */
+    </style>
+</head>
+<body>
+    <!-- 新增加载动画 -->
+    <div class="loader" id="loader">
+        <div class="dot-flashing"></div>
+    </div>
+
+    <!-- 原有内容 -->
+    <header>
+        <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
+    </header>
+
+    <!-- 其他原有HTML结构保持不变... -->
+
+    <script>
+        // 新增加载动画控制逻辑
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            
+            // 先触发重绘
+            void loader.offsetHeight;
+            
+            // 添加隐藏类
+            loader.classList.add('hidden');
+            
+            // 动画结束后移除元素
+            loader.addEventListener('transitionend', () => {
+                loader.remove();
+            }, { once: true });
+        });
+
+        // 原有JavaScript代码保持不变...
+    </script>
+</body>
+</html>
