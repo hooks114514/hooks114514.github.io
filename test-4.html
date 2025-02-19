@@ -13,135 +13,111 @@
             --secondary-color: #444;
             --text-color: #f4f4f4;
             --link-hover-color: #666;
+            --container-width: min(80%, 1200px);
         }
 
+        /* 优化后的加载动画 */
         .loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            place-items: center;
             z-index: 9999;
             transition: opacity 0.5s ease;
         }
 
-        .progress-container {
+        .progress {
             width: 200px;
-            height: 4px;
-            background: rgba(51, 51, 51, 0.2);
-            border-radius: 2px;
-            margin-top: 20px;
-            overflow: hidden;
-            role: "progressbar";
-            aria-valuemin: "0";
-            aria-valuemax: "100";
+            text-align: center;
         }
 
         .progress-bar {
+            height: 4px;
+            background: rgba(51, 51, 51, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
             width: 0%;
             height: 100%;
             background: var(--primary-color);
             transition: width 0.3s ease;
-            border-radius: 2px;
-            will-change: width;
+            transform-origin: left;
         }
 
-        .progress-text {
-            color: var(--primary-color);
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        @keyframes fadeIn { 
+            0% { opacity: 0 } 
+            100% { opacity: 1 } 
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: var(--text-color);
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--text-color);
             margin: 0;
-            padding: 0;
-            animation: fadeIn 2s ease-out;
+            animation: fadeIn 1s ease;
         }
 
-        header {
-            background-color: var(--primary-color);
+        header, footer {
+            background: var(--primary-color);
             color: white;
-            padding: 15px 0;
             text-align: center;
+            padding: 1rem;
         }
 
         nav {
-            background-color: var(--secondary-color);
-            padding: 10px 0;
-            text-align: center;
+            background: var(--secondary-color);
+            padding: 0.5rem;
         }
 
-        nav a, nav button {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 5px 10px;
-            transition: background-color 0.3s ease;
-            background: none;
-            border: none;
-            cursor: pointer;
+        .nav-list {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
 
-        nav a:hover, nav button:hover {
-            background-color: var(--link-hover-color);
+        .nav-link, .lang-btn {
+            color: inherit;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .nav-link:hover, 
+        .lang-btn:hover {
+            background: var(--link-hover-color);
         }
 
         .container {
-            width: 80%;
-            margin: 20px auto 60px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .article {
-            margin-bottom: 20px;
-        }
-
-        .article h2 {
-            color: var(--primary-color);
-        }
-
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            width: var(--container-width);
+            margin: 2rem auto 4rem;
+            background: white;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 10px;
+            :root { --container-width: 95% }
+            
+            .nav-list {
+                flex-direction: column;
+                gap: 0.5rem;
             }
-            nav a, nav button {
-                display: block;
-                margin: 5px 0;
-                min-height: 44px;
-                padding: 10px;
+            
+            .nav-link, .lang-btn {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": ["WebSite", "Person"],
+        "@type": ["Person", "WebSite"],
         "name": "hooks1",
         "url": "https://hooks114514.github.io",
         "sameAs": [
@@ -153,140 +129,167 @@
 </head>
 <body>
     <div class="loader" id="loader">
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
         </div>
-        <div class="progress-text" id="progress-text">0%</div>
     </div>
 
     <header>
-        <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
+        <h1 id="blogTitle">欢迎来到hooks1的个人网站</h1>
     </header>
 
     <nav>
-        <a href="https://hooks114514.github.io" id="home-link" aria-current="page">首页</a>
-        <a href="#about" id="about-link">关于我</a>
-        <button class="language-switcher" onclick="switchLanguage()" 
-                role="button" 
-                aria-label="切换语言/Toggle language">
-            切换语言
-        </button>
+        <ul class="nav-list">
+            <li><a href="https://hooks114514.github.io" class="nav-link" id="homeLink" aria-current="page">首页</a></li>
+            <li><a href="#about" class="nav-link" id="aboutLink">关于我</a></li>
+            <li><button class="lang-btn" id="langBtn" aria-label="切换语言">切换语言</button></li>
+        </ul>
     </nav>
 
-    <div class="container">
+    <main class="container">
         <section id="about">
-            <h2 id="about-title">关于我</h2>
-            <p id="about-text">你好，我是hooks1。</p>
+            <h2 id="aboutTitle">关于我</h2>
+            <p id="aboutText">你好，我是hooks1。</p>
         </section>
 
         <section id="articles">
-            <h2 id="articles-title">我的个人链接</h2>
-            <div class="article">
-                <h3 id="article-title-1">BiliBili</h3>
-                <p id="article-summary-1"><a href="https://space.bilibili.com/1312125285" rel="noopener noreferrer">这是我的BiliBili账号</a></p>
-            </div>
-            <div class="article">
-                <h3 id="article-title-2">网易云音乐</h3>
-                <p id="article-summary-2"><a href="https://music.163.com/user/home?id=3307535618" rel="noopener noreferrer">这是我的网易云音乐账号</a></p>
-            </div>
+            <h2 id="articlesTitle">我的个人链接</h2>
+            <article class="article">
+                <h3 id="bilibiliTitle">BiliBili</h3>
+                <p><a href="https://space.bilibili.com/1312125285" rel="noopener" class="ext-link">这是我的BiliBili账号</a></p>
+            </article>
+            <article class="article">
+                <h3 id="musicTitle">网易云音乐</h3>
+                <p><a href="https://music.163.com/user/home?id=3307535618" rel="noopener" class="ext-link">这是我的网易云音乐账号</a></p>
+            </article>
         </section>
-    </div>
+    </main>
 
     <footer>
-        <p id="footer-text">&copy; 2024 hooks1的个人网站 | All rights reserved.</p>
+        <p id="footerText">&copy; <span id="currentYear"></span> hooks1的个人网站</p>
     </footer>
 
     <script>
-        (function() {
-            const loader = document.getElementById('loader');
-            const progressBar = document.getElementById('progress-bar');
-            const progressText = document.getElementById('progress-text');
-            const container = progressBar.parentElement;
-            
-            let progress = 0;
-            const loadTimeout = setTimeout(completeLoading, 10000);
-
-            function updateProgress(target) {
-                const speed = target > 80 ? 0.3 : 0.5;
-                progress += (target - progress) * speed;
+        // 性能优化后的加载控制器
+        class Loader {
+            static init() {
+                this.progress = 0;
+                this.elements = {
+                    loader: document.getElementById('loader'),
+                    progress: document.getElementById('progress'),
+                    text: document.getElementById('progressText')
+                };
                 
-                progressBar.style.width = progress + '%';
-                progressText.textContent = Math.round(progress) + '%';
-                container.setAttribute('aria-valuenow', Math.round(progress));
-
-                if (progress < target) {
-                    requestAnimationFrame(() => updateProgress(target));
-                }
+                this.start();
             }
 
-            function checkResources() {
-                const resources = window.performance.getEntriesByType('resource');
-                const loaded = resources.filter(r => r.duration > 0).length;
-                return resources.length > 0 ? Math.min(95, (loaded / resources.length) * 100) : 0;
+            static start() {
+                const steps = [
+                    [25, 300],  // 初始进度
+                    [50, 800],  // DOM交互
+                    [95, 5000], // 资源加载
+                    [100, 300]  // 完成
+                ];
+
+                steps.forEach(([target, delay]) => {
+                    setTimeout(() => this.update(target), delay);
+                });
+
+                window.addEventListener('load', () => {
+                    this.finish();
+                    clearTimeout(this.timeout);
+                });
+
+                this.timeout = setTimeout(this.finish.bind(this), 10000);
             }
 
-            function completeLoading() {
-                clearInterval(resourceCheckInterval);
-                updateProgress(100);
+            static update(target) {
+                if (this.progress >= target) return;
+                
+                const step = () => {
+                    this.progress += (target - this.progress) * 0.1;
+                    this.render();
+                    if (this.progress < target - 1) {
+                        requestAnimationFrame(step);
+                    }
+                };
+                requestAnimationFrame(step);
+            }
+
+            static render() {
+                this.elements.progress.style.width = `${this.progress}%`;
+                this.elements.text.textContent = `${Math.round(this.progress)}%`;
+            }
+
+            static finish() {
+                this.update(100);
                 setTimeout(() => {
-                    loader.classList.add('hidden');
-                    loader.addEventListener('transitionend', () => loader.remove(), { once: true });
-                }, 300);
+                    this.elements.loader.style.opacity = '0';
+                    this.elements.loader.addEventListener('transitionend', () => {
+                        this.elements.loader.remove();
+                    }, { once: true });
+                }, 500);
             }
-
-            updateProgress(25);
-            document.onreadystatechange = () => document.readyState === 'interactive' && updateProgress(50);
-            const resourceCheckInterval = setInterval(() => updateProgress(checkResources()), 500);
-            window.addEventListener('load', completeLoading);
-        })();
-
-        const translations = {
-            zh: {
-                "blog-title": "欢迎来到hooks1的个人网站",
-                "home-link": "首页",
-                "about-link": "关于我",
-                "about-title": "关于我",
-                "about-text": "你好，我是hooks1。",
-                "articles-title": "我的个人链接",
-                "article-title-1": "BiliBili",
-                "article-summary-1": "<a href='https://space.bilibili.com/1312125285' rel='noopener noreferrer'>这是我的BiliBili账号</a>",
-                "article-title-2": "网易云音乐",
-                "article-summary-2": "<a href='https://music.163.com/user/home?id=3307535618' rel='noopener noreferrer'>这是我的网易云音乐账号</a>",
-                "footer-text": "&copy; 2024 hooks1的个人网站 | All rights reserved."
-            },
-            en: {
-                "blog-title": "Welcome to hooks1's Personal Website",
-                "home-link": "Home",
-                "about-link": "About Me",
-                "about-title": "About Me",
-                "about-text": "Hi, I'm hooks1.",
-                "articles-title": "My Personal Links",
-                "article-title-1": "BiliBili",
-                "article-summary-1": "<a href='https://space.bilibili.com/1312125285' rel='noopener noreferrer'>This is My BiliBili Account</a>",
-                "article-title-2": "NetEase CloudMusic",
-                "article-summary-2": "<a href='https://music.163.com/user/home?id=3307535618' rel='noopener noreferrer'>This is My NetEase Cloud Music Account</a>",
-                "footer-text": "&copy; 2024 hooks1's Personal Website | All rights reserved."
-            }
-        };
-
-        let currentLang = localStorage.getItem('language') || 'zh';
-        
-        function switchLanguage() {
-            currentLang = currentLang === 'zh' ? 'en' : 'zh';
-            localStorage.setItem('language', currentLang);
-            updateContent();
         }
 
-        function updateContent() {
-            document.documentElement.lang = currentLang;
-            const text = translations[currentLang];
-            Object.entries(text).forEach(([key, value]) => {
-                const element = document.getElementById(key);
-                element && (element.innerHTML = value);
-            });
+        // 国际化模块
+        class I18n {
+            static init() {
+                this.lang = localStorage.getItem('lang') || 'zh';
+                this.translations = {
+                    zh: {
+                        blogTitle: '欢迎来到hooks1的个人网站',
+                        homeLink: '首页',
+                        aboutLink: '关于我',
+                        aboutTitle: '关于我',
+                        aboutText: '你好，我是hooks1。',
+                        articlesTitle: '我的个人链接',
+                        bilibiliTitle: 'BiliBili',
+                        musicTitle: '网易云音乐',
+                        footerText: '版权所有'
+                    },
+                    en: {
+                        blogTitle: "Welcome to hooks1's Website",
+                        homeLink: "Home",
+                        aboutLink: "About",
+                        aboutTitle: "About Me",
+                        aboutText: "Hi, I'm hooks1.",
+                        articlesTitle: "My Links",
+                        bilibiliTitle: "BiliBili",
+                        musicTitle: "NetEase Music",
+                        footerText: "All rights reserved"
+                    }
+                };
+                
+                this.update();
+                document.getElementById('langBtn').addEventListener('click', () => this.toggle());
+                document.getElementById('currentYear').textContent = new Date().getFullYear();
+            }
+
+            static toggle() {
+                this.lang = this.lang === 'zh' ? 'en' : 'zh';
+                localStorage.setItem('lang', this.lang);
+                this.update();
+            }
+
+            static update() {
+                document.documentElement.lang = this.lang;
+                const t = this.translations[this.lang];
+                Object.entries(t).forEach(([key, value]) => {
+                    const el = document.getElementById(key);
+                    if (el) el.textContent = value;
+                });
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', updateContent);
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            Loader.init();
+            I18n.init();
+        });
     </script>
 </body>
 </html>
