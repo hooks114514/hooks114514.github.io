@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,151 +8,28 @@
     <link rel="dns-prefetch" href="https://space.bilibili.com">
     <title>hooks1的个人网站</title>
     <style>
+        /* 优化后的CSS变量系统 */
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --text-color: #ecf0f1;
-            --link-hover-color: #3498db;
-            --container-bg: #ffffff;
-            --progress-bg: rgba(44, 62, 80, 0.1);
-            --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        /* 精简加载动画 */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--text-color);
-            display: grid;
-            place-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s var(--easing);
-        }
-
-        .progress-container {
-            width: min(90%, 300px);
-            height: 4px;
-            background: var(--progress-bg);
-            border-radius: 2px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: var(--primary-color);
-            transition: width 0.3s var(--easing);
-            transform-origin: left;
-        }
-
-        /* 优化主体动画 */
-        @media (prefers-reduced-motion: no-preference) {
-            body {
-                animation: fadeIn 1s var(--easing);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* 精简布局样式 */
-        header {
-            background: var(--primary-color);
-            color: var(--text-color);
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        nav {
-            background: var(--secondary-color);
-            padding: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-link {
-            color: inherit;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: 
-                background 0.3s var(--easing),
-                transform 0.2s var(--easing);
-        }
-
-        .nav-link:hover {
-            background: var(--link-hover-color);
-            transform: translateY(-2px);
-        }
-
-        .container {
-            width: min(90%, 1200px);
-            margin: 2rem auto 5rem;
-            background: var(--container-bg);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .article {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            border-left: 4px solid var(--primary-color);
-            transition: transform 0.3s var(--easing);
-        }
-
-        .article:hover {
-            transform: translateX(5px);
-        }
-
-        footer {
-            background: var(--primary-color);
-            color: var(--text-color);
-            text-align: center;
-            padding: 1rem;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            nav {
-                gap: 0.5rem;
-                padding: 0.5rem;
-            }
+            /* 基础设置 */
+            --radius: 8px;
+            --transition: all 0.3s ease;
             
-            .nav-link {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .container {
-                padding: 1rem;
-                margin-bottom: 6rem;
-            }
-        }
-            /* 亮色主题变量 */
+            /* 亮色主题 */
             --color-bg: #ffffff;
             --color-text: #2c3e50;
             --color-primary: #3498db;
             --color-secondary: #f8f9fa;
             --color-border: #dee2e6;
-            --color-card-bg: #ffffff;
+            --color-card: #ffffff;
             --color-shadow: rgba(0, 0, 0, 0.1);
-            
-            /* 深色主题变量 */
+
+            /* 深色主题 */
             --dark-color-bg: #1a1a1a;
             --dark-color-text: #e0e0e0;
             --dark-color-primary: #6ab0f3;
             --dark-color-secondary: #2d2d2d;
             --dark-color-border: #404040;
-            --dark-color-card-bg: #252525;
+            --dark-color-card: #252525;
             --dark-color-shadow: rgba(255, 255, 255, 0.1);
 
             /* 动态变量 */
@@ -161,15 +38,11 @@
             --primary: var(--color-primary);
             --secondary: var(--color-secondary);
             --border: var(--color-border);
-            --card-bg: var(--color-card-bg);
+            --card-bg: var(--color-card);
             --shadow: var(--color-shadow);
-            
-            /* 公共变量 */
-            --radius: 8px;
-            --transition: all 0.3s ease;
         }
 
-        /* 深色模式自动适配 */
+        /* 深色模式适配 */
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
                 --background: var(--dark-color-bg);
@@ -177,19 +50,18 @@
                 --primary: var(--dark-color-primary);
                 --secondary: var(--dark-color-secondary);
                 --border: var(--dark-color-border);
-                --card-bg: var(--dark-color-card-bg);
+                --card-bg: var(--dark-color-card);
                 --shadow: var(--dark-color-shadow);
             }
         }
 
-        /* 手动切换主题 */
         [data-theme="dark"] {
             --background: var(--dark-color-bg);
             --text: var(--dark-color-text);
             --primary: var(--dark-color-primary);
             --secondary: var(--dark-color-secondary);
             --border: var(--dark-color-border);
-            --card-bg: var(--dark-color-card-bg);
+            --card-bg: var(--dark-color-card);
             --shadow: var(--dark-color-shadow);
         }
 
@@ -199,17 +71,49 @@
             --primary: var(--color-primary);
             --secondary: var(--color-secondary);
             --border: var(--color-border);
-            --card-bg: var(--color-card-bg);
+            --card-bg: var(--color-card);
             --shadow: var(--color-shadow);
         }
 
+        /* 基础样式 */
         body {
             background: var(--background);
             color: var(--text);
             font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
             transition: var(--transition);
         }
 
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--background);
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s var(--easing);
+        }
+
+        .progress-container {
+            width: min(90%, 300px);
+            height: 4px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        /* 布局优化 */
         header {
             background: var(--primary);
             color: white;
@@ -218,95 +122,125 @@
         }
 
         nav {
-            background: var(--secondary);
+            display: flex;
+            gap: 1rem;
             padding: 1rem;
+            background: var(--secondary);
             border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .theme-toggle {
-            background: none;
-            border: 2px solid var(--text);
-            color: var(--text);
-            padding: 0.5rem;
+        .nav-link, .theme-toggle {
+            padding: 0.5rem 1rem;
             border-radius: var(--radius);
-            cursor: pointer;
             transition: var(--transition);
+            color: inherit;
+            text-decoration: none;
         }
 
-        .theme-toggle:hover {
+        .nav-link:hover, .theme-toggle:hover {
             background: var(--primary);
-            border-color: var(--primary);
             color: white;
         }
 
         .container {
+            width: min(90%, 1200px);
+            margin: 2rem auto;
+            padding: 2rem;
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            border-radius: var(--radius);
             box-shadow: 0 3px 10px var(--shadow);
         }
+
+        .article {
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 3px solid var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .article:hover {
+            transform: translateX(5px);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 3rem;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 1rem auto;
+            }
+            
+            nav {
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+            
+            .nav-link, .theme-toggle {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* 可访问性优化 */
+        :focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
     </style>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": ["Person", "WebSite"],
-        "name": "hooks1",
-        "url": "https://hooks114514.github.io",
-        "sameAs": [
-            "https://space.bilibili.com/1312125285",
-            "https://music.163.com/user/home?id=3307535618"
-        ],
-        "description": "个人技术博客与作品展示"
-    }
-    </script>
 </head>
 <body>
     <div class="loader" id="loader">
-        <div class="progress-container" role="progressbar" 
-             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
     </div>
 
     <header>
-        <h1 id="blog-title">欢迎来到hooks1的个人网站</h1>
+        <h1>欢迎来到hooks1的个人网站</h1>
     </header>
 
     <nav>
-        <a href="#home" class="nav-link" id="home-link" aria-current="page">首页</a>
-        <a href="#about" class="nav-link" id="about-link">关于我</a>
-        <button class="nav-link" id="language-switcher" aria-label="切换语言">
-            🌐 切换语言
-        </button>
-        <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
-            🌓
-        </button>
+        <a href="#home" class="nav-link">首页</a>
+        <a href="#about" class="nav-link">关于我</a>
+        <button class="nav-link" id="theme-toggle" aria-label="切换主题">🌓</button>
     </nav>
 
     <main class="container">
         <section id="about">
-            <h2 id="about-title">关于我</h2>
-            <p id="about-text">你好，我是hooks1。</p>
+            <h2>关于我</h2>
+            <p>你好，我是hooks1，热爱技术分享和音乐创作。</p>
         </section>
 
-        <section id="articles">
-            <h2 id="articles-title">我的个人链接</h2>
+        <section id="links">
+            <h2>我的链接</h2>
             <article class="article">
-                <h3 id="article-title-1">BiliBili</h3>
-                <p id="article-summary-1">
+                <h3>BiliBili</h3>
+                <p>
                     <a href="https://space.bilibili.com/1312125285" 
-                       rel="noopener noreferrer"
-                       class="ext-link">
-                        📺 这是我的BiliBili账号
+                       target="_blank" 
+                       rel="noopener"
+                       class="nav-link">
+                        📺 访问我的B站主页
                     </a>
                 </p>
             </article>
             <article class="article">
-                <h3 id="article-title-2">网易云音乐</h3>
-                <p id="article-summary-2">
+                <h3>网易云音乐</h3>
+                <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
-                       rel="noopener noreferrer"
-                       class="ext-link">
-                        🎵 这是我的网易云音乐账号
+                       target="_blank"
+                       rel="noopener"
+                       class="nav-link">
+                        🎵 访问我的网易云
                     </a>
                 </p>
             </article>
@@ -314,122 +248,87 @@
     </main>
 
     <footer>
-        <p id="footer-text">&copy; <span id="current-year"></span> hooks1的个人网站</p>
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
     <script>
-        // 现代JS优化
-        (async () => {
-            // 加载进度控制
-            const loader = document.getElementById('loader');
-            const progressBar = document.getElementById('progress-bar');
-            const updateProgress = (target) => {
-                const progress = +progressBar.style.width.replace('%','') || 0;
-                const step = Math.min(5, (target - progress) * 0.3);
+        class ThemeManager {
+            static init() {
+                this.toggleBtn = document.getElementById('theme-toggle');
+                this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+                this.loadTheme();
+                this.bindEvents();
+            }
+
+            static loadTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                const systemDark = this.prefersDark.matches;
                 
-                progressBar.style.width = `${progress + step}%`;
-                if (progress < target) requestAnimationFrame(() => updateProgress(target));
-            };
+                document.documentElement.setAttribute('data-theme', 
+                    savedTheme || (systemDark ? 'dark' : ''));
+                this.updateButton(savedTheme ?? (systemDark ? 'dark' : 'light'));
+            }
 
-            // 资源加载检测
-            const getLoadProgress = () => {
-                const resources = performance.getEntriesByType('resource');
-                return resources.length ? 
-                    Math.min(95, resources.filter(r => r.duration > 0).length / resources.length * 100) : 0;
-            };
+            static updateButton(theme) {
+                this.toggleBtn.textContent = theme === 'dark' ? '🌞' : '🌙';
+            }
 
-            // 初始化加载流程
-            const initLoader = () => {
-                let current = 0;
-                const phases = {
-                    interactive: 50,
-                    load: 100,
-                    timeout: 100
-                };
-
-                const update = () => {
-                    current = Math.max(current, getLoadProgress(), 
-                        document.readyState === 'complete' ? 100 : 
-                        document.readyState === 'interactive' ? 50 : 0);
-                    updateProgress(current);
-                };
-
-                document.onreadystatechange = update;
-                const timer = setInterval(update, 500);
-                window.addEventListener('load', () => {
-                    clearInterval(timer);
-                    updateProgress(100);
-                    setTimeout(() => {
-                        loader.style.opacity = '0';
-                        loader.addEventListener('transitionend', () => loader.remove());
-                    }, 500);
-                });
-
-                setTimeout(() => updateProgress(100), 10000); // 10秒超时
-            };
-
-            // 多语言支持
-            const translations = {
-                zh: {
-                    // 中文内容
-                },
-                en: {
-                    // 英文内容
-                }
-            };
-
-            const langToggle = document.getElementById('language-switcher');
-            let currentLang = localStorage.getItem('lang') || 'zh';
-
-            const setLanguage = (lang) => {
-                document.documentElement.lang = lang;
-                Object.entries(translations[lang]).forEach(([key, val]) => {
-                    const el = document.getElementById(key);
-                    if (el) el.textContent = val;
-                });
-            };
-
-            langToggle.addEventListener('click', () => {
-                currentLang = currentLang === 'zh' ? 'en' : 'zh';
-                localStorage.setItem('lang', currentLang);
-                setLanguage(currentLang);
-            });
-
-            // 初始化
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-            initLoader();
-            setLanguage(currentLang);
-                // 主题切换功能
-            const themeToggle = document.getElementById('theme-toggle');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-            const savedTheme = localStorage.getItem('theme');
-
-            // 初始化主题
-            const applyTheme = (theme) => {
-                document.documentElement.setAttribute('data-theme', theme || '');
-                const isDark = theme === 'dark' || (!theme && prefersDark.matches);
-                themeToggle.textContent = isDark ? '🌞' : '🌙';
-            };
-
-            // 切换主题
-            const toggleTheme = () => {
+            static toggleTheme() {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem('theme', newTheme);
-                applyTheme(newTheme);
-            };
+                this.updateButton(newTheme);
+            }
 
-            // 监听系统主题变化
-            prefersDark.addEventListener('change', (e) => {
-                if (!localStorage.getItem('theme')) {
-                    applyTheme(e.matches ? 'dark' : 'light');
-                }
-            });
+            static bindEvents() {
+                this.toggleBtn.addEventListener('click', () => this.toggleTheme());
+                this.prefersDark.addEventListener('change', e => {
+                    if (!localStorage.getItem('theme')) {
+                        document.documentElement.setAttribute('data-theme', 
+                            e.matches ? 'dark' : '');
+                        this.updateButton(e.matches ? 'dark' : 'light');
+                    }
+                });
+            }
+        }
 
-            // 初始化
-            themeToggle.addEventListener('click', toggleTheme);
-            applyTheme(savedTheme);
-        })();
+        class LoadManager {
+            static init() {
+                this.loader = document.getElementById('loader');
+                this.progressBar = document.getElementById('progress-bar');
+                this.startLoading();
+            }
+
+            static startLoading() {
+                let progress = 0;
+                const update = () => {
+                    progress = Math.min(progress + Math.random() * 10, 90);
+                    this.progressBar.style.width = `${progress}%`;
+                };
+
+                const interval = setInterval(update, 200);
+                
+                window.addEventListener('load', () => {
+                    clearInterval(interval);
+                    this.progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        this.loader.style.opacity = '0';
+                        this.loader.addEventListener('transitionend', () => {
+                            this.loader.remove();
+                        });
+                    }, 500);
+                });
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            LoadManager.init();
+            ThemeManager.init();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
     </script>
 </body>
 </html>
