@@ -36,8 +36,33 @@
             --current-secondary: var(--color-secondary);
             --current-border: var(--color-border);
             --current-shadow: var(--color-shadow);
+            
+            /* 新增高亮指示色 */
+            --color-highlight: #5e5e5e;
+            --dark-highlight: #a0a0a0;
+        }
+        /* 按钮高亮状态 */
+        .theme-toggle--active {
+            background: var(--current-primary) !important;
+            color: white !important;
+            box-shadow: 0 0 8px var(--current-shadow);
         }
 
+        .theme-toggle {
+            /* 新增过渡属性 */
+            transition: 
+                background 0.3s ease,
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            .theme-toggle {
+                padding: 0.8rem;
+                min-width: 44px;
+            }
+        }
         /* 主题适配 */
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
@@ -238,78 +263,39 @@
 
     <script>
         class ThemeManager {
-            static init() {
-                this.toggleBtn = document.getElementById('theme-toggle');
-                this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-                this.loadTheme();
-                this.bindEvents();
-            }
-
-            static loadTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                const systemDark = this.prefersDark.matches;
-                const theme = savedTheme || (systemDark ? 'dark' : '');
-                document.documentElement.setAttribute('data-theme', theme);
-                this.updateButton(theme);
-            }
-
             static updateButton(theme) {
                 const isDark = theme === 'dark' || (!theme && this.prefersDark.matches);
+                this.toggleBtn.classList.toggle('theme-toggle--active', isDark);
                 this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
-                this.toggleBtn.style.backgroundColor = isDark 
+                
+                // 同步按钮背景色
+                const bgColor = isDark 
                     ? getComputedStyle(document.documentElement)
                         .getPropertyValue('--dark-secondary')
                     : getComputedStyle(document.documentElement)
                         .getPropertyValue('--color-secondary');
+                this.toggleBtn.style.backgroundColor = bgColor;
             }
 
             static toggleTheme() {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 this.loadTheme();
-            }
-
-            static bindEvents() {
-                this.toggleBtn.addEventListener('click', () => this.toggleTheme());
-                this.prefersDark.addEventListener('change', () => {
-                    if (!localStorage.getItem('theme')) this.loadTheme();
-                });
-            }
-        }
-
-        class LoadManager {
-            static init() {
-                this.loader = document.getElementById('loader');
-                this.progressBar = document.getElementById('progress-bar');
-                this.startLoading();
-            }
-
-            static startLoading() {
-                let progress = 0;
-                const animate = () => {
-                    progress = Math.min(progress + Math.random() * 5, 95);
-                    this.progressBar.style.width = `${progress}%`;
-                    if (progress < 95) requestAnimationFrame(animate);
-                };
-                animate();
-
-                window.addEventListener('load', () => {
-                    this.progressBar.style.width = '100%';
-                    setTimeout(() => {
-                        this.loader.style.opacity = '0';
-                        this.loader.addEventListener('transitionend', () => this.loader.remove());
-                    }, 500);
-                });
+                
+                // 触发按钮涟漪效果
+                this.toggleBtn.style.animation = 'none';
+                setTimeout(() => {
+                    this.toggleBtn.style.animation = 'buttonRipple 0.4s ease-out';
+                }, 10);
             }
         }
 
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            LoadManager.init();
-            ThemeManager.init();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        });
+        /* 新增动画关键帧 */
+        @keyframes buttonRipple {
+            0% { box-shadow: 0 0 0 0 rgba(var(--current-primary), 0.3); }
+            100% { box-shadow: 0 0 0 12px rgba(var(--current-primary), 0); }
+        }
     </script>
 </body>
 </html>
