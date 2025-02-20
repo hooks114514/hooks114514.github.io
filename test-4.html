@@ -9,101 +9,153 @@
     <title>hooks1的个人网站</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --text-color: #ecf0f1;
-            --link-hover-color: #3498db;
-            --container-bg: #ffffff;
-            --progress-bg: rgba(44, 62, 80, 0.1);
-            --easing: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* 亮色主题 */
+            --color-bg: #ffffff;
+            --color-text: #2c3e50;
+            --color-primary: #3498db;
+            --color-secondary: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-card-bg: #ffffff;
+            --color-shadow: rgba(0, 0, 0, 0.1);
+            
+            /* 深色主题 */
+            --dark-color-bg: #1a1a1a;
+            --dark-color-text: #e0e0e0;
+            --dark-color-primary: #6ab0f3;
+            --dark-color-secondary: #2d2d2d;
+            --dark-color-border: #404040;
+            --dark-color-card-bg: #252525;
+            --dark-color-shadow: rgba(255, 255, 255, 0.1);
+
+            /* 动态变量 */
+            --background: var(--color-bg);
+            --text: var(--color-text);
+            --primary: var(--color-primary);
+            --secondary: var(--color-secondary);
+            --border: var(--color-border);
+            --card-bg: var(--color-card-bg);
+            --shadow: var(--color-shadow);
+            
+            /* 公共变量 */
+            --radius: 8px;
+            --transition: all 0.3s ease;
         }
 
-        /* 精简加载动画 */
+        /* 深色模式自动适配 */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --background: var(--dark-color-bg);
+                --text: var(--dark-color-text);
+                --primary: var(--dark-color-primary);
+                --secondary: var(--dark-color-secondary);
+                --border: var(--dark-color-border);
+                --card-bg: var(--dark-color-card-bg);
+                --shadow: var(--dark-color-shadow);
+            }
+        }
+
+        /* 手动切换主题 */
+        [data-theme="dark"] {
+            --background: var(--dark-color-bg);
+            --text: var(--dark-color-text);
+            --primary: var(--dark-color-primary);
+            --secondary: var(--dark-color-secondary);
+            --border: var(--dark-color-border);
+            --card-bg: var(--dark-color-card-bg);
+            --shadow: var(--dark-color-shadow);
+        }
+
+        [data-theme="light"] {
+            --background: var(--color-bg);
+            --text: var(--color-text);
+            --primary: var(--color-primary);
+            --secondary: var(--color-secondary);
+            --border: var(--color-border);
+            --card-bg: var(--color-card-bg);
+            --shadow: var(--color-shadow);
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            font-family: system-ui, -apple-system, sans-serif;
+            transition: var(--transition);
+        }
+
         .loader {
             position: fixed;
             inset: 0;
-            background: var(--text-color);
+            background: var(--background);
             display: grid;
             place-items: center;
             z-index: 9999;
-            transition: opacity 0.5s var(--easing);
+            transition: opacity 0.5s var(--transition);
         }
 
         .progress-container {
             width: min(90%, 300px);
             height: 4px;
-            background: var(--progress-bg);
-            border-radius: 2px;
+            background: var(--secondary);
+            border-radius: var(--radius);
             overflow: hidden;
-            position: relative;
         }
 
         .progress-bar {
             width: 0%;
             height: 100%;
-            background: var(--primary-color);
-            transition: width 0.3s var(--easing);
-            transform-origin: left;
+            background: var(--primary);
+            transition: width 0.3s var(--transition);
         }
 
-        /* 优化主体动画 */
-        @media (prefers-reduced-motion: no-preference) {
-            body {
-                animation: fadeIn 1s var(--easing);
-            }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* 精简布局样式 */
         header {
-            background: var(--primary-color);
-            color: var(--text-color);
+            background: var(--primary);
+            color: white;
             padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px var(--shadow);
         }
 
         nav {
-            background: var(--secondary-color);
+            background: var(--secondary);
             padding: 1rem;
             display: flex;
             justify-content: center;
             gap: 1.5rem;
             flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
         }
 
-        .nav-link {
-            color: inherit;
+        .nav-link, .theme-toggle {
+            color: var(--text);
             padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: 
-                background 0.3s var(--easing),
-                transform 0.2s var(--easing);
+            border-radius: var(--radius);
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        .nav-link:hover {
-            background: var(--link-hover-color);
+        .nav-link:hover, .theme-toggle:hover {
+            background: var(--primary);
+            color: white;
             transform: translateY(-2px);
         }
 
         .container {
             width: min(90%, 1200px);
             margin: 2rem auto 5rem;
-            background: var(--container-bg);
+            background: var(--card-bg);
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-radius: var(--radius);
+            box-shadow: 0 3px 10px var(--shadow);
+            border: 1px solid var(--border);
         }
 
         .article {
             margin-bottom: 2rem;
             padding: 1.5rem;
-            border-left: 4px solid var(--primary-color);
-            transition: transform 0.3s var(--easing);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s var(--transition);
         }
 
         .article:hover {
@@ -111,23 +163,23 @@
         }
 
         footer {
-            background: var(--primary-color);
-            color: var(--text-color);
+            background: var(--primary);
+            color: white;
             text-align: center;
             padding: 1rem;
             position: fixed;
             bottom: 0;
             width: 100%;
+            box-shadow: 0 -2px 5px var(--shadow);
         }
 
-        /* 移动端优化 */
         @media (max-width: 768px) {
             nav {
                 gap: 0.5rem;
                 padding: 0.5rem;
             }
             
-            .nav-link {
+            .nav-link, .theme-toggle {
                 width: 100%;
                 text-align: center;
             }
@@ -170,6 +222,9 @@
         <button class="nav-link" id="language-switcher" aria-label="切换语言">
             🌐 切换语言
         </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+            🌓
+        </button>
     </nav>
 
     <main class="container">
@@ -186,7 +241,7 @@
                     <a href="https://space.bilibili.com/1312125285" 
                        rel="noopener noreferrer"
                        class="ext-link">
-                        📺 这是我的BiliBili账号。
+                        📺 这是我的BiliBili账号
                     </a>
                 </p>
             </article>
@@ -196,7 +251,7 @@
                     <a href="https://music.163.com/user/home?id=3307535618"
                        rel="noopener noreferrer"
                        class="ext-link">
-                        🎵 这是我的网易云音乐账号。
+                        🎵 这是我的网易云音乐账号
                     </a>
                 </p>
             </article>
@@ -261,50 +316,10 @@
             // 多语言支持
             const translations = {
                 zh: {
-            "blog-title": "欢迎来到hooks1的个人网站",
-            "home-link": "首页",
-            "about-link": "关于我",
-            "about-title": "关于我",
-            "about-text": "你好，我是hooks1。",
-            "articles-title": "我的个人链接",
-            "article-title-1": "BiliBili",
-            "article-summary-1": "<a href="https://space.bilibili.com/1312125285" 
-                       rel="noopener noreferrer"
-                       class="ext-link">
-                        📺 这是我的BiliBili账号。
-                    </a>",
-            "article-title-2": "网易云音乐",
-            "article-summary-2": "<p id="article-summary-2">
-                    <a href="https://music.163.com/user/home?id=3307535618"
-                       rel="noopener noreferrer"
-                       class="ext-link">
-                        🎵 这是我的网易云音乐账号。
-                    </a>
-                </p>",
-            "footer-text": "© 2024 hooks1的个人网站 | All rights reserved."
+                    // 中文内容
                 },
                 en: {
-            "blog-title": "Welcome to hooks1's Personal Website",
-            "home-link": "Home",
-            "about-link": "About Me",
-            "about-title": "About Me",
-            "about-text": "Hi, I'm hooks1.",
-            "articles-title": "My Personal Links",
-            "article-title-1": "BiliBili",
-            "article-summary-1": "<a href="https://space.bilibili.com/1312125285" 
-                       rel="noopener noreferrer"
-                       class="ext-link">
-                        📺 This is My BiliBili Account.
-                    </a>",
-            "article-title-2": "NetEase CloudMusic",
-            "article-summary-2": "<p id="article-summary-2">
-                    <a href="https://music.163.com/user/home?id=3307535618"
-                       rel="noopener noreferrer"
-                       class="ext-link">
-                        🎵 This is My NetEase Cloud Music Account.
-                    </a>
-                </p>",
-            "footer-text": "© 2024 hooks1's Personal Website | All rights reserved."
+                    // 英文内容
                 }
             };
 
@@ -325,10 +340,37 @@
                 setLanguage(currentLang);
             });
 
+            // 主题切换功能
+            const themeToggle = document.getElementById('theme-toggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+            const savedTheme = localStorage.getItem('theme');
+
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme || '');
+                const isDark = theme === 'dark' || (!theme && prefersDark.matches);
+                themeToggle.textContent = isDark ? '🌞' : '🌙';
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            };
+
+            prefersDark.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+
+            themeToggle.addEventListener('click', toggleTheme);
+
             // 初始化
             document.getElementById('current-year').textContent = new Date().getFullYear();
             initLoader();
             setLanguage(currentLang);
+            applyTheme(savedTheme);
         })();
     </script>
 </body>
