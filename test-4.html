@@ -13,20 +13,20 @@
             --radius: 8px;
             --transition: all 0.3s ease;
             
-            /* 黑色主题 */
+            /* 灰色主题系统 */
             --color-bg: #ffffff;
-            --color-text: #2d3436;
-            --color-primary: #000000;  /* 主色改为黑色 */
-            --color-secondary: #f8f9fa;
-            --color-border: #dfe6e9;
+            --color-text: #404040;      /* 深灰色 */
+            --color-primary: #707070;   /* 主灰色 */
+            --color-secondary: #f0f0f0;
+            --color-border: #dcdcdc;
             --color-shadow: rgba(0, 0, 0, 0.1);
 
             /* 深色模式 */
-            --dark-bg: #0a0a0a;        /* 更深的背景 */
-            --dark-text: #ffffff;
-            --dark-primary: #000000;   /* 保持黑色主色 */
-            --dark-secondary: #1a1a1a;
-            --dark-border: #2d3436;
+            --dark-bg: #2d2d2d;
+            --dark-text: #e6e6e6;
+            --dark-primary: #8f8f8f;    /* 浅灰色 */
+            --dark-secondary: #3d3d3d;
+            --dark-border: #5a5a5a;
             --dark-shadow: rgba(255, 255, 255, 0.1);
 
             /* 动态变量 */
@@ -71,13 +71,75 @@
             transition: var(--transition);
         }
 
-        /* 标题居中 */
         header {
             text-align: center;
             padding: 2rem 1.5rem;
             background: var(--current-primary);
             color: white;
             box-shadow: 0 2px 10px var(--current-shadow);
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--current-secondary);
+            border-bottom: 1px solid var(--current-border);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-link, .theme-toggle {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            color: var(--current-text);
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid var(--current-border);
+            background: var(--current-secondary);
+        }
+
+        .nav-link:hover, .theme-toggle:hover {
+            background: var(--current-primary);
+            color: white;
+            border-color: transparent;
+        }
+
+        .container {
+            width: min(90%, 1200px);
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--current-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 3px 10px var(--current-shadow);
+            border: 1px solid var(--current-border);
+        }
+
+        .article {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--current-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .article:hover {
+            transform: translateX(5px);
+        }
+
+        footer {
+            background: var(--current-primary);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1.5rem 1rem; }
+            nav { gap: 0.5rem; padding: 0.75rem; }
+            .nav-link, .theme-toggle { width: 100%; }
+            .container { padding: 1rem; }
         }
 
         /* 加载动画 */
@@ -105,86 +167,6 @@
             background: var(--current-primary);
             transition: width 0.3s ease;
         }
-
-        /* 导航栏 */
-        nav {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--current-secondary);
-            border-bottom: 1px solid var(--current-border);
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .nav-link, .theme-toggle {
-            padding: 0.5rem 1.5rem;
-            border-radius: var(--radius);
-            transition: var(--transition);
-            color: var(--current-text);
-            text-decoration: none;
-            cursor: pointer;
-            border: 1px solid var(--current-border);
-        }
-
-        .nav-link:hover, .theme-toggle:hover {
-            background: var(--current-primary);
-            color: white;
-            border-color: transparent;
-        }
-
-        /* 内容容器 */
-        .container {
-            width: min(90%, 1200px);
-            margin: 2rem auto;
-            padding: 2rem;
-            background: var(--current-bg);
-            border-radius: var(--radius);
-            box-shadow: 0 3px 10px var(--current-shadow);
-            border: 1px solid var(--current-border);
-        }
-
-        /* 文章卡片 */
-        .article {
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 3px solid var(--current-primary);
-            transition: transform 0.3s ease;
-        }
-
-        .article:hover {
-            transform: translateX(5px);
-        }
-
-        /* 页脚 */
-        footer {
-            background: var(--current-primary);
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            header {
-                padding: 1.5rem 1rem;
-            }
-            
-            nav {
-                gap: 0.5rem;
-                padding: 0.75rem;
-            }
-            
-            .nav-link, .theme-toggle {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-        }
     </style>
     <script type="application/ld+json">
     {
@@ -208,7 +190,7 @@
     </div>
 
     <header>
-        <h1>hooks1的个人空间</h1>
+        <h1>hooks1的技术空间</h1>
     </header>
 
     <nav>
@@ -220,11 +202,11 @@
     <main class="container">
         <section id="about">
             <h2>关于我</h2>
-            <p>全栈开发者 | 技术极客 | 音乐爱好者</p>
+            <p>全栈开发者 | 开源贡献者 | 技术创作者</p>
         </section>
 
         <section id="links">
-            <h2>重要链接</h2>
+            <h2>作品展示</h2>
             <article class="article">
                 <h3>BiliBili频道</h3>
                 <p>
@@ -232,7 +214,7 @@
                        target="_blank" 
                        rel="noopener"
                        class="nav-link">
-                        📺 技术分享与项目演示
+                        📺 技术教程与项目实战
                     </a>
                 </p>
             </article>
@@ -243,7 +225,7 @@
                        target="_blank"
                        rel="noopener"
                        class="nav-link">
-                        🎵 原创音乐与收藏歌单
+                        🎵 音乐作品与编程歌单
                     </a>
                 </p>
             </article>
@@ -274,11 +256,16 @@
             static updateButton(theme) {
                 const isDark = theme === 'dark' || (!theme && this.prefersDark.matches);
                 this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
+                this.toggleBtn.style.backgroundColor = isDark 
+                    ? getComputedStyle(document.documentElement)
+                        .getPropertyValue('--dark-secondary')
+                    : getComputedStyle(document.documentElement)
+                        .getPropertyValue('--color-secondary');
             }
 
             static toggleTheme() {
-                const current = document.documentElement.getAttribute('data-theme');
-                const newTheme = current === 'dark' ? 'light' : 'dark';
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 this.loadTheme();
             }
@@ -303,11 +290,10 @@
                 const animate = () => {
                     progress = Math.min(progress + Math.random() * 5, 95);
                     this.progressBar.style.width = `${progress}%`;
-                    progress < 95 ? requestAnimationFrame(animate) : null;
+                    if (progress < 95) requestAnimationFrame(animate);
                 };
-
                 animate();
-                
+
                 window.addEventListener('load', () => {
                     this.progressBar.style.width = '100%';
                     setTimeout(() => {
