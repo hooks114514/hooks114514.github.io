@@ -161,7 +161,67 @@
         @media (max-width: 768px) {
             header { padding: 1.5rem 1rem; }
             nav { gap: 0.5rem; padding: 0.75rem; }
-h空间</h1>
+            .nav-link, .theme-toggle { width: 100%; }
+            .container { padding: 1rem; }
+        }
+
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--current-bg);
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .progress-container {
+            width: min(90%, 300px);
+            height: 4px;
+            background: var(--current-secondary);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--current-primary);
+            transition: width 0.3s ease;
+        }
+
+        /* 新增涟漪动画 */
+        @keyframes ripple {
+            to {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "hooks1",
+        "url": "https://hooks114514.github.io",
+        "sameAs": [
+            "https://space.bilibili.com/1312125285",
+            "https://music.163.com/user/home?id=3307535618"
+        ],
+        "description": "技术博客与数字作品展示"
+    }
+    </script>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <div class="progress-container" role="progressbar">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <header>
+        <h1>hooks1的个人空间</h1>
     </header>
 
     <nav>
@@ -177,7 +237,7 @@ h空间</h1>
         </section>
 
         <section id="links">
-            <h2>个人链接</h2>
+            <h2>作品展示</h2>
             <article class="article">
                 <h3>BiliBili频道</h3>
                 <p>
