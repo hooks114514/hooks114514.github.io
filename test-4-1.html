@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme>
+<head>
+    <!-- 元信息保持不变 -->
+    <style>
+        :root {
+            /* 新增高亮指示色 */
+            --color-highlight: #5e5e5e;
+            --dark-highlight: #a0a0a0;
+        }
+
+        /* 按钮高亮状态 */
+        .theme-toggle--active {
+            background: var(--current-primary) !important;
+            color: white !important;
+            box-shadow: 0 0 8px var(--current-shadow);
+        }
+
+        .theme-toggle {
+            /* 新增过渡属性 */
+            transition: 
+                background 0.3s ease,
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            .theme-toggle {
+                padding: 0.8rem;
+                min-width: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 结构保持不变 -->
+
+    <script>
+        class ThemeManager {
+            static updateButton(theme) {
+                const isDark = theme === 'dark' || (!theme && this.prefersDark.matches);
+                this.toggleBtn.classList.toggle('theme-toggle--active', isDark);
+                this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
+                
+                // 同步按钮背景色
+                const bgColor = isDark 
+                    ? getComputedStyle(document.documentElement)
+                        .getPropertyValue('--dark-secondary')
+                    : getComputedStyle(document.documentElement)
+                        .getPropertyValue('--color-secondary');
+                this.toggleBtn.style.backgroundColor = bgColor;
+            }
+
+            static toggleTheme() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                this.loadTheme();
+                
+                // 触发按钮涟漪效果
+                this.toggleBtn.style.animation = 'none';
+                setTimeout(() => {
+                    this.toggleBtn.style.animation = 'buttonRipple 0.4s ease-out';
+                }, 10);
+            }
+        }
+
+        /* 新增动画关键帧 */
+        @keyframes buttonRipple {
+            0% { box-shadow: 0 0 0 0 rgba(var(--current-primary), 0.3); }
+            100% { box-shadow: 0 0 0 12px rgba(var(--current-primary), 0); }
+        }
+    </script>
+</body>
+</html>
