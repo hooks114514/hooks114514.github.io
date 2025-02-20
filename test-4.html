@@ -89,7 +89,7 @@
             justify-content: center;
         }
 
-        /* 新增按钮高亮样式 */
+        /* 按钮增强样式 */
         .nav-link, .theme-toggle {
             padding: 0.5rem 1.5rem;
             border-radius: var(--radius);
@@ -231,7 +231,36 @@
     </nav>
 
     <main class="container">
-        <!-- 内容保持不变 -->
+        <section id="about">
+            <h2>关于我</h2>
+            <p>全栈开发者 | 开源贡献者 | 技术创作者</p>
+        </section>
+
+        <section id="links">
+            <h2>作品展示</h2>
+            <article class="article">
+                <h3>BiliBili频道</h3>
+                <p>
+                    <a href="https://space.bilibili.com/1312125285" 
+                       target="_blank" 
+                       rel="noopener"
+                       class="nav-link">
+                        📺 技术教程与项目实战
+                    </a>
+                </p>
+            </article>
+            <article class="article">
+                <h3>网易云音乐</h3>
+                <p>
+                    <a href="https://music.163.com/user/home?id=3307535618"
+                       target="_blank"
+                       rel="noopener"
+                       class="nav-link">
+                        🎵 音乐作品与编程歌单
+                    </a>
+                </p>
+            </article>
+        </section>
     </main>
 
     <footer>
@@ -303,7 +332,31 @@
             }
         }
 
-        // LoadManager 类保持不变
+        class LoadManager {
+            static init() {
+                this.loader = document.getElementById('loader');
+                this.progressBar = document.getElementById('progress-bar');
+                this.startLoading();
+            }
+
+            static startLoading() {
+                let progress = 0;
+                const animate = () => {
+                    progress = Math.min(progress + Math.random() * 5, 95);
+                    this.progressBar.style.width = `${progress}%`;
+                    if (progress < 95) requestAnimationFrame(animate);
+                };
+                animate();
+
+                window.addEventListener('load', () => {
+                    this.progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        this.loader.style.opacity = '0';
+                        this.loader.addEventListener('transitionend', () => this.loader.remove());
+                    }, 500);
+                });
+            }
+        }
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
