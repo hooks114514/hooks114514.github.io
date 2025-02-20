@@ -13,20 +13,20 @@
             --radius: 8px;
             --transition: all 0.3s ease;
             
-            /* 亮色主题 */
+            /* 黑色主题 */
             --color-bg: #ffffff;
-            --color-text: #2c3e50;
-            --color-primary: #3498db;
+            --color-text: #2d3436;
+            --color-primary: #000000;  /* 主色改为黑色 */
             --color-secondary: #f8f9fa;
-            --color-border: #dee2e6;
+            --color-border: #dfe6e9;
             --color-shadow: rgba(0, 0, 0, 0.1);
 
-            /* 深色主题 */
-            --dark-bg: #1a1a1a;
-            --dark-text: #e0e0e0;
-            --dark-primary: #6ab0f3;
-            --dark-secondary: #2d2d2d;
-            --dark-border: #404040;
+            /* 深色模式 */
+            --dark-bg: #0a0a0a;        /* 更深的背景 */
+            --dark-text: #ffffff;
+            --dark-primary: #000000;   /* 保持黑色主色 */
+            --dark-secondary: #1a1a1a;
+            --dark-border: #2d3436;
             --dark-shadow: rgba(255, 255, 255, 0.1);
 
             /* 动态变量 */
@@ -71,6 +71,15 @@
             transition: var(--transition);
         }
 
+        /* 标题居中 */
+        header {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--current-primary);
+            color: white;
+            box-shadow: 0 2px 10px var(--current-shadow);
+        }
+
         /* 加载动画 */
         .loader {
             position: fixed;
@@ -97,14 +106,7 @@
             transition: width 0.3s ease;
         }
 
-        /* 布局组件 */
-        header {
-            background: var(--current-primary);
-            color: white;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px var(--current-shadow);
-        }
-
+        /* 导航栏 */
         nav {
             display: flex;
             gap: 1rem;
@@ -116,19 +118,22 @@
         }
 
         .nav-link, .theme-toggle {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.5rem;
             border-radius: var(--radius);
             transition: var(--transition);
             color: var(--current-text);
             text-decoration: none;
             cursor: pointer;
+            border: 1px solid var(--current-border);
         }
 
         .nav-link:hover, .theme-toggle:hover {
             background: var(--current-primary);
             color: white;
+            border-color: transparent;
         }
 
+        /* 内容容器 */
         .container {
             width: min(90%, 1200px);
             margin: 2rem auto;
@@ -139,9 +144,10 @@
             border: 1px solid var(--current-border);
         }
 
+        /* 文章卡片 */
         .article {
             padding: 1.5rem;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
             border-left: 3px solid var(--current-primary);
             transition: transform 0.3s ease;
         }
@@ -150,16 +156,21 @@
             transform: translateX(5px);
         }
 
+        /* 页脚 */
         footer {
             background: var(--current-primary);
             color: white;
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
             margin-top: 3rem;
         }
 
         /* 响应式设计 */
         @media (max-width: 768px) {
+            header {
+                padding: 1.5rem 1rem;
+            }
+            
             nav {
                 gap: 0.5rem;
                 padding: 0.75rem;
@@ -197,7 +208,7 @@
     </div>
 
     <header>
-        <h1>欢迎来到hooks1的个人网站</h1>
+        <h1>hooks1的个人空间</h1>
     </header>
 
     <nav>
@@ -209,19 +220,19 @@
     <main class="container">
         <section id="about">
             <h2>关于我</h2>
-            <p>你好，我是hooks1，热爱前端技术与音乐创作。</p>
+            <p>全栈开发者 | 技术极客 | 音乐爱好者</p>
         </section>
 
         <section id="links">
-            <h2>我的链接</h2>
+            <h2>重要链接</h2>
             <article class="article">
-                <h3>BiliBili</h3>
+                <h3>BiliBili频道</h3>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
                        rel="noopener"
                        class="nav-link">
-                        📺 访问我的B站主页
+                        📺 技术分享与项目演示
                     </a>
                 </p>
             </article>
@@ -232,7 +243,7 @@
                        target="_blank"
                        rel="noopener"
                        class="nav-link">
-                        🎵 访问我的网易云
+                        🎵 原创音乐与收藏歌单
                     </a>
                 </p>
             </article>
@@ -257,7 +268,12 @@
                 const systemDark = this.prefersDark.matches;
                 const theme = savedTheme || (systemDark ? 'dark' : '');
                 document.documentElement.setAttribute('data-theme', theme);
-                this.toggleBtn.textContent = theme === 'dark' ? '🌞' : '🌙';
+                this.updateButton(theme);
+            }
+
+            static updateButton(theme) {
+                const isDark = theme === 'dark' || (!theme && this.prefersDark.matches);
+                this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
             }
 
             static toggleTheme() {
@@ -269,7 +285,7 @@
 
             static bindEvents() {
                 this.toggleBtn.addEventListener('click', () => this.toggleTheme());
-                this.prefersDark.addEventListener('change', e => {
+                this.prefersDark.addEventListener('change', () => {
                     if (!localStorage.getItem('theme')) this.loadTheme();
                 });
             }
@@ -287,7 +303,7 @@
                 const animate = () => {
                     progress = Math.min(progress + Math.random() * 5, 95);
                     this.progressBar.style.width = `${progress}%`;
-                    if (progress < 95) requestAnimationFrame(animate);
+                    progress < 95 ? requestAnimationFrame(animate) : null;
                 };
 
                 animate();
@@ -296,9 +312,7 @@
                     this.progressBar.style.width = '100%';
                     setTimeout(() => {
                         this.loader.style.opacity = '0';
-                        this.loader.addEventListener('transitionend', () => {
-                            this.loader.remove();
-                        });
+                        this.loader.addEventListener('transitionend', () => this.loader.remove());
                     }, 500);
                 });
             }
