@@ -8,9 +8,8 @@
     <link rel="dns-prefetch" href="https://space.bilibili.com">
     <title>hooks1的个人网站</title>
     <style>
-        /* 优化后的CSS变量系统 */
         :root {
-            /* 基础设置 */
+            /* 基础变量 */
             --radius: 8px;
             --transition: all 0.3s ease;
             
@@ -20,65 +19,50 @@
             --color-primary: #3498db;
             --color-secondary: #f8f9fa;
             --color-border: #dee2e6;
-            --color-card: #ffffff;
             --color-shadow: rgba(0, 0, 0, 0.1);
 
             /* 深色主题 */
-            --dark-color-bg: #1a1a1a;
-            --dark-color-text: #e0e0e0;
-            --dark-color-primary: #6ab0f3;
-            --dark-color-secondary: #2d2d2d;
-            --dark-color-border: #404040;
-            --dark-color-card: #252525;
-            --dark-color-shadow: rgba(255, 255, 255, 0.1);
+            --dark-bg: #1a1a1a;
+            --dark-text: #e0e0e0;
+            --dark-primary: #6ab0f3;
+            --dark-secondary: #2d2d2d;
+            --dark-border: #404040;
+            --dark-shadow: rgba(255, 255, 255, 0.1);
 
             /* 动态变量 */
-            --background: var(--color-bg);
-            --text: var(--color-text);
-            --primary: var(--color-primary);
-            --secondary: var(--color-secondary);
-            --border: var(--color-border);
-            --card-bg: var(--color-card);
-            --shadow: var(--color-shadow);
+            --current-bg: var(--color-bg);
+            --current-text: var(--color-text);
+            --current-primary: var(--color-primary);
+            --current-secondary: var(--color-secondary);
+            --current-border: var(--color-border);
+            --current-shadow: var(--color-shadow);
         }
 
-        /* 深色模式适配 */
+        /* 主题适配 */
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
-                --background: var(--dark-color-bg);
-                --text: var(--dark-color-text);
-                --primary: var(--dark-color-primary);
-                --secondary: var(--dark-color-secondary);
-                --border: var(--dark-color-border);
-                --card-bg: var(--dark-color-card);
-                --shadow: var(--dark-color-shadow);
+                --current-bg: var(--dark-bg);
+                --current-text: var(--dark-text);
+                --current-primary: var(--dark-primary);
+                --current-secondary: var(--dark-secondary);
+                --current-border: var(--dark-border);
+                --current-shadow: var(--dark-shadow);
             }
         }
 
         [data-theme="dark"] {
-            --background: var(--dark-color-bg);
-            --text: var(--dark-color-text);
-            --primary: var(--dark-color-primary);
-            --secondary: var(--dark-color-secondary);
-            --border: var(--dark-color-border);
-            --card-bg: var(--dark-color-card);
-            --shadow: var(--dark-color-shadow);
-        }
-
-        [data-theme="light"] {
-            --background: var(--color-bg);
-            --text: var(--color-text);
-            --primary: var(--color-primary);
-            --secondary: var(--color-secondary);
-            --border: var(--color-border);
-            --card-bg: var(--color-card);
-            --shadow: var(--color-shadow);
+            --current-bg: var(--dark-bg);
+            --current-text: var(--dark-text);
+            --current-primary: var(--dark-primary);
+            --current-secondary: var(--dark-secondary);
+            --current-border: var(--dark-border);
+            --current-shadow: var(--dark-shadow);
         }
 
         /* 基础样式 */
         body {
-            background: var(--background);
-            color: var(--text);
+            background: var(--current-bg);
+            color: var(--current-text);
             font-family: system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             min-height: 100vh;
@@ -91,42 +75,42 @@
         .loader {
             position: fixed;
             inset: 0;
-            background: var(--background);
+            background: var(--current-bg);
             display: grid;
             place-items: center;
             z-index: 1000;
-            transition: opacity 0.5s var(--easing);
+            transition: opacity 0.5s ease;
         }
 
         .progress-container {
             width: min(90%, 300px);
             height: 4px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 2px;
+            background: var(--current-secondary);
+            border-radius: var(--radius);
             overflow: hidden;
         }
 
         .progress-bar {
             width: 0%;
             height: 100%;
-            background: var(--primary);
+            background: var(--current-primary);
             transition: width 0.3s ease;
         }
 
-        /* 布局优化 */
+        /* 布局组件 */
         header {
-            background: var(--primary);
+            background: var(--current-primary);
             color: white;
             padding: 1.5rem;
-            box-shadow: 0 2px 10px var(--shadow);
+            box-shadow: 0 2px 10px var(--current-shadow);
         }
 
         nav {
             display: flex;
             gap: 1rem;
             padding: 1rem;
-            background: var(--secondary);
-            border-bottom: 1px solid var(--border);
+            background: var(--current-secondary);
+            border-bottom: 1px solid var(--current-border);
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -135,12 +119,13 @@
             padding: 0.5rem 1rem;
             border-radius: var(--radius);
             transition: var(--transition);
-            color: inherit;
+            color: var(--current-text);
             text-decoration: none;
+            cursor: pointer;
         }
 
         .nav-link:hover, .theme-toggle:hover {
-            background: var(--primary);
+            background: var(--current-primary);
             color: white;
         }
 
@@ -148,15 +133,16 @@
             width: min(90%, 1200px);
             margin: 2rem auto;
             padding: 2rem;
-            background: var(--card-bg);
+            background: var(--current-bg);
             border-radius: var(--radius);
-            box-shadow: 0 3px 10px var(--shadow);
+            box-shadow: 0 3px 10px var(--current-shadow);
+            border: 1px solid var(--current-border);
         }
 
         .article {
             padding: 1.5rem;
             margin: 1rem 0;
-            border-left: 3px solid var(--primary);
+            border-left: 3px solid var(--current-primary);
             transition: transform 0.3s ease;
         }
 
@@ -165,20 +151,15 @@
         }
 
         footer {
-            background: var(--primary);
+            background: var(--current-primary);
             color: white;
             text-align: center;
             padding: 1rem;
             margin-top: 3rem;
         }
 
-        /* 移动端优化 */
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-                margin: 1rem auto;
-            }
-            
             nav {
                 gap: 0.5rem;
                 padding: 0.75rem;
@@ -188,18 +169,29 @@
                 width: 100%;
                 text-align: center;
             }
-        }
-
-        /* 可访问性优化 */
-        :focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
+            
+            .container {
+                padding: 1rem;
+            }
         }
     </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "hooks1",
+        "url": "https://hooks114514.github.io",
+        "sameAs": [
+            "https://space.bilibili.com/1312125285",
+            "https://music.163.com/user/home?id=3307535618"
+        ],
+        "description": "技术博客与数字作品展示"
+    }
+    </script>
 </head>
 <body>
     <div class="loader" id="loader">
-        <div class="progress-container">
+        <div class="progress-container" role="progressbar">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
     </div>
@@ -209,15 +201,15 @@
     </header>
 
     <nav>
-        <a href="#home" class="nav-link">首页</a>
+        <a href="#home" class="nav-link" aria-current="page">首页</a>
         <a href="#about" class="nav-link">关于我</a>
-        <button class="nav-link" id="theme-toggle" aria-label="切换主题">🌓</button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">🌓</button>
     </nav>
 
     <main class="container">
         <section id="about">
             <h2>关于我</h2>
-            <p>你好，我是hooks1，热爱技术分享和音乐创作。</p>
+            <p>你好，我是hooks1，热爱前端技术与音乐创作。</p>
         </section>
 
         <section id="links">
@@ -263,33 +255,22 @@
             static loadTheme() {
                 const savedTheme = localStorage.getItem('theme');
                 const systemDark = this.prefersDark.matches;
-                
-                document.documentElement.setAttribute('data-theme', 
-                    savedTheme || (systemDark ? 'dark' : ''));
-                this.updateButton(savedTheme ?? (systemDark ? 'dark' : 'light'));
-            }
-
-            static updateButton(theme) {
+                const theme = savedTheme || (systemDark ? 'dark' : '');
+                document.documentElement.setAttribute('data-theme', theme);
                 this.toggleBtn.textContent = theme === 'dark' ? '🌞' : '🌙';
             }
 
             static toggleTheme() {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                document.documentElement.setAttribute('data-theme', newTheme);
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
                 localStorage.setItem('theme', newTheme);
-                this.updateButton(newTheme);
+                this.loadTheme();
             }
 
             static bindEvents() {
                 this.toggleBtn.addEventListener('click', () => this.toggleTheme());
                 this.prefersDark.addEventListener('change', e => {
-                    if (!localStorage.getItem('theme')) {
-                        document.documentElement.setAttribute('data-theme', 
-                            e.matches ? 'dark' : '');
-                        this.updateButton(e.matches ? 'dark' : 'light');
-                    }
+                    if (!localStorage.getItem('theme')) this.loadTheme();
                 });
             }
         }
@@ -303,15 +284,15 @@
 
             static startLoading() {
                 let progress = 0;
-                const update = () => {
-                    progress = Math.min(progress + Math.random() * 10, 90);
+                const animate = () => {
+                    progress = Math.min(progress + Math.random() * 5, 95);
                     this.progressBar.style.width = `${progress}%`;
+                    if (progress < 95) requestAnimationFrame(animate);
                 };
 
-                const interval = setInterval(update, 200);
+                animate();
                 
                 window.addEventListener('load', () => {
-                    clearInterval(interval);
                     this.progressBar.style.width = '100%';
                     setTimeout(() => {
                         this.loader.style.opacity = '0';
