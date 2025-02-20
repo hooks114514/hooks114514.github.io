@@ -137,6 +137,113 @@
                 margin-bottom: 6rem;
             }
         }
+            /* 亮色主题变量 */
+            --color-bg: #ffffff;
+            --color-text: #2c3e50;
+            --color-primary: #3498db;
+            --color-secondary: #f8f9fa;
+            --color-border: #dee2e6;
+            --color-card-bg: #ffffff;
+            --color-shadow: rgba(0, 0, 0, 0.1);
+            
+            /* 深色主题变量 */
+            --dark-color-bg: #1a1a1a;
+            --dark-color-text: #e0e0e0;
+            --dark-color-primary: #6ab0f3;
+            --dark-color-secondary: #2d2d2d;
+            --dark-color-border: #404040;
+            --dark-color-card-bg: #252525;
+            --dark-color-shadow: rgba(255, 255, 255, 0.1);
+
+            /* 动态变量 */
+            --background: var(--color-bg);
+            --text: var(--color-text);
+            --primary: var(--color-primary);
+            --secondary: var(--color-secondary);
+            --border: var(--color-border);
+            --card-bg: var(--color-card-bg);
+            --shadow: var(--color-shadow);
+            
+            /* 公共变量 */
+            --radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        /* 深色模式自动适配 */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --background: var(--dark-color-bg);
+                --text: var(--dark-color-text);
+                --primary: var(--dark-color-primary);
+                --secondary: var(--dark-color-secondary);
+                --border: var(--dark-color-border);
+                --card-bg: var(--dark-color-card-bg);
+                --shadow: var(--dark-color-shadow);
+            }
+        }
+
+        /* 手动切换主题 */
+        [data-theme="dark"] {
+            --background: var(--dark-color-bg);
+            --text: var(--dark-color-text);
+            --primary: var(--dark-color-primary);
+            --secondary: var(--dark-color-secondary);
+            --border: var(--dark-color-border);
+            --card-bg: var(--dark-color-card-bg);
+            --shadow: var(--dark-color-shadow);
+        }
+
+        [data-theme="light"] {
+            --background: var(--color-bg);
+            --text: var(--color-text);
+            --primary: var(--color-primary);
+            --secondary: var(--color-secondary);
+            --border: var(--color-border);
+            --card-bg: var(--color-card-bg);
+            --shadow: var(--color-shadow);
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            font-family: system-ui, -apple-system, sans-serif;
+            transition: var(--transition);
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        nav {
+            background: var(--secondary);
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--text);
+            color: var(--text);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            box-shadow: 0 3px 10px var(--shadow);
+        }
     </style>
     <script type="application/ld+json">
     {
@@ -169,6 +276,9 @@
         <a href="#about" class="nav-link" id="about-link">关于我</a>
         <button class="nav-link" id="language-switcher" aria-label="切换语言">
             🌐 切换语言
+        </button>
+        <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+            🌓
         </button>
     </nav>
 
@@ -289,6 +399,36 @@
             document.getElementById('current-year').textContent = new Date().getFullYear();
             initLoader();
             setLanguage(currentLang);
+                // 主题切换功能
+            const themeToggle = document.getElementById('theme-toggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+            const savedTheme = localStorage.getItem('theme');
+
+            // 初始化主题
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme || '');
+                const isDark = theme === 'dark' || (!theme && prefersDark.matches);
+                themeToggle.textContent = isDark ? '🌞' : '🌙';
+            };
+
+            // 切换主题
+            const toggleTheme = () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            };
+
+            // 监听系统主题变化
+            prefersDark.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+
+            // 初始化
+            themeToggle.addEventListener('click', toggleTheme);
+            applyTheme(savedTheme);
         })();
     </script>
 </body>
