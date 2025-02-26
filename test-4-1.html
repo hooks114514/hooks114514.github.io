@@ -15,72 +15,210 @@
 
     <title>hooks1的个人空间</title>
     
-    <style>
-        :root {
-            --radius: 8px;
-            --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            --theme-bg: #ffffff;
-            --theme-text: #333333;
-            --theme-primary: #646464;
-            --theme-surface: #f5f5f5;
-            --theme-border: #e0e0e0;
+   <style>
+    /* 完整展开的CSS样式 */
+    :root {
+        --radius: 8px;
+        --transition: cubic-bezier(0.4, 0, 0.2, 1);
+        --theme-bg: #ffffff;
+        --theme-text: #333333;
+        --theme-primary: #646464;
+        --theme-surface: #f5f5f5;
+        --theme-border: #e0e0e0;
+    }
+
+    [data-theme="dark"] {
+        --theme-bg: #1a1a1a;
+        --theme-text: #e0e0e0;
+        --theme-primary: #858585;
+        --theme-surface: #2d2d2d;
+        --theme-border: #404040;
+    }
+
+    body {
+        background: var(--theme-bg);
+        color: var(--theme-text);
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        transition: all 0.3s var(--transition);
+        margin: 0;
+    }
+
+    header {
+        padding: 2rem 1rem;
+        background: var(--theme-primary);
+        color: white;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    nav {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--theme-surface);
+        justify-content: center;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--theme-border);
+    }
+
+    .nav-link, .theme-toggle {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius);
+        background: var(--theme-surface);
+        border: 1px solid var(--theme-border);
+        color: var(--theme-text);
+        cursor: pointer;
+        transition: all 0.3s var(--transition);
+        position: relative;
+        overflow: hidden;
+        will-change: transform, background-color;
+        text-decoration: none;
+    }
+
+    .theme-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-link:hover,
+    .theme-toggle:hover {
+        background: var(--theme-primary);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .container {
+        width: min(90%, 1200px);
+        margin: 2rem auto;
+        padding: 2rem;
+        background: var(--theme-bg);
+        border-radius: var(--radius);
+        border: 1px solid var(--theme-border);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .article {
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        border-left: 3px solid var(--theme-primary);
+        transition: transform 0.3s ease;
+        background: var(--theme-surface);
+        border-radius: calc(var(--radius) / 2);
+    }
+
+    .article:hover {
+        transform: translateX(5px);
+    }
+
+    footer {
+        background: var(--theme-primary);
+        color: white;
+        text-align: center;
+        padding: 1.5rem;
+        margin-top: 3rem;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 加载动画 */
+    .loader {
+        position: fixed;
+        inset: 0;
+        background: var(--theme-bg);
+        display: grid;
+        place-items: center;
+        z-index: 1000;
+        transition: opacity 0.5s var(--transition);
+    }
+
+    .progress-container {
+        width: min(90%, 300px);
+        height: 4px;
+        background: var(--theme-surface);
+        border-radius: var(--radius);
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        width: 0%;
+        height: 100%;
+        background: var(--theme-primary);
+        transition: width 0.5s var(--transition);
+        will-change: width;
+        transform: translateZ(0);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        header {
+            padding: 1.5rem 1rem;
+            font-size: 0.9em;
         }
 
-        [data-theme="dark"] {
-            --theme-bg: #1a1a1a;
-            --theme-text: #e0e0e0;
-            --theme-primary: #858585;
-            --theme-surface: #2d2d2d;
-            --theme-border: #404040;
-        }
-
-        /* 优化后的通用样式 */
-        body {
-            background: var(--theme-bg);
-            color: var(--theme-text);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            transition: all 0.3s var(--transition);
+        nav {
+            gap: 0.5rem;
+            padding: 0.75rem;
         }
 
         .nav-link, .theme-toggle {
-            transition: all 0.3s var(--transition);
-            will-change: transform, background-color;
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem;
         }
 
-        /* 加载动画 */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--theme-bg);
-            display: grid;
-            place-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s var(--transition);
+        .container {
+            padding: 1rem;
+            margin: 1rem auto;
+            width: 95%;
         }
 
-        .progress-container {
-            width: min(90%, 300px);
-            height: 4px;
-            background: var(--theme-surface);
-            border-radius: var(--radius);
-            overflow: hidden;
+        .article {
+            padding: 1rem;
+            margin: 1rem 0;
         }
 
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: var(--theme-primary);
-            transition: width 0.5s var(--transition);
-            will-change: width;
-            transform: translateZ(0);
+        footer {
+            padding: 1rem;
+            font-size: 0.9em;
         }
+    }
 
-        /* 其他样式... */
-    </style>
+    /* 涟漪动画关键帧 */
+    @keyframes ripple {
+        from {
+            transform: scale(0);
+            opacity: 1;
+        }
+        to {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+
+    /* 辅助样式 */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+
+    [aria-hidden="true"] {
+        display: none;
+    }
+</style>
 
     <script type="application/ld+json">
     {
