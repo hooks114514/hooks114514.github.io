@@ -1,25 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#646464">
-    <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
-    <!-- 网络性能优化 -->
-    <link rel="preconnect" href="//music.163.com">
-    <link rel="preconnect" href="//space.bilibili.com">
-    <link rel="dns-prefetch" href="//music.163.com">
-    <link rel="dns-prefetch" href="//space.bilibili.com">
-    <title>hooks1的个人空间</title>
+    <meta name="description" content="hooks1的个人网站 - 分享创作与技术心得">
+    <title>hooks1的创作空间</title>
     <style>
-        /* 新增动画关键帧 */
-        @keyframes ripple {
-            from { transform: scale(0); opacity: 1; }
-            to { transform: scale(2); opacity: 0; }
-        }
-
-        /* 增强的变量系统 */
         :root {
+            /* 基础变量 */
             --radius: 8px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
             
@@ -45,7 +33,7 @@
             --current-border: var(--color-border);
         }
 
-        /* 改进的深色模式逻辑 */
+        /* 深色模式适配 */
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme]) {
                 --current-bg: var(--dark-bg);
@@ -64,113 +52,17 @@
             --current-border: var(--dark-border);
         }
 
-        /* 增强的基础样式 */
         body {
             background: var(--current-bg);
             color: var(--current-text);
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             min-height: 100vh;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            transition: background-color 0.3s var(--transition), 
-                       color 0.3s var(--transition);
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        header {
-            padding: 2rem 1rem;
-            background: var(--current-primary);
-            color: white;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        nav {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--current-surface);
-            justify-content: center;
-            flex-wrap: wrap;
-            border-bottom: 1px solid var(--current-border);
-        }
-
-        /* 优化交互组件 */
-        .nav-link, .theme-toggle {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background: var(--current-surface);
-            border: 1px solid var(--current-border);
-            color: var(--current-text);
-            cursor: pointer;
-            transition: 
-                background-color 0.3s var(--transition),
-                transform 0.2s ease,
-                color 0.3s var(--transition);
-            position: relative;
-            overflow: hidden;
-            will-change: transform, background-color;
-            text-decoration: none;
-        }
-
-        .theme-toggle {
-            min-width: 44px;
-            min-height: 44px;
-        }
-
-        .theme-toggle::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, 
-                rgba(255,255,255,0.15) 0%, 
-                transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-link:hover,
-        .theme-toggle:hover {
-            background: var(--current-primary);
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        .theme-toggle:hover::after {
-            opacity: 1;
-        }
-
-        /* 改进的内容容器 */
-        .container {
-            width: min(90%, 1200px);
-            margin: 2rem auto;
-            padding: 2rem;
-            background: var(--current-bg);
-            border-radius: var(--radius);
-            border: 1px solid var(--current-border);
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .article {
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 3px solid var(--current-primary);
-            transition: transform 0.3s ease;
-        }
-
-        .article:hover {
-            transform: translateX(5px);
-        }
-
-        footer {
-            background: var(--current-primary);
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        /* 增强的加载动画 */
+        /* 加载动画 */
         .loader {
             position: fixed;
             inset: 0;
@@ -197,239 +89,247 @@
             will-change: width;
         }
 
-        /* 增强的响应式设计 */
+        /* 导航样式 */
+        nav {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--current-surface);
+            justify-content: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--current-border);
+        }
+
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            background: var(--current-surface);
+            border: 1px solid var(--current-border);
+            color: var(--current-text);
+            cursor: pointer;
+            transition: all 0.3s var(--transition);
+        }
+
+        .nav-btn:hover {
+            background: var(--current-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 内容容器 */
+        .container {
+            width: min(90%, 1200px);
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--current-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--current-border);
+        }
+
+        .article {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--current-primary);
+            transition: transform 0.3s ease;
+        }
+
+        .article:hover {
+            transform: translateX(5px);
+        }
+
+        footer {
+            background: var(--current-primary);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
         @media (max-width: 768px) {
-            header { padding: 1.5rem 1rem; }
-            nav { gap: 0.5rem; padding: 0.75rem; }
-            .nav-link, .theme-toggle { 
-                width: 100%; 
-                text-align: center;
-            }
-            .container { 
+            .container {
                 padding: 1rem;
                 margin: 1rem auto;
             }
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "hooks1",
-        "url": "https://hooks114514.github.io",
-        "sameAs": [
-            "https://space.bilibili.com/1312125285",
-            "https://music.163.com/user/home?id=3307535618"
-        ],
-        "description": "技术创作与数字内容分享",
-        "image": "https://hooks114514.github.io/avatar.jpg"
-    }
-    </script>
 </head>
 <body>
     <div class="loader" id="loader">
-        <div class="progress-container" role="progressbar" 
-             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="progress-container">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
     </div>
 
-    <header>
-        <h1 id="blog-title">欢迎来到hooks1的创作空间</h1>
-    </header>
-
     <nav>
-        <a href="https://hooks114514.github.io/" class="nav-link" aria-current="page">🏠 首页</a>
-        <a href="#about" class="nav-link">👤 关于我</a>
-        <button class="theme-toggle" id="theme-toggle" 
-                aria-label="切换主题" aria-pressed="false">
-            🌓
-        </button>
+        <a href="#home" class="nav-btn" id="home-link">🏠 首页</a>
+        <a href="#about" class="nav-btn" id="about-link">👤 关于</a>
+        <button class="nav-btn" id="theme-toggle">🌓 主题</button>
+        <button class="nav-btn" id="lang-toggle">🌐 中/EN</button>
     </nav>
 
     <main class="container">
-        <section id="about" aria-labelledby="about-title">
-            <h2 id="about-title">关于创作者</h2>
-            <p id="about-text">我是hooks1，视频制作与音乐爱好者</p>
+        <section id="about">
+            <h1 id="about-title">欢迎来到创作空间</h1>
+            <p id="about-text">我是hooks1，数字内容创作者</p>
         </section>
 
-        <section id="links" aria-labelledby="articles-title">
-            <h2 id="articles-title">我的平台</h2>
-            <article class="article" aria-label="Bilibili频道">
-                <h3>🎥 BiliBili频道</h3>
+        <section id="links">
+            <div class="article">
+                <h2 id="bilibili-title">🎥 B站主页</h2>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
-                       rel="noopener noreferrer"
-                       class="platform-link">
-                        浏览我的视频作品
+                       rel="noopener"
+                       class="nav-btn">
+                        浏览视频作品
                     </a>
                 </p>
-            </article>
-            <article class="article" aria-label="网易云音乐">
-                <h3>🎵 网易云音乐</h3>
+            </div>
+            <div class="article">
+                <h2 id="music-title">🎵 音乐主页</h2>
                 <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
                        target="_blank"
-                       rel="noopener noreferrer"
-                       class="platform-link">
-                        探索我的音乐收藏
+                       rel="noopener"
+                       class="nav-btn">
+                        查看音乐收藏
                     </a>
                 </p>
-            </article>
+            </div>
         </section>
     </main>
 
     <footer>
-        <p id="footer-text">&copy; <span id="current-year"></span> hooks1 版权所有</p>
+        <p id="footer-text">&copy; <span id="current-year"></span> hooks1</p>
     </footer>
 
     <script>
-        // 增强的主题管理器
+        // 主题管理
         class ThemeManager {
-            static #instance;
-            static getInstance() {
-                if (!this.#instance) this.#instance = new ThemeManager();
-                return this.#instance;
-            }
-
-            constructor() {
-                this.toggleBtn = document.getElementById('theme-toggle');
+            static init() {
+                this.themeToggle = document.getElementById('theme-toggle');
                 this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-                this.init();
-            }
-
-            init() {
                 this.loadTheme();
-                this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
-                this.prefersDark.addEventListener('change', () => this.handleSystemChange());
+                this.bindEvents();
             }
 
-            loadTheme() {
+            static loadTheme() {
                 const savedTheme = localStorage.getItem('theme');
                 const systemDark = this.prefersDark.matches;
-                const theme = savedTheme || (systemDark ? 'dark' : '');
+                const theme = savedTheme || (systemDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
-                this.updateButtonState(theme);
+                this.updateButton(theme);
             }
 
-            updateButtonState(theme) {
-                const isDark = theme === 'dark' || (!theme && this.prefersDark.matches);
-                this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
-                this.toggleBtn.setAttribute('aria-pressed', isDark);
+            static updateButton(theme) {
+                const isDark = theme === 'dark';
+                this.themeToggle.textContent = isDark ? '🌞 浅色' : '🌙 深色';
             }
 
-            handleToggle(event) {
+            static toggleTheme() {
                 const current = document.documentElement.getAttribute('data-theme');
-                const newTheme = current === 'dark' ? '' : 'dark';
+                const newTheme = current === 'dark' ? 'light' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 this.loadTheme();
-                this.createRipple(event);
             }
 
-            handleSystemChange() {
-                if (!localStorage.getItem('theme')) this.loadTheme();
-            }
-
-            createRipple(event) {
-                const ripple = document.createElement('div');
-                ripple.style.cssText = `
-                    position: absolute;
-                    width: 200%;
-                    height: 200%;
-                    background: radial-gradient(circle, 
-                        rgba(255,255,255,0.2) 0%, 
-                        transparent 70%);
-                    transform: translate(-50%, -50%);
-                    pointer-events: none;
-                    animation: ripple 0.6s ease-out;
-                `;
-
-                const rect = this.toggleBtn.getBoundingClientRect();
-                ripple.style.left = `${event.clientX - rect.left}px`;
-                ripple.style.top = `${event.clientY - rect.top}px`;
-                
-                this.toggleBtn.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            }
-        }
-
-        // 改进的加载管理器
-        class LoadManager {
-            static #instance;
-            static getInstance() {
-                if (!this.#instance) this.#instance = new LoadManager();
-                return this.#instance;
-            }
-
-            constructor() {
-                this.loader = document.getElementById('loader');
-                this.progressBar = document.getElementById('progress-bar');
-                this.init();
-            }
-
-            async init() {
-                await this.simulateProgress();
-                window.addEventListener('load', () => this.handleLoadComplete());
-            }
-
-            async simulateProgress() {
-                const resources = [
-                    { url: '//music.163.com', type: 'image' },
-                    { url: '//space.bilibili.com', type: 'script' }
-                ];
-
-                let loadedCount = 0;
-                for (const resource of resources) {
-                    try {
-                        await this.loadResource(resource);
-                        loadedCount++;
-                        this.updateProgress((loadedCount / resources.length) * 90);
-                    } catch {
-                        this.updateProgress((loadedCount / resources.length) * 90);
-                    }
-                }
-            }
-
-            loadResource({ url, type }) {
-                return new Promise((resolve, reject) => {
-                    const element = type === 'image' 
-                        ? new Image() 
-                        : document.createElement('script');
-                    
-                    element.src = url;
-                    element.onload = resolve;
-                    element.onerror = reject;
+            static bindEvents() {
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+                this.prefersDark.addEventListener('change', () => {
+                    if (!localStorage.getItem('theme')) this.loadTheme();
                 });
             }
+        }
 
-            updateProgress(percentage) {
-                const current = parseFloat(this.progressBar.style.width) || 0;
-                const target = Math.max(current, percentage);
-                
-                this.progressBar.animate(
-                    { width: [`${current}%`, `${target}%`] },
-                    { duration: 500, easing: 'ease-out' }
-                ).onfinish = () => {
-                    this.progressBar.style.width = `${target}%`;
-                };
+        // 语言管理
+        class LanguageManager {
+            static translations = {
+                zh: {
+                    'home-link': '🏠 首页',
+                    'about-link': '👤 关于',
+                    'about-title': '欢迎来到创作空间',
+                    'about-text': '我是hooks1，数字内容创作者',
+                    'bilibili-title': '🎥 B站主页',
+                    'music-title': '🎵 音乐主页',
+                    'footer-text': '© {year} hooks1'
+                },
+                en: {
+                    'home-link': '🏠 Home',
+                    'about-link': '👤 About',
+                    'about-title': 'Welcome to Creative Space',
+                    'about-text': 'I\'m hooks1, digital content creator',
+                    'bilibili-title': '🎥 Bilibili Channel',
+                    'music-title': '🎵 Music Profile',
+                    'footer-text': '© {year} hooks1'
+                }
+            };
+
+            static init() {
+                this.langToggle = document.getElementById('lang-toggle');
+                this.currentLang = localStorage.getItem('lang') || 'zh';
+                this.applyLanguage();
+                this.bindEvents();
             }
 
-            handleLoadComplete() {
-                this.updateProgress(100);
-                setTimeout(() => {
-                    this.loader.style.opacity = '0';
-                    this.loader.addEventListener('transitionend', () => {
-                        this.loader.remove();
-                    }, { once: true });
-                }, 800);
+            static applyLanguage() {
+                const texts = this.translations[this.currentLang];
+                Object.entries(texts).forEach(([key, value]) => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.textContent = value.replace('{year}', new Date().getFullYear());
+                    }
+                });
+                this.langToggle.textContent = this.currentLang === 'zh' ? '🌐 EN' : '🌐 中文';
+            }
+
+            static toggleLanguage() {
+                this.currentLang = this.currentLang === 'zh' ? 'en' : 'zh';
+                localStorage.setItem('lang', this.currentLang);
+                this.applyLanguage();
+            }
+
+            static bindEvents() {
+                this.langToggle.addEventListener('click', () => this.toggleLanguage());
             }
         }
 
-        // 初始化逻辑
+        // 加载管理
+        class LoadManager {
+            static init() {
+                this.loader = document.getElementById('loader');
+                this.progressBar = document.getElementById('progress-bar');
+                this.startLoading();
+            }
+
+            static startLoading() {
+                let progress = 0;
+                const animate = () => {
+                    progress = Math.min(progress + Math.random() * 3, 95);
+                    this.progressBar.style.width = `${progress}%`;
+                    progress < 95 ? requestAnimationFrame(animate) : null;
+                };
+                animate();
+
+                window.addEventListener('load', () => {
+                    this.progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        this.loader.style.opacity = '0';
+                        this.loader.addEventListener('transitionend', () => {
+                            this.loader.remove();
+                        }, { once: true });
+                    }, 500);
+                });
+            }
+        }
+
+        // 初始化
         document.addEventListener('DOMContentLoaded', () => {
-            ThemeManager.getInstance();
-            LoadManager.getInstance();
+            ThemeManager.init();
+            LanguageManager.init();
+            LoadManager.init();
             document.getElementById('current-year').textContent = new Date().getFullYear();
         });
     </script>
