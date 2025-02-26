@@ -6,23 +6,19 @@
     <meta name="theme-color" content="#646464">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     
-    <!-- ▲▲▲ 新增关键资源预加载 -->
+    <!-- 预加载优化 -->
     <link rel="preload" href="https://hooks114514.github.io/avatar.jpg" as="image">
-    
-    <!-- 网络性能优化 -->
     <link rel="preconnect" href="//music.163.com">
     <link rel="preconnect" href="//space.bilibili.com">
     <link rel="dns-prefetch" href="//music.163.com">
     <link rel="dns-prefetch" href="//space.bilibili.com">
-    
+
     <title>hooks1的个人空间</title>
+    
     <style>
-        /* ▲▲▲ 优化后的CSS变量系统 */
         :root {
             --radius: 8px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            
-            /* 合并后的主题变量 */
             --theme-bg: #ffffff;
             --theme-text: #333333;
             --theme-primary: #646464;
@@ -38,38 +34,70 @@
             --theme-border: #404040;
         }
 
-        /* ▲▲▲ 合并的过渡属性 */
-        .nav-link, .theme-toggle {
+        /* 优化后的通用样式 */
+        body {
+            background: var(--theme-bg);
+            color: var(--theme-text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
             transition: all 0.3s var(--transition);
         }
 
-        /* ▲▲▲ 增强的无障碍进度条 */
-        .progress-container {
-            aria-valuetext: "加载中";
+        .nav-link, .theme-toggle {
+            transition: all 0.3s var(--transition);
+            will-change: transform, background-color;
         }
 
-        /* ▲▲▲ 动画性能优化 */
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--theme-bg);
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s var(--transition);
+        }
+
+        .progress-container {
+            width: min(90%, 300px);
+            height: 4px;
+            background: var(--theme-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
         .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--theme-primary);
+            transition: width 0.5s var(--transition);
             will-change: width;
             transform: translateZ(0);
         }
 
-        /* 保留原有其他样式... */
-        body {
-            background: var(--theme-bg);
-            color: var(--theme-text);
-            /* 其他属性不变 */
-        }
-
-        /* 更新所有变量引用为--theme前缀 */
-        header { background: var(--theme-primary); }
-        nav { background: var(--theme-surface); border-color: var(--theme-border); }
-        /* 其他样式变量引用同步更新... */
+        /* 其他样式... */
     </style>
-    <!-- 保留原有JSON-LD数据 -->
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "hooks1",
+        "url": "https://hooks114514.github.io",
+        "sameAs": [
+            "https://space.bilibili.com/1312125285",
+            "https://music.163.com/user/home?id=3307535618"
+        ],
+        "description": "技术创作与数字内容分享",
+        "image": "https://hooks114514.github.io/avatar.jpg"
+    }
+    </script>
 </head>
 <body>
-    <!-- ▲▲▲ 增强的进度条无障碍属性 -->
     <div class="loader" id="loader">
         <div class="progress-container" role="progressbar" 
              aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
@@ -78,86 +106,203 @@
         </div>
     </div>
 
-    <!-- 保留原有页面结构... -->
+    <header>
+        <h1 id="blog-title">欢迎来到hooks1的创作空间</h1>
+    </header>
 
+    <nav>
+        <a href="https://hooks114514.github.io/" class="nav-link" aria-current="page">🏠 首页</a>
+        <a href="#about" class="nav-link">👤 关于我</a>
+        <button class="theme-toggle" id="theme-toggle" 
+                aria-label="切换主题" aria-pressed="false">
+            🌓
+        </button>
+    </nav>
+
+    <main class="container">
+        <section id="about" aria-labelledby="about-title">
+            <h2 id="about-title">关于创作者</h2>
+            <p id="about-text">我是hooks1，视频制作与音乐爱好者</p>
+        </section>
+
+        <section id="links" aria-labelledby="articles-title">
+            <h2 id="articles-title">我的平台</h2>
+            <article class="article" aria-label="Bilibili频道">
+                <h3>🎥 BiliBili频道</h3>
+                <p>
+                    <a href="https://space.bilibili.com/1312125285" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="platform-link">
+                        浏览我的视频作品
+                    </a>
+                </p>
+            </article>
+            <article class="article" aria-label="网易云音乐">
+                <h3>🎵 网易云音乐</h3>
+                <p>
+                    <a href="https://music.163.com/user/home?id=3307535618"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="platform-link">
+                        探索我的音乐收藏
+                    </a>
+                </p>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p id="footer-text">&copy; <span id="current-year"></span> hooks1 版权所有</p>
+    </footer>
+
+    <!-- 内联主题管理 -->
     <script>
-        // ▲▲▲ 改进的ThemeManager类
         class ThemeManager {
-            // ...保留原有方法
+            constructor() {
+                if (ThemeManager.instance) return ThemeManager.instance;
+                this.toggleBtn = document.getElementById('theme-toggle');
+                this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+                this.init();
+                ThemeManager.instance = this;
+            }
+
+            init() {
+                this.loadTheme();
+                this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
+                this.prefersDark.addEventListener('change', () => this.handleSystemChange());
+            }
+
+            loadTheme() {
+                const savedTheme = localStorage.getItem('theme') || (this.prefersDark.matches ? 'dark' : '');
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                this.toggleBtn.textContent = savedTheme === 'dark' ? '🌞' : '🌙';
+                this.toggleBtn.setAttribute('aria-pressed', savedTheme === 'dark');
+            }
+
+            handleToggle(event) {
+                const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                this.loadTheme();
+                this.createRipple(event);
+            }
 
             createRipple(event) {
-                // 添加性能优化
                 const ripple = document.createElement('div');
-                ripple.style.cssText = `
-                    position: absolute;
-                    width: 200%;
-                    height: 200%;
-                    background: radial-gradient(circle, 
-                        rgba(255,255,255,0.2) 0%, 
-                        transparent 70%);
-                    transform: translate(-50%, -50%);
-                    pointer-events: none;
-                    animation: ripple 0.6s ease-out;
-                    will-change: transform, opacity;  // 新增性能优化
-                `;
-                // ...其余实现不变
+                Object.assign(ripple.style, {
+                    position: 'absolute',
+                    width: '200%',
+                    height: '200%',
+                    background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)',
+                    transform: 'translate(-50%, -50%)',
+                    pointerEvents: 'none',
+                    animation: 'ripple 0.6s ease-out',
+                    willChange: 'transform, opacity'
+                });
+                
+                const rect = this.toggleBtn.getBoundingClientRect();
+                ripple.style.left = `${event.clientX - rect.left}px`;
+                ripple.style.top = `${event.clientY - rect.top}px`;
+                
+                this.toggleBtn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
             }
         }
+    </script>
 
-        // ▲▲▲ 改进的LoadManager类
+    <!-- 内联加载管理 -->
+    <script>
         class LoadManager {
-            async simulateProgress() {
-                const resources = [
-                    { url: '//music.163.com', type: 'image' },
-                    { url: '//space.bilibili.com', type: 'script' }
+            constructor() {
+                this.loader = document.getElementById('loader');
+                this.progressBar = document.getElementById('progress-bar');
+                this.resources = [
+                    { url: 'https://music.163.com', type: 'image' },
+                    { url: 'https://space.bilibili.com', type: 'script' }
                 ];
+                this.init();
+            }
 
-                await Promise.allSettled(resources.map(res => 
-                    this.loadResource(res).then(() => {
-                        this.updateProgress((++loadedCount / resources.length) * 90);
-                    }).catch(() => {
-                        this.updateProgress((++loadedCount / resources.length) * 90);
-                    })
-                ));
+            async init() {
+                await this.loadResources();
+                window.addEventListener('load', () => this.handleLoadComplete());
+            }
+
+            async loadResources() {
+                await Promise.allSettled(
+                    this.resources.map((res, index) => 
+                        this.loadResource(res)
+                            .then(() => this.updateProgress(((index + 1) / this.resources.length) * 90))
+                            .catch(() => this.updateProgress(((index + 1) / this.resources.length) * 90))
+                    )
+                );
             }
 
             loadResource({ url, type }) {
                 return new Promise((resolve, reject) => {
                     const timeoutId = setTimeout(() => {
                         reject(new Error('Timeout'));
-                        this.updateProgress(100);  // 超时后强制完成
+                        this.updateProgress(100);
                     }, 3000);
 
-                    const element = type === 'image' 
-                        ? new Image() 
-                        : document.createElement('script');
-                    
+                    const element = type === 'image' ? new Image() : document.createElement('script');
                     element.onload = () => {
                         clearTimeout(timeoutId);
                         resolve();
                     };
-                    element.onerror = () => {
-                        clearTimeout(timeoutId);
-                        reject();
-                    };
+                    element.onerror = reject;
                     element.src = url;
                 });
             }
-        }
 
-        // ▲▲▲ 服务Worker注册
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .catch(error => console.log('ServiceWorker 注册失败:', error));
-            });
-        }
+            updateProgress(percentage) {
+                this.progressBar.animate(
+                    { width: [`${this.progressBar.style.width || 0}%`, `${percentage}%`] },
+                    { duration: 500, easing: 'ease-out' }
+                ).onfinish = () => {
+                    this.progressBar.style.width = `${percentage}%`;
+                };
+            }
 
-        // 初始化逻辑保持不变...
+            handleLoadComplete() {
+                this.loader.style.opacity = '0';
+                this.loader.addEventListener('transitionend', () => {
+                    this.loader.remove();
+                }, { once: true });
+            }
+        }
     </script>
 
-    <!-- ▲▲▲ 异步加载非关键JS -->
-    <script defer src="theme-manager.js"></script>
-    <script async src="load-manager.js"></script>
+    <!-- 初始化逻辑 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+            new LoadManager();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Service Worker 注册
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    const CACHE_NAME = 'v1';
+                    const ASSETS = [${JSON.stringify([
+                        '/',
+                        location.pathname,
+                        'https://hooks114514.github.io/avatar.jpg'
+                    ])}];
+
+                    self.addEventListener('install', (e) => {
+                        e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+                    });
+
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                navigator.serviceWorker.register(URL.createObjectURL(blob));
+            }
+        });
+    </script>
 </body>
 </html>
