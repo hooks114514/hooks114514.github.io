@@ -8,280 +8,202 @@
     
     <!-- 预加载优化 -->
     <link rel="preload" href="https://hooks114514.github.io/avatar.jpg" as="image">
-    <link rel="preconnect" href="//music.163.com">
-    <link rel="preconnect" href="//space.bilibili.com">
-    <link rel="dns-prefetch" href="//music.163.com">
-    <link rel="dns-prefetch" href="//space.bilibili.com">
+    <link rel="preconnect" href="https://music.163.com">
+    <link rel="preconnect" href="https://space.bilibili.com">
 
     <title>hooks1的个人空间</title>
     
-   <style>
-    /* 完整展开的CSS样式 */
-    :root {
-        --radius: 8px;
-        --transition: cubic-bezier(0.4, 0, 0.2, 1);
-        --theme-bg: #ffffff;
-        --theme-text: #333333;
-        --theme-primary: #646464;
-        --theme-surface: #f5f5f5;
-        --theme-border: #e0e0e0;
-    }
+    <style>
+        :root {
+            --radius: 8px;
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+            --theme-bg: #ffffff;
+            --theme-text: #333333;
+            --theme-primary: #646464;
+            --theme-surface: #f5f5f5;
+            --theme-border: #e0e0e0;
+        }
 
-    [data-theme="dark"] {
-        --theme-bg: #1a1a1a;
-        --theme-text: #e0e0e0;
-        --theme-primary: #858585;
-        --theme-surface: #2d2d2d;
-        --theme-border: #404040;
-    }
+        [data-theme="dark"] {
+            --theme-bg: #1a1a1a;
+            --theme-text: #e0e0e0;
+            --theme-primary: #858585;
+            --theme-surface: #2d2d2d;
+            --theme-border: #404040;
+        }
 
-    body {
-        background: var(--theme-bg);
-        color: var(--theme-text);
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        line-height: 1.6;
-        min-height: 100vh;
-        display: grid;
-        grid-template-rows: auto 1fr auto;
-        transition: all 0.3s var(--transition);
-        margin: 0;
-    }
+        body {
+            background: var(--theme-bg);
+            color: var(--theme-text);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            transition: all 0.3s var(--transition);
+            margin: 0;
+        }
 
-    header {
-        padding: 2rem 1rem;
-        background: var(--theme-primary);
-        color: white;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-
-    nav {
-        display: flex;
-        gap: 1rem;
-        padding: 1rem;
-        background: var(--theme-surface);
-        justify-content: center;
-        flex-wrap: wrap;
-        border-bottom: 1px solid var(--theme-border);
-    }
-
-    .nav-link, .theme-toggle {
-        padding: 0.75rem 1.5rem;
-        border-radius: var(--radius);
-        background: var(--theme-surface);
-        border: 1px solid var(--theme-border);
-        color: var(--theme-text);
-        cursor: pointer;
-        transition: all 0.3s var(--transition);
-        position: relative;
-        overflow: hidden;
-        will-change: transform, background-color;
-        text-decoration: none;
-    }
-
-    .theme-toggle {
-        min-width: 44px;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .nav-link:hover,
-    .theme-toggle:hover {
-        background: var(--theme-primary);
-        color: white;
-        transform: translateY(-1px);
-    }
-
-    .container {
-        width: min(90%, 1200px);
-        margin: 2rem auto;
-        padding: 2rem;
-        background: var(--theme-bg);
-        border-radius: var(--radius);
-        border: 1px solid var(--theme-border);
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .article {
-        padding: 1.5rem;
-        margin: 1.5rem 0;
-        border-left: 3px solid var(--theme-primary);
-        transition: transform 0.3s ease;
-        background: var(--theme-surface);
-        border-radius: calc(var(--radius) / 2);
-    }
-
-    .article:hover {
-        transform: translateX(5px);
-    }
-
-    footer {
-        background: var(--theme-primary);
-        color: white;
-        text-align: center;
-        padding: 1.5rem;
-        margin-top: 3rem;
-        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* 加载动画 */
-    .loader {
-        position: fixed;
-        inset: 0;
-        background: var(--theme-bg);
-        display: grid;
-        place-items: center;
-        z-index: 1000;
-        transition: opacity 0.5s var(--transition);
-    }
-
-    .progress-container {
-        width: min(90%, 300px);
-        height: 4px;
-        background: var(--theme-surface);
-        border-radius: var(--radius);
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        width: 0%;
-        height: 100%;
-        background: var(--theme-primary);
-        transition: width 0.5s var(--transition);
-        will-change: width;
-        transform: translateZ(0);
-    }
-
-    /* 响应式设计 */
-    @media (max-width: 768px) {
         header {
-            padding: 1.5rem 1rem;
-            font-size: 0.9em;
+            padding: 2rem 1rem;
+            background: var(--theme-primary);
+            color: white;
+            text-align: center;
+            position: relative;
         }
 
         nav {
-            gap: 0.5rem;
-            padding: 0.75rem;
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--theme-surface);
+            justify-content: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--theme-border);
         }
 
         .nav-link, .theme-toggle {
-            width: 100%;
-            text-align: center;
-            padding: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            background: var(--theme-surface);
+            border: 1px solid var(--theme-border);
+            color: var(--theme-text);
+            cursor: pointer;
+            transition: all 0.3s var(--transition);
+            position: relative;
+            overflow: hidden;
+            will-change: transform, background-color;
+            text-decoration: none;
+        }
+
+        .theme-toggle {
+            min-width: 44px;
+            min-height: 44px;
+            display: grid;
+            place-items: center;
+        }
+
+        .nav-link:hover,
+        .theme-toggle:hover {
+            background: var(--theme-primary);
+            color: white;
+            transform: translateY(-2px);
         }
 
         .container {
-            padding: 1rem;
-            margin: 1rem auto;
-            width: 95%;
+            width: min(90%, 1200px);
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--theme-bg);
+            border-radius: var(--radius);
         }
 
         .article {
-            padding: 1rem;
-            margin: 1rem 0;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--theme-primary);
+            transition: transform 0.3s ease;
+            background: var(--theme-surface);
+            border-radius: calc(var(--radius) / 2);
+        }
+
+        .article:hover {
+            transform: translateX(5px);
         }
 
         footer {
-            padding: 1rem;
-            font-size: 0.9em;
+            background: var(--theme-primary);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
         }
-    }
 
-    /* 涟漪动画关键帧 */
-    @keyframes ripple {
-        from {
-            transform: scale(0);
-            opacity: 1;
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--theme-bg);
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s var(--transition);
         }
-        to {
-            transform: scale(2);
-            opacity: 0;
+
+        .progress-container {
+            width: min(90%, 300px);
+            height: 4px;
+            background: var(--theme-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
         }
-    }
 
-    /* 辅助样式 */
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        border: 0;
-    }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--theme-primary);
+            transition: width 0.5s var(--transition);
+            will-change: width;
+        }
 
-    [aria-hidden="true"] {
-        display: none;
-    }
-</style>
+        @media (max-width: 768px) {
+            header { padding: 1rem; }
+            nav { gap: 0.5rem; padding: 0.75rem; }
+            .nav-link, .theme-toggle { width: 100%; text-align: center; }
+            .container { padding: 1rem; width: 95%; }
+        }
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "hooks1",
-        "url": "https://hooks114514.github.io",
-        "sameAs": [
-            "https://space.bilibili.com/1312125285",
-            "https://music.163.com/user/home?id=3307535618"
-        ],
-        "description": "技术创作与数字内容分享",
-        "image": "https://hooks114514.github.io/avatar.jpg"
-    }
-    </script>
+        @keyframes ripple {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(2); opacity: 0; }
+        }
+    </style>
 </head>
 <body>
     <div class="loader" id="loader">
         <div class="progress-container" role="progressbar" 
-             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+             aria-valuemin="0" aria-valuemax="100"
              aria-labelledby="loading-label">
             <div class="progress-bar" id="progress-bar"></div>
         </div>
     </div>
 
     <header>
-        <h1 id="blog-title">欢迎来到hooks1的创作空间</h1>
+        <h1>欢迎来到hooks1的创作空间</h1>
     </header>
 
     <nav>
-        <a href="https://hooks114514.github.io/" class="nav-link" aria-current="page">🏠 首页</a>
+        <a href="/" class="nav-link" aria-current="page">🏠 首页</a>
         <a href="#about" class="nav-link">👤 关于我</a>
         <button class="theme-toggle" id="theme-toggle" 
-                aria-label="切换主题" aria-pressed="false">
-            🌓
-        </button>
+                aria-label="切换主题" aria-pressed="false">🌓</button>
     </nav>
 
     <main class="container">
         <section id="about" aria-labelledby="about-title">
             <h2 id="about-title">关于创作者</h2>
-            <p id="about-text">我是hooks1，视频制作与音乐爱好者</p>
+            <p>我是hooks1，视频制作与音乐爱好者</p>
         </section>
 
         <section id="links" aria-labelledby="articles-title">
             <h2 id="articles-title">我的平台</h2>
-            <article class="article" aria-label="Bilibili频道">
+            <article class="article">
                 <h3>🎥 BiliBili频道</h3>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
-                       rel="noopener noreferrer"
+                       rel="noopener"
                        class="platform-link">
                         浏览我的视频作品
                     </a>
                 </p>
             </article>
-            <article class="article" aria-label="网易云音乐">
+            <article class="article">
                 <h3>🎵 网易云音乐</h3>
                 <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
                        target="_blank"
-                       rel="noopener noreferrer"
+                       rel="noopener"
                        class="platform-link">
                         探索我的音乐收藏
                     </a>
@@ -291,35 +213,33 @@
     </main>
 
     <footer>
-        <p id="footer-text">&copy; <span id="current-year"></span> hooks1 版权所有</p>
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-    <!-- 内联主题管理 -->
     <script>
-        class ThemeManager {
+       class ThemeManager {
             constructor() {
-                if (ThemeManager.instance) return ThemeManager.instance;
                 this.toggleBtn = document.getElementById('theme-toggle');
                 this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
                 this.init();
-                ThemeManager.instance = this;
             }
 
             init() {
                 this.loadTheme();
-                this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
-                this.prefersDark.addEventListener('change', () => this.handleSystemChange());
+                this.toggleBtn.addEventListener('click', (e) => this.toggleTheme(e));
+                this.prefersDark.addEventListener('change', () => this.systemThemeChange());
             }
 
             loadTheme() {
-                const savedTheme = localStorage.getItem('theme') || (this.prefersDark.matches ? 'dark' : '');
-                document.documentElement.setAttribute('data-theme', savedTheme);
+                const savedTheme = localStorage.getItem('theme') || 
+                                  (this.prefersDark.matches ? 'dark' : '');
+                document.documentElement.dataset.theme = savedTheme;
                 this.toggleBtn.textContent = savedTheme === 'dark' ? '🌞' : '🌙';
-                this.toggleBtn.setAttribute('aria-pressed', savedTheme === 'dark');
+                this.toggleBtn.ariaPressed = savedTheme === 'dark';
             }
 
-            handleToggle(event) {
-                const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? '' : 'dark';
+            toggleTheme(event) {
+                const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 this.loadTheme();
                 this.createRipple(event);
@@ -335,110 +255,203 @@
                     transform: 'translate(-50%, -50%)',
                     pointerEvents: 'none',
                     animation: 'ripple 0.6s ease-out',
-                    willChange: 'transform, opacity'
                 });
                 
                 const rect = this.toggleBtn.getBoundingClientRect();
-                ripple.style.left = `${event.clientX - rect.left}px`;
-                ripple.style.top = `${event.clientY - rect.top}px`;
+                ripple.style.left = event.clientX - rect.left + 'px';
+                ripple.style.top = event.clientY - rect.top + 'px';
                 
                 this.toggleBtn.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
             }
-        }
-    </script>
 
-    <!-- 内联加载管理 -->
-    <script>
+            systemThemeChange() {
+                if (!localStorage.getItem('theme')) {
+                    this.loadTheme();
+                }
+            }
+        }
+
         class LoadManager {
             constructor() {
                 this.loader = document.getElementById('loader');
                 this.progressBar = document.getElementById('progress-bar');
                 this.resources = [
-                    { url: 'https://music.163.com', type: 'image' },
-                    { url: 'https://space.bilibili.com', type: 'script' }
+                    { url: 'https://hooks114514.github.io/avatar.jpg', type: 'image' },
                 ];
                 this.init();
             }
 
             async init() {
-                await this.loadResources();
-                window.addEventListener('load', () => this.handleLoadComplete());
+                try {
+                    await this.loadResources();
+                    window.addEventListener('load', () => this.finishLoading());
+                } catch (error) {
+                    this.finishLoading();
+                }
             }
 
             async loadResources() {
                 await Promise.allSettled(
                     this.resources.map((res, index) => 
-                        this.loadResource(res)
-                            .then(() => this.updateProgress(((index + 1) / this.resources.length) * 90))
-                            .catch(() => this.updateProgress(((index + 1) / this.resources.length) * 90))
+                        this.fetchResource(res)
+                            .then(() => this.updateProgress((index + 1) * 90))
+                            .catch(() => this.updateProgress((index + 1) * 90))
                     )
                 );
+                this.updateProgress(100);
             }
 
-            loadResource({ url, type }) {
+            fetchResource({ url, type }) {
                 return new Promise((resolve, reject) => {
+                    const controller = new AbortController();
                     const timeoutId = setTimeout(() => {
-                        reject(new Error('Timeout'));
-                        this.updateProgress(100);
+                        controller.abort();
+                        reject(new Error('加载超时'));
                     }, 3000);
 
-                    const element = type === 'image' ? new Image() : document.createElement('script');
-                    element.onload = () => {
-                        clearTimeout(timeoutId);
-                        resolve();
-                    };
-                    element.onerror = reject;
-                    element.src = url;
+                    fetch(url, { 
+                        signal: controller.signal,
+                        mode: 'no-cors' 
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('响应错误');
+                            return type === 'image' ? response.blob() : response.text();
+                        })
+                        .then(() => resolve())
+                        .catch(reject)
+                        .finally(() => clearTimeout(timeoutId));
                 });
             }
 
-            updateProgress(percentage) {
-                this.progressBar.animate(
-                    { width: [`${this.progressBar.style.width || 0}%`, `${percentage}%`] },
-                    { duration: 500, easing: 'ease-out' }
-                ).onfinish = () => {
-                    this.progressBar.style.width = `${percentage}%`;
-                };
+            updateProgress(percent) {
+                this.progressBar.style.width = Math.min(percent, 100) + '%';
             }
 
-            handleLoadComplete() {
+            finishLoading() {
                 this.loader.style.opacity = '0';
-                this.loader.addEventListener('transitionend', () => {
+                setTimeout(() => {
                     this.loader.remove();
-                }, { once: true });
+                }, 500);
             }
         }
-    </script>
 
-    <!-- 初始化逻辑 -->
-    <script>
+        // 初始化逻辑（包含增强版 Service Worker 集成）
         document.addEventListener('DOMContentLoaded', () => {
             new ThemeManager();
             new LoadManager();
             document.getElementById('current-year').textContent = new Date().getFullYear();
-            
-            // Service Worker 注册
+
+            // 动态生成 Service Worker
             if ('serviceWorker' in navigator) {
-                const swCode = `
-                    const CACHE_NAME = 'v1';
-                    const ASSETS = [${JSON.stringify([
+                const swVersion = 'v3'; // 每次更新需修改版本号
+                const swScript = `
+                    const CACHE_NAME = '${swVersion}';
+                    const PRE_CACHE = [
                         '/',
+                        '/index.html',
+                        'https://hooks114514.github.io/avatar.jpg',
                         location.pathname,
-                        'https://hooks114514.github.io/avatar.jpg'
-                    ])}];
+                        'https://music.163.com/static/css/netease.css',
+                        'https://space.bilibili.com/static/css/bili.css'
+                    ];
 
-                    self.addEventListener('install', (e) => {
-                        e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+                    // 安装阶段 - 预缓存关键资源
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil((async () => {
+                            const cache = await caches.open(CACHE_NAME);
+                            await cache.addAll(PRE_CACHE.map(url => new Request(url, { cache: 'reload' })));
+                            self.skipWaiting();
+                        })());
                     });
 
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                    // 激活阶段 - 清理旧缓存
+                    self.addEventListener('activate', (event) => {
+                        event.waitUntil((async () => {
+                            const keys = await caches.keys();
+                            await Promise.all(
+                                keys.map(key => key !== CACHE_NAME && caches.delete(key))
+                            );
+                            self.clients.claim();
+                        })());
                     });
+
+                    // 增强型缓存策略
+                    self.addEventListener('fetch', (event) => {
+                        const request = event.request;
+                        
+                        // 网络优先策略（适用于API请求）
+                        if (request.url.includes('/api/')) {
+                            event.respondWith(networkFirst(request));
+                            return;
+                        }
+
+                        // 缓存优先策略（适用于静态资源）
+                        event.respondWith(cacheFirst(request));
+                    });
+
+                    async function cacheFirst(request) {
+                        const cached = await caches.match(request);
+                        return cached || networkFirst(request);
+                    }
+
+                    async function networkFirst(request) {
+                        try {
+                            const response = await fetch(request);
+                            const cache = await caches.open(CACHE_NAME);
+                            cache.put(request, response.clone());
+                            return response;
+                        } catch (error) {
+                            const cached = await caches.match(request);
+                            return cached || offlineResponse(request);
+                        }
+                    }
+
+                    function offlineResponse(request) {
+                        if (request.mode === 'navigate') {
+                            return caches.match('/offline.html') || 
+                                new Response('<h1>离线模式</h1><p>请连接网络后刷新页面</p>', {
+                                    headers: { 'Content-Type': 'text/html' }
+                                });
+                        }
+                        return new Response('网络不可用', { status: 503 });
+                    }
                 `;
-                
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                navigator.serviceWorker.register(URL.createObjectURL(blob));
+
+                // 创建 Service Worker Blob
+                try {
+                    const blob = new Blob([swScript], { type: 'application/javascript' });
+                    const swUrl = URL.createObjectURL(blob);
+
+                    // 注册 Service Worker
+                    navigator.serviceWorker.register(swUrl, {
+                        scope: '/',
+                        updateViaCache: 'none'
+                    }).then(registration => {
+                        // 自动更新检查
+                        if (registration.active) registration.update();
+                        
+                        // 监听更新事件
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'activated') {
+                                    console.log('新版本 Service Worker 已激活');
+                                    // 可在此处提示用户刷新页面
+                                }
+                            });
+                        });
+                        
+                        console.log('ServiceWorker 注册成功:', registration.scope);
+                    }).catch(error => {
+                        console.error('ServiceWorker 注册失败:', error);
+                    });
+
+                    // 清理不再需要的 Blob URL
+                    navigator.serviceWorker.ready.then(() => URL.revokeObjectURL(swUrl));
+                } catch (error) {
+                    console.error('ServiceWorker 创建失败:', error);
+                }
             }
         });
     </script>
