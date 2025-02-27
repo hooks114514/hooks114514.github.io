@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme>
+<html lang="zh-CN" data-theme="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="var(--theme-primary)">
+    <meta name="theme-color" content="#646464">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     
     <!-- 资源预加载优化 -->
@@ -14,19 +14,17 @@
     <title>hooks1的个人空间</title>
     
     <style>
-        /* 基础设计系统 */
+        /* 修复后的CSS */
         :root {
             --radius: 0.5rem;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
             
-            /* 亮色主题 */
             --theme-bg: #ffffff;
             --theme-text: #333;
             --theme-primary: #646464;
             --theme-surface: #f8f9fa;
             --theme-border: #e9ecef;
             
-            /* 深色主题 */
             --theme-bg-dark: #1a1a1a;
             --theme-text-dark: #e0e0e0;
             --theme-primary-dark: #858585;
@@ -42,7 +40,6 @@
             --theme-border: var(--theme-border-dark);
         }
 
-        /* 基础样式 */
         body {
             background: var(--theme-bg);
             color: var(--theme-text);
@@ -55,7 +52,6 @@
             margin: 0;
         }
 
-        /* 头部样式 */
         header {
             padding: 2rem 1rem;
             background: var(--theme-primary);
@@ -64,7 +60,6 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* 导航栏 */
         nav {
             display: flex;
             gap: 1rem;
@@ -75,7 +70,6 @@
             border-bottom: 1px solid var(--theme-border);
         }
 
-        /* 交互组件 */
         .nav-link, .theme-toggle {
             padding: 0.75rem 1.5rem;
             border-radius: var(--radius);
@@ -89,7 +83,6 @@
             text-decoration: none;
             position: relative;
             overflow: hidden;
-            will-change: transform, background-color;
         }
 
         .theme-toggle {
@@ -106,7 +99,6 @@
             transform: translateY(-2px);
         }
 
-        /* 内容容器 */
         .container {
             width: min(90%, 1200px);
             margin: 2rem auto;
@@ -116,7 +108,6 @@
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
         }
 
-        /* 文章卡片 */
         .article {
             padding: 1.5rem;
             margin: 1.5rem 0;
@@ -130,7 +121,6 @@
             transform: translateX(5px);
         }
 
-        /* 页脚 */
         footer {
             background: var(--theme-primary);
             color: white;
@@ -139,7 +129,6 @@
             margin-top: auto;
         }
 
-        /* 加载动画 */
         .loader {
             position: fixed;
             inset: 0;
@@ -163,10 +152,8 @@
             height: 100%;
             background: var(--theme-primary);
             transition: width 0.5s var(--transition);
-            will-change: width;
         }
 
-        /* 响应式设计 */
         @media (max-width: 768px) {
             header { padding: 1rem; }
             nav { gap: 0.5rem; padding: 0.75rem; }
@@ -181,7 +168,6 @@
     </style>
 </head>
 <body>
-    <!-- 加载界面 -->
     <div class="loader" id="loader">
         <div class="progress-container" role="progressbar" 
              aria-valuemin="0" aria-valuemax="100"
@@ -190,9 +176,8 @@
         </div>
     </div>
 
-    <!-- 页面结构 -->
     <header>
-        <h1 id="page-title">欢迎来到hooks1的创作空间</h1>
+        <h1>欢迎来到hooks1的创作空间</h1>
     </header>
 
     <nav aria-label="主导航">
@@ -210,26 +195,24 @@
 
         <section id="links" aria-labelledby="articles-title">
             <h2 id="articles-title">我的平台</h2>
-            <article class="article" aria-labelledby="bilibili-title">
-                <h3 id="bilibili-title">🎥 BiliBili频道</h3>
+            <article class="article">
+                <h3>🎥 BiliBili频道</h3>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
                        rel="noopener noreferrer"
-                       class="nav-link"
-                       aria-label="在BiliBili上查看我的视频作品">
+                       class="nav-link">
                         浏览我的视频作品
                     </a>
                 </p>
             </article>
-            <article class="article" aria-labelledby="netease-title">
-                <h3 id="netease-title">🎵 网易云音乐</h3>
+            <article class="article">
+                <h3>🎵 网易云音乐</h3>
                 <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
                        target="_blank"
                        rel="noopener noreferrer"
-                       class="nav-link"
-                       aria-label="在网易云音乐查看我的收藏">
+                       class="nav-link">
                         探索我的音乐收藏
                     </a>
                 </p>
@@ -237,151 +220,184 @@
         </section>
     </main>
 
-    <footer aria-label="页脚">
+    <footer>
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
     <script>
-        // 增强型主题管理
+        // 修复后的JavaScript
         class ThemeManager {
-            #toggleBtn;
-            #prefersDark;
-
             constructor() {
-                this.#toggleBtn = document.getElementById('theme-toggle');
-                this.#prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-                this.#init();
+                this.toggleBtn = document.getElementById('theme-toggle');
+                this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+                this.init();
             }
 
-            #init() {
-                this.#loadTheme();
-                this.#toggleBtn.addEventListener('click', e => this.#toggleTheme(e));
-                this.#prefersDark.addEventListener('change', () => this.#handleSystemChange());
+            init() {
+                this.loadTheme();
+                this.toggleBtn.addEventListener('click', (e) => this.toggleTheme(e));
+                this.prefersDark.addEventListener('change', () => this.systemThemeChange());
             }
 
-            #loadTheme() {
-                const savedTheme = localStorage.getItem('theme') ?? 
-                                  (this.#prefersDark.matches ? 'dark' : '');
+            loadTheme() {
+                const savedTheme = localStorage.getItem('theme') || 
+                                  (this.prefersDark.matches ? 'dark' : '');
                 document.documentElement.dataset.theme = savedTheme;
-                this.#updateButtonState(savedTheme);
+                this.updateButtonState(savedTheme);
             }
 
-            #updateButtonState(theme) {
+            updateButtonState(theme) {
                 const isDark = theme === 'dark';
-                this.#toggleBtn.textContent = isDark ? '🌞' : '🌙';
-                this.#toggleBtn.setAttribute('aria-pressed', isDark);
+                this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
+                this.toggleBtn.setAttribute('aria-pressed', isDark);
                 document.querySelector('meta[name="theme-color"]')
                     .setAttribute('content', isDark ? '#2d2d2d' : '#646464');
             }
 
-            #toggleTheme(event) {
+            toggleTheme(event) {
                 const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
                 localStorage.setItem('theme', newTheme);
-                this.#loadTheme();
-                this.#createRipple(event);
+                this.loadTheme();
+                this.createRipple(event);
             }
 
-            #createRipple(event) {
+            createRipple(event) {
+                const rect = this.toggleBtn.getBoundingClientRect();
                 const ripple = document.createElement('div');
+                
                 Object.assign(ripple.style, {
                     position: 'absolute',
                     width: '200%',
                     height: '200%',
                     background: `radial-gradient(circle, 
-                        rgba(${document.documentElement.dataset.theme === 'dark' ? '255,255,255' : '0,0,0'},0.1) 0%, 
+                        ${document.documentElement.dataset.theme === 'dark' 
+                            ? 'rgba(255,255,255,0.2)' 
+                            : 'rgba(0,0,0,0.1)'} 0%, 
                         transparent 70%)`,
                     transform: 'translate(-50%, -50%)',
-                    pointerEvents: 'none',
+                    left: `${event.clientX - rect.left}px`,
+                    top: `${event.clientY - rect.top}px`,
                     animation: 'ripple 0.6s ease-out',
+                    pointerEvents: 'none'
                 });
                 
-                const rect = this.#toggleBtn.getBoundingClientRect();
-                ripple.style.left = `${event.clientX - rect.left}px`;
-                ripple.style.top = `${event.clientY - rect.top}px`;
-                
-                this.#toggleBtn.appendChild(ripple);
+                this.toggleBtn.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
             }
 
-            #handleSystemChange() {
-                if (!localStorage.getItem('theme')) this.#loadTheme();
+            systemThemeChange() {
+                if (!localStorage.getItem('theme')) this.loadTheme();
             }
         }
 
-        // 优化加载管理
         class LoadManager {
-            #loader;
-            #progressBar;
-            #resources = [
-                { url: 'https://hooks114514.github.io/avatar.jpg', type: 'image' },
-            ];
-
             constructor() {
-                this.#loader = document.getElementById('loader');
-                this.#progressBar = document.getElementById('progress-bar');
-                this.#init();
+                this.loader = document.getElementById('loader');
+                this.progressBar = document.getElementById('progress-bar');
+                this.resources = [
+                    { url: 'https://hooks114514.github.io/avatar.jpg', type: 'image' }
+                ];
+                this.init();
             }
 
-            async #init() {
+            async init() {
                 try {
-                    await this.#loadResources();
-                    this.#finishLoading();
+                    await this.loadResources();
+                    window.addEventListener('load', () => this.finishLoading());
                 } catch (error) {
-                    console.error('资源加载失败:', error);
-                    this.#finishLoading();
+                    this.finishLoading();
                 }
             }
 
-            async #loadResources() {
-                const promises = this.#resources.map((res, index) => 
-                    this.#fetchWithTimeout(res.url, 3000)
-                        .then(() => this.#updateProgress((index + 1) * 90))
-                        .catch(() => this.#updateProgress((index + 1) * 90))
+            async loadResources() {
+                const promises = this.resources.map((res, index) => 
+                    this.fetchResource(res)
+                        .then(() => this.updateProgress((index + 1) * 90))
+                        .catch(() => this.updateProgress((index + 1) * 90))
                 );
 
                 await Promise.allSettled(promises);
-                this.#updateProgress(100);
+                this.updateProgress(100);
             }
 
-            #fetchWithTimeout(url, timeout) {
+            fetchResource({ url, type }) {
                 return new Promise((resolve, reject) => {
                     const controller = new AbortController();
-                    setTimeout(() => controller.abort(), timeout);
+                    const timeoutId = setTimeout(() => {
+                        controller.abort();
+                        reject(new Error('加载超时'));
+                    }, 3000);
 
                     fetch(url, { 
                         signal: controller.signal,
                         mode: 'no-cors' 
-                    }).then(resolve).catch(reject);
+                    })
+                        .then(response => {
+                            if (!response.ok) throw new Error('响应错误');
+                            return type === 'image' ? response.blob() : response.text();
+                        })
+                        .then(resolve)
+                        .catch(reject)
+                        .finally(() => clearTimeout(timeoutId));
                 });
             }
 
-            #updateProgress(percent) {
-                this.#progressBar.style.width = `${Math.min(percent, 100)}%`;
+            updateProgress(percent) {
+                this.progressBar.style.width = `${Math.min(percent, 100)}%`;
             }
 
-            #finishLoading() {
-                this.#loader.style.opacity = '0';
-                setTimeout(() => this.#loader.remove(), 500);
+            finishLoading() {
+                this.loader.style.opacity = '0';
+                setTimeout(() => this.loader.remove(), 500);
             }
         }
 
-        // Service Worker 管理
         class SWManager {
-            static #VERSION = 'v3.1';
-            static #CACHE_LIST = [
-                '/',
-                '/index.html',
-                'https://hooks114514.github.io/avatar.jpg'
-            ];
-
             static async register() {
                 if (!('serviceWorker' in navigator)) return;
 
                 try {
-                    const registration = await navigator.serviceWorker.register(
-                        new URL('sw.js', import.meta.url), 
-                        { scope: '/', updateViaCache: 'none' }
-                    );
+                    const swCode = `
+                        const CACHE_NAME = 'v3';
+                        const PRE_CACHE = [
+                            '/',
+                            location.pathname,
+                            'https://hooks114514.github.io/avatar.jpg'
+                        ];
+
+                        self.addEventListener('install', (event) => {
+                            event.waitUntil((async () => {
+                                const cache = await caches.open(CACHE_NAME);
+                                await cache.addAll(PRE_CACHE);
+                                self.skipWaiting();
+                            })());
+                        });
+
+                        self.addEventListener('activate', (event) => {
+                            event.waitUntil((async () => {
+                                const keys = await caches.keys();
+                                await Promise.all(
+                                    keys.map(key => key !== CACHE_NAME && caches.delete(key))
+                                );
+                                self.clients.claim();
+                            })());
+                        });
+
+                        self.addEventListener('fetch', (event) => {
+                            event.respondWith(
+                                caches.match(event.request)
+                                    .then(cached => cached || fetch(event.request))
+                            );
+                        });
+                    `;
+
+                    const blob = new Blob([swCode], { type: 'application/javascript' });
+                    const swUrl = URL.createObjectURL(blob);
+
+                    const registration = await navigator.serviceWorker.register(swUrl, {
+                        scope: '/',
+                        updateViaCache: 'none'
+                    });
 
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
@@ -393,9 +409,9 @@
                         });
                     });
 
-                    console.log('Service Worker 注册成功:', registration.scope);
+                    URL.revokeObjectURL(swUrl);
                 } catch (error) {
-                    console.error('注册失败:', error);
+                    console.error('Service Worker 注册失败:', error);
                 }
             }
         }
