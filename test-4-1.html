@@ -6,7 +6,6 @@
     <meta name="theme-color" content="#646464">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     
-    <!-- 跨平台预连接优化 -->
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
 
@@ -222,44 +221,44 @@
     </footer>
 
     <script>
-        // 通用主题管理器
-        class ThemeSystem {
+        // 主题管理系统
+        class ThemeController {
             constructor() {
-                this.toggleBtn = document.getElementById('theme-toggle');
+                this.toggleButton = document.getElementById('theme-toggle');
+                this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
                 this.init();
             }
 
             init() {
                 this.loadTheme();
-                this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
-                window.matchMedia('(prefers-color-scheme: dark)')
-                     .addEventListener('change', () => this.handleSystemChange());
+                this.toggleButton.addEventListener('click', (e) => this.toggle(e));
+                this.mediaQuery.addEventListener('change', () => this.handleSystemChange());
             }
 
             loadTheme() {
                 const savedTheme = localStorage.getItem('theme') || 
-                                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : '');
+                                  (this.mediaQuery.matches ? 'dark' : '');
                 document.documentElement.dataset.theme = savedTheme;
                 this.updateUI(savedTheme);
             }
 
             updateUI(theme) {
-                const isDark = theme === 'dark';
-                this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
-                this.toggleBtn.setAttribute('aria-pressed', isDark);
-                document.querySelector('meta[name="theme-color"]').content = 
-                    isDark ? '#2d2d2d' : '#646464';
+                const isDarkMode = theme === 'dark';
+                this.toggleButton.textContent = isDarkMode ? '🌞' : '🌙';
+                this.toggleButton.setAttribute('aria-pressed', isDarkMode);
+                document.querySelector('meta[name="theme-color"]')
+                    .content = isDarkMode ? '#2d2d2d' : '#646464';
             }
 
-            handleToggle(event) {
+            toggle(event) {
                 const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 this.loadTheme();
-                this.createRipple(event);
+                this.createRippleEffect(event);
             }
 
-            createRipple(event) {
-                const rect = this.toggleBtn.getBoundingClientRect();
+            createRippleEffect(event) {
+                const rect = this.toggleButton.getBoundingClientRect();
                 const ripple = document.createElement('div');
                 
                 Object.assign(ripple.style, {
@@ -278,7 +277,7 @@
                     pointerEvents: 'none'
                 });
                 
-                this.toggleBtn.appendChild(ripple);
+                this.toggleButton.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
             }
 
@@ -287,20 +286,20 @@
             }
         }
 
-        // 通用加载控制器
-        class LoadController {
+        // 加载控制器
+        class LoadManager {
             constructor() {
                 this.loader = document.getElementById('loader');
-                this.progressBar = document.getElementById('progress-bar');
+                this.progress = document.getElementById('progress-bar');
                 this.init();
             }
 
             async init() {
                 try {
                     await this.simulateLoading();
-                    window.addEventListener('load', () => this.complete());
+                    window.addEventListener('load', () => this.completeLoading());
                 } catch {
-                    this.complete();
+                    this.completeLoading();
                 }
             }
 
@@ -309,7 +308,7 @@
                     let progress = 0;
                     const interval = setInterval(() => {
                         progress += Math.random() * 15;
-                        this.progressBar.style.width = `${Math.min(progress, 95)}%`;
+                        this.progress.style.width = `${Math.min(progress, 95)}%`;
                         if (progress >= 95) {
                             clearInterval(interval);
                             resolve();
@@ -318,8 +317,8 @@
                 });
             }
 
-            complete() {
-                this.progressBar.style.width = '100%';
+            completeLoading() {
+                this.progress.style.width = '100%';
                 setTimeout(() => {
                     this.loader.style.opacity = '0';
                     setTimeout(() => this.loader.remove(), 500);
@@ -327,13 +326,13 @@
             }
         }
 
-        // 通用离线缓存
-        class OfflineManager {
+        // 离线缓存系统
+        class OfflineCache {
             static async setup() {
                 if (!('serviceWorker' in navigator)) return;
 
                 try {
-                    const swUrl = this.generateSW();
+                    const swUrl = this.generateServiceWorker();
                     const registration = await navigator.serviceWorker.register(swUrl, {
                         scope: './'
                     });
@@ -342,22 +341,22 @@
                         const newWorker = registration.installing;
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'activated') {
-                                console.log('新版本已生效');
+                                console.log('新版本缓存已就绪');
                             }
                         });
                     });
 
                     URL.revokeObjectURL(swUrl);
                 } catch (error) {
-                    console.error('离线功能初始化失败:', error);
+                    console.warn('离线缓存初始化失败:', error);
                 }
             }
 
-            static generateSW() {
-                const swCode = `
-                    const CACHE_NAME = 'v1-${Date.now()}';
+            static generateServiceWorker() {
+                const swScript = `
+                    const CACHE_NAME = 'v3-${Date.now()}';
                     const CACHE_FILES = [
-                        location.pathname,
+                        location.href,
                         new Request(location.href, {cache: 'reload'})
                     ];
 
@@ -387,17 +386,15 @@
                     });
                 `;
 
-                return URL.createObjectURL(
-                    new Blob([swCode], { type: 'application/javascript' })
-                );
+                return new Blob([swScript], { type: 'application/javascript' });
             }
         }
 
         // 初始化入口
         document.addEventListener('DOMContentLoaded', () => {
-            new ThemeSystem();
-            new LoadController();
-            OfflineManager.setup();
+            new ThemeController();
+            new LoadManager();
+            OfflineCache.setup();
             document.getElementById('current-year').textContent = 
                 new Date().getFullYear();
         });
