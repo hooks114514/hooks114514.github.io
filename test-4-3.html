@@ -83,7 +83,7 @@
         h2 { font-size: 1.5rem; font-weight: 500; }
         h3 { font-size: 1.25rem; font-weight: 500; }
 
-        /* 顶部应用栏 */
+        /* 顶部应用栏 - 新增居中布局 */
         header {
             background: var(--header-bg);
             color: var(--header-text);
@@ -93,17 +93,25 @@
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 导航栏增强 */
+        /* 导航栏布局优化 */
         nav {
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
             background: var(--surface-container);
-            justify-content: center;
-            flex-wrap: wrap;
             border-bottom: 1px solid var(--outline);
+        }
+
+        .nav-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .nav-link {
@@ -126,12 +134,13 @@
 
         /* 主题切换按钮优化 */
         .theme-toggle {
+            --icon-size: 24px;
             width: 48px;
             height: 48px;
             border-radius: 24px;
             display: grid;
             place-items: center;
-            background: transparent;
+            background: rgba(var(--primary-rgb), 0.1);
             border: none;
             cursor: pointer;
             transition: 
@@ -140,7 +149,22 @@
         }
 
         .theme-toggle:hover {
-            background: rgba(var(--primary-rgb), 0.08);
+            background: rgba(var(--primary-rgb), 0.2);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle .material-symbols-rounded {
+            font-size: var(--icon-size);
+            color: var(--primary);
+            transition: color 0.3s var(--transition);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         /* 卡片容器 */
@@ -177,6 +201,7 @@
         @media (max-width: 600px) {
             .container { padding: 1rem; width: 95%; }
             .nav-link { padding: 12px; flex: 1; }
+            nav { padding: 1rem; }
         }
     </style>
 </head>
@@ -190,14 +215,16 @@
     </header>
 
     <nav aria-label="主导航">
-        <a href="./" class="nav-link" aria-current="page">
-            <span class="material-symbols-rounded">home</span>
-            首页
-        </a>
-        <a href="#about" class="nav-link">
-            <span class="material-symbols-rounded">person</span>
-            关于
-        </a>
+        <div class="nav-group">
+            <a href="./" class="nav-link" aria-current="page">
+                <span class="material-symbols-rounded">home</span>
+                首页
+            </a>
+            <a href="#about" class="nav-link">
+                <span class="material-symbols-rounded">person</span>
+                关于
+            </a>
+        </div>
         <button class="theme-toggle" id="theme-toggle">
             <span class="material-symbols-rounded">dark_mode</span>
         </button>
@@ -251,9 +278,7 @@
             }
 
             init() {
-                // 初始化颜色变量
                 document.documentElement.style.setProperty('--primary-rgb', this.hexToRgb('#757575'));
-                
                 this.loadTheme();
                 this.toggleBtn.addEventListener('click', () => this.toggleTheme());
                 this.mediaQuery.addEventListener('change', () => this.handleSystemChange());
@@ -284,6 +309,7 @@
             updateThemeMeta() {
                 const isDark = document.documentElement.dataset.theme === 'dark';
                 this.themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
+                this.themeIcon.style.color = isDark ? '#EEEEEE' : '#616161';
                 document.querySelector('meta[name="theme-color"]').content = 
                     isDark ? '#262626' : '#616161';
             }
