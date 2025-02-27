@@ -220,184 +220,178 @@
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-    <script>
-        // 主题管理系统
-        class ThemeController {
-            constructor() {
-                this.toggleButton = document.getElementById('theme-toggle');
-                this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                this.init();
-            }
+   <script>
+    // 主题控制系统
+    class ThemeController {
+        constructor() {
+            this.toggleBtn = document.getElementById('theme-toggle');
+            this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            this.init();
+        }
 
-            init() {
-                this.loadTheme();
-                this.toggleButton.addEventListener('click', (e) => this.toggle(e));
-                this.mediaQuery.addEventListener('change', () => this.handleSystemChange());
-            }
+        init() {
+            this.loadTheme();
+            this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
+            this.mediaQuery.addEventListener('change', () => this.handleSystemChange());
+        }
 
-            loadTheme() {
-                const savedTheme = localStorage.getItem('theme') || 
-                                  (this.mediaQuery.matches ? 'dark' : '');
-                document.documentElement.dataset.theme = savedTheme;
-                this.updateUI(savedTheme);
-            }
+        loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 
+                              (this.mediaQuery.matches ? 'dark' : '');
+            document.documentElement.dataset.theme = savedTheme;
+            this.updateUI(savedTheme);
+        }
 
-            updateUI(theme) {
-                const isDarkMode = theme === 'dark';
-                this.toggleButton.textContent = isDarkMode ? '🌞' : '🌙';
-                this.toggleButton.setAttribute('aria-pressed', isDarkMode);
-                document.querySelector('meta[name="theme-color"]')
-                    .content = isDarkMode ? '#2d2d2d' : '#646464';
-            }
+        updateUI(theme) {
+            const isDark = theme === 'dark';
+            this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
+            this.toggleBtn.setAttribute('aria-pressed', isDark);
+            document.querySelector('meta[name="theme-color"]').content = 
+                isDark ? '#2d2d2d' : '#646464';
+        }
 
-            toggle(event) {
-                const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
-                localStorage.setItem('theme', newTheme);
-                this.loadTheme();
-                this.createRippleEffect(event);
-            }
+        handleToggle(event) {
+            const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            this.loadTheme();
+            this.createRipple(event);
+        }
 
-            createRippleEffect(event) {
-                const rect = this.toggleButton.getBoundingClientRect();
-                const ripple = document.createElement('div');
-                
-                Object.assign(ripple.style, {
-                    position: 'absolute',
-                    width: '200%',
-                    height: '200%',
-                    background: `radial-gradient(circle, 
-                        ${document.documentElement.dataset.theme === 'dark' 
-                            ? 'rgba(255,255,255,0.2)' 
-                            : 'rgba(0,0,0,0.1)'} 0%, 
-                        transparent 70%)`,
-                    transform: 'translate(-50%, -50%)',
-                    left: `${event.clientX - rect.left}px`,
-                    top: `${event.clientY - rect.top}px`,
-                    animation: 'ripple 0.6s ease-out',
-                    pointerEvents: 'none'
-                });
-                
-                this.toggleButton.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            }
+        createRipple(event) {
+            const rect = this.toggleBtn.getBoundingClientRect();
+            const ripple = document.createElement('div');
+            
+            Object.assign(ripple.style, {
+                position: 'absolute',
+                width: '200%',
+                height: '200%',
+                background: `radial-gradient(circle, 
+                    ${document.documentElement.dataset.theme === 'dark' 
+                        ? 'rgba(255,255,255,0.2)' 
+                        : 'rgba(0,0,0,0.1)'} 0%, 
+                    transparent 70%)`,
+                transform: 'translate(-50%, -50%)',
+                left: `${event.clientX - rect.left}px`,
+                top: `${event.clientY - rect.top}px`,
+                animation: 'ripple 0.6s ease-out',
+                pointerEvents: 'none'
+            });
+            
+            this.toggleBtn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
 
-            handleSystemChange() {
-                if (!localStorage.getItem('theme')) this.loadTheme();
+        handleSystemChange() {
+            if (!localStorage.getItem('theme')) this.loadTheme();
+        }
+    }
+
+    // 加载进度控制器
+    class LoadManager {
+        constructor() {
+            this.loader = document.getElementById('loader');
+            this.progressBar = document.getElementById('progress-bar');
+            this.init();
+        }
+
+        async init() {
+            try {
+                await this.simulateLoading();
+                window.addEventListener('load', () => this.complete());
+            } catch {
+                this.complete();
             }
         }
 
-        // 加载控制器
-        class LoadManager {
-            constructor() {
-                this.loader = document.getElementById('loader');
-                this.progress = document.getElementById('progress-bar');
-                this.init();
-            }
-
-            async init() {
-                try {
-                    await this.simulateLoading();
-                    window.addEventListener('load', () => this.completeLoading());
-                } catch {
-                    this.completeLoading();
-                }
-            }
-
-            simulateLoading() {
-                return new Promise(resolve => {
-                    let progress = 0;
-                    const interval = setInterval(() => {
-                        progress += Math.random() * 15;
-                        this.progress.style.width = `${Math.min(progress, 95)}%`;
-                        if (progress >= 95) {
-                            clearInterval(interval);
-                            resolve();
-                        }
-                    }, 200);
-                });
-            }
-
-            completeLoading() {
-                this.progress.style.width = '100%';
-                setTimeout(() => {
-                    this.loader.style.opacity = '0';
-                    setTimeout(() => this.loader.remove(), 500);
-                }, 300);
-            }
+        simulateLoading() {
+            return new Promise(resolve => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    this.progressBar.style.width = `${Math.min(progress, 95)}%`;
+                    if (progress >= 95) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 200);
+            });
         }
 
-        // 离线缓存系统
-        class OfflineCache {
-            static async setup() {
-                if (!('serviceWorker' in navigator)) return;
+        complete() {
+            this.progressBar.style.width = '100%';
+            setTimeout(() => {
+                this.loader.style.opacity = '0';
+                setTimeout(() => this.loader.remove(), 500);
+            }, 300);
+        }
+    }
 
-                try {
-                    const swUrl = this.generateServiceWorker();
-                    const registration = await navigator.serviceWorker.register(swUrl, {
-                        scope: './'
-                    });
+    // 离线缓存系统
+    class OfflineSystem {
+        static async activate() {
+            if (!('serviceWorker' in navigator)) return;
 
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'activated') {
-                                console.log('新版本缓存已就绪');
-                            }
-                        });
-                    });
-
-                    URL.revokeObjectURL(swUrl);
-                } catch (error) {
-                    console.warn('离线缓存初始化失败:', error);
-                }
-            }
-
-            static generateServiceWorker() {
-                const swScript = `
+            try {
+                const swContent = `
                     const CACHE_NAME = 'v3-${Date.now()}';
-                    const CACHE_FILES = [
-                        location.href,
-                        new Request(location.href, {cache: 'reload'})
-                    ];
+                    const CACHE_FILES = [location.href];
 
                     self.addEventListener('install', event => {
-                        event.waitUntil(
-                            caches.open(CACHE_NAME)
-                                .then(cache => cache.addAll(CACHE_FILES))
-                                .then(() => self.skipWaiting())
-                        );
+                        event.waitUntil((async () => {
+                            const cache = await caches.open(CACHE_NAME);
+                            await cache.addAll(CACHE_FILES);
+                            self.skipWaiting();
+                        })());
                     });
 
                     self.addEventListener('activate', event => {
-                        event.waitUntil(
-                            caches.keys().then(keys => 
-                                Promise.all(
-                                    keys.map(key => key !== CACHE_NAME && caches.delete(key))
-                                )
-                            )
-                        );
+                        event.waitUntil((async () => {
+                            const keys = await caches.keys();
+                            await Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)));
+                            clients.claim();
+                        })());
                     });
 
                     self.addEventListener('fetch', event => {
-                        event.respondWith(
-                            caches.match(event.request)
-                                .then(response => response || fetch(event.request))
-                        );
+                        event.respondWith((async () => {
+                            const cached = await caches.match(event.request);
+                            return cached || fetch(event.request);
+                        })());
                     });
                 `;
 
-                return new Blob([swScript], { type: 'application/javascript' });
+                const swBlob = new Blob([swContent], { type: 'application/javascript' });
+                const swURL = URL.createObjectURL(swBlob);
+
+                const registration = await navigator.serviceWorker.register(swURL, {
+                    scope: './',
+                    updateViaCache: 'none'
+                });
+
+                registration.addEventListener('updatefound', () => {
+                    const worker = registration.installing;
+                    worker.addEventListener('statechange', () => {
+                        if (worker.state === 'activated') {
+                            console.log('Service Worker 已激活');
+                            URL.revokeObjectURL(swURL);
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.log('离线系统初始化失败:', error);
             }
         }
+    }
 
-        // 初始化入口
-        document.addEventListener('DOMContentLoaded', () => {
-            new ThemeController();
-            new LoadManager();
-            OfflineCache.setup();
-            document.getElementById('current-year').textContent = 
-                new Date().getFullYear();
-        });
-    </script>
+    // 统一初始化入口
+    document.addEventListener('DOMContentLoaded', () => {
+        new ThemeController();
+        new LoadManager();
+        OfflineSystem.activate();
+        document.getElementById('current-year').textContent = 
+            new Date().getFullYear().toString();
+    });
+</script>
 </body>
 </html>
