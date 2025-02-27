@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1976D2">
+    <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
+    
+    <!-- 引入Material Design字体和图标 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <!-- 跨平台预连接优化 -->
+    <link rel="preconnect" href="https://music.163.com">
+    <link rel="preconnect" href="https://space.bilibili.com">
+
+    <title>hooks1的个人空间</title>
+    
+    <style>
+        :root {
+            --radius: 16px; /* Material规范圆角 */
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Material Design颜色体系 */
+            --primary: #1976D2;
+            --on-primary: #FFFFFF;
+            --surface: #FFFFFF;
+            --surface-container: #F3F3F3;
+            --surface-dim: #DEDEDE;
+            --outline: #757575;
+            
+            /* 暗色模式 */
+            --primary-dark: #90CAF9;
+            --surface-dark: #121212;
+            --surface-container-dark: #242424;
+            --outline-dark: #949494;
+        }
+
+        [data-theme="dark"] {
+            --primary: var(--primary-dark);
+            --surface: var(--surface-dark);
+            --surface-container: var(--surface-container-dark);
+            --outline: var(--outline-dark);
+        }
+
+        body {
+            background: var(--surface);
+            color: var(--on-surface);
+            font-family: 'Roboto', system-ui, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            transition: background-color 0.3s var(--transition);
+            margin: 0;
+        }
+
+        /* Material规范标题排版 */
+        h1 {
+            font-size: 2.125rem;
+            font-weight: 400;
+            line-height: 2.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        /* 顶部应用栏 */
+        header {
+            background: var(--primary);
+            color: var(--on-primary);
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* 导航栏适配Material规范 */
+        nav {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface-container);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--on-surface);
+            text-decoration: none;
+            transition: 
+                background-color 0.3s var(--transition),
+                box-shadow 0.3s var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link[aria-current="page"] {
+            background: rgba(var(--primary-rgb), 0.12);
+            color: var(--primary);
+        }
+
+        .nav-link:hover {
+            background: rgba(var(--primary-rgb), 0.08);
+        }
+
+        /* 主题切换按钮优化 */
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            display: grid;
+            place-items: center;
+            transition: 
+                background-color 0.3s var(--transition),
+                transform 0.2s ease;
+        }
+
+        /* 容器卡片样式 */
+        .container {
+            width: min(90%, 1280px);
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 文章卡片 */
+        .article-card {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            background: var(--surface-container);
+            border-radius: var(--radius);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--outline);
+        }
+
+        .article-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* 加载进度条优化 */
+        .progress-container {
+            height: 4px;
+            background: rgba(var(--primary-rgb), 0.24);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.5s var(--transition);
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+                width: 95%;
+            }
+            
+            .nav-link {
+                padding: 12px;
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Material规范图标样式 */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 简化后的加载指示器 -->
+    <div class="progress-container" id="loader" role="progressbar">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <header>
+        <h1>hooks1的创作空间</h1>
+    </header>
+
+    <nav aria-label="主导航">
+        <a href="./" class="nav-link" aria-current="page">
+            <span class="material-symbols-rounded">home</span>
+            首页
+        </a>
+        <a href="#about" class="nav-link">
+            <span class="material-symbols-rounded">person</span>
+            关于
+        </a>
+        <button class="theme-toggle" id="theme-toggle">
+            <span class="material-symbols-rounded">dark_mode</span>
+        </button>
+    </nav>
+
+    <main class="container">
+        <section id="about">
+            <h2>关于创作者</h2>
+            <div class="article-card">
+                <p>我是hooks1，视频制作与音乐爱好者</p>
+            </div>
+        </section>
+
+        <section id="links">
+            <h2>我的平台</h2>
+            <article class="article-card">
+                <h3><span class="material-symbols-rounded">video_library</span> BiliBili频道</h3>
+                <a href="https://space.bilibili.com/1312125285" 
+                   class="nav-link"
+                   target="_blank"
+                   rel="noopener">
+                    <span class="material-symbols-rounded">launch</span>
+                    浏览作品
+                </a>
+            </article>
+            <article class="article-card">
+                <h3><span class="material-symbols-rounded">music_note</span> 网易云音乐</h3>
+                <a href="https://music.163.com/user/home?id=3307535618"
+                   class="nav-link"
+                   target="_blank"
+                   rel="noopener">
+                    <span class="material-symbols-rounded">launch</span>
+                    音乐收藏
+                </a>
+            </article>
+        </section>
+    </main>
+
+    <footer class="article-card">
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
+    </footer>
+
+    <script>
+        // 更新后的主题控制系统
+        class ThemeManager {
+            constructor() {
+                this.toggleElement = document.getElementById('theme-toggle');
+                this.themeIcon = this.toggleElement.querySelector('.material-symbols-rounded');
+                this.initialize();
+            }
+
+            initialize() {
+                this.loadThemeState();
+                this.toggleElement.addEventListener('click', e => this.toggleTheme(e));
+            }
+
+            loadThemeState() {
+                const savedTheme = localStorage.getItem('user-theme') || 
+                                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : '');
+                document.documentElement.dataset.theme = savedTheme;
+                this.updateThemeIndicator(savedTheme);
+            }
+
+            updateThemeIndicator(theme) {
+                this.themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+                document.querySelector('meta[name="theme-color"]').content = 
+                    theme === 'dark' ? '#242424' : '#1976D2';
+            }
+
+            toggleTheme() {
+                const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
+                localStorage.setItem('user-theme', newTheme);
+                this.loadThemeState();
+            }
+        }
+
+        // 简化的加载系统
+        window.addEventListener('load', () => {
+            document.getElementById('progress-bar').style.width = '100%';
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').remove(), 500);
+            }, 300);
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
