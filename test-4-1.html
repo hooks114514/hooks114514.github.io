@@ -216,8 +216,9 @@
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-    <script>
-       class ThemeManager {
+     <script>
+        // 主题管理模块
+        class ThemeManager {
             constructor() {
                 this.toggleBtn = document.getElementById('theme-toggle');
                 this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -226,7 +227,7 @@
 
             init() {
                 this.loadTheme();
-                this.toggleBtn.addEventListener('click', (e) => this.toggleTheme(e));
+                this.toggleBtn.addEventListener('click', e => this.toggleTheme(e));
                 this.prefersDark.addEventListener('change', () => this.systemThemeChange());
             }
 
@@ -266,12 +267,11 @@
             }
 
             systemThemeChange() {
-                if (!localStorage.getItem('theme')) {
-                    this.loadTheme();
-                }
+                if (!localStorage.getItem('theme')) this.loadTheme();
             }
         }
 
+        // 加载管理模块
         class LoadManager {
             constructor() {
                 this.loader = document.getElementById('loader');
@@ -305,10 +305,7 @@
             fetchResource({ url, type }) {
                 return new Promise((resolve, reject) => {
                     const controller = new AbortController();
-                    const timeoutId = setTimeout(() => {
-                        controller.abort();
-                        reject(new Error('加载超时'));
-                    }, 3000);
+                    const timeoutId = setTimeout(() => controller.abort(), 3000);
 
                     fetch(url, { 
                         signal: controller.signal,
@@ -318,7 +315,7 @@
                             if (!response.ok) throw new Error('响应错误');
                             return type === 'image' ? response.blob() : response.text();
                         })
-                        .then(() => resolve())
+                        .then(resolve)
                         .catch(reject)
                         .finally(() => clearTimeout(timeoutId));
                 });
@@ -330,34 +327,52 @@
 
             finishLoading() {
                 this.loader.style.opacity = '0';
-                setTimeout(() => {
-                    this.loader.remove();
-                }, 500);
+                setTimeout(() => this.loader.remove(), 500);
             }
         }
 
-        // 初始化逻辑（包含增强版 Service Worker 集成）
-        document.addEventListener('DOMContentLoaded', () => {
-            new ThemeManager();
-            new LoadManager();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+        // Service Worker 集成
+        class SWManager {
+            static VERSION = 'v3';
+            static PRE_CACHE = [
+                '/',
+                '/index.html',
+                'https://hooks114514.github.io/avatar.jpg',
+                location.pathname,
+                'https://music.163.com/static/css/netease.css',
+                'https://space.bilibili.com/static/css/bili.css'
+            ];
 
-            // 动态生成 Service Worker
-            if ('serviceWorker' in navigator) {
-                const swVersion = 'v3'; // 每次更新需修改版本号
-                const swScript = `
-                    const CACHE_NAME = '${swVersion}';
-                    const PRE_CACHE = [
-                        '/',
-                        '/index.html',
-                        'https://hooks114514.github.io/avatar.jpg',
-                        location.pathname,
-                        'https://music.163.com/static/css/netease.css',
-                        'https://space.bilibili.com/static/css/bili.css'
-                    ];
+            static async register() {
+                if (!('serviceWorker' in navigator)) return;
 
-                    // 安装阶段 - 预缓存关键资源
-                    self.addEventListener('install', (event) => {
+                try {
+                    const registration = await navigator.serviceWorker.register(
+                        `data:application/javascript,${encodeURIComponent(this.#generateSWScript())}`,
+                        { scope: '/', updateViaCache: 'none' }
+                    );
+
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'activated') {
+                                console.log('新版本 Service Worker 已激活');
+                            }
+                        });
+                    });
+
+                    console.log('ServiceWorker 注册成功:', registration.scope);
+                } catch (error) {
+                    console.error('ServiceWorker 注册失败:', error);
+                }
+            }
+
+            static #generateSWScript() {
+                return `
+                    const CACHE_NAME = '${SWManager.VERSION}';
+                    const PRE_CACHE = ${JSON.stringify(SWManager.PRE_CACHE)};
+
+                    self.addEventListener('install', event => {
                         event.waitUntil((async () => {
                             const cache = await caches.open(CACHE_NAME);
                             await cache.addAll(PRE_CACHE.map(url => new Request(url, { cache: 'reload' })));
@@ -365,37 +380,31 @@
                         })());
                     });
 
-                    // 激活阶段 - 清理旧缓存
-                    self.addEventListener('activate', (event) => {
+                    self.addEventListener('activate', event => {
                         event.waitUntil((async () => {
                             const keys = await caches.keys();
-                            await Promise.all(
-                                keys.map(key => key !== CACHE_NAME && caches.delete(key))
-                            );
+                            await Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)));
                             self.clients.claim();
                         })());
                     });
 
-                    // 增强型缓存策略
-                    self.addEventListener('fetch', (event) => {
+                    self.addEventListener('fetch', event => {
                         const request = event.request;
                         
-                        // 网络优先策略（适用于API请求）
                         if (request.url.includes('/api/')) {
-                            event.respondWith(networkFirst(request));
+                            event.respondWith(SWManager.#networkFirst(request));
                             return;
                         }
 
-                        // 缓存优先策略（适用于静态资源）
-                        event.respondWith(cacheFirst(request));
+                        event.respondWith(SWManager.#cacheFirst(request));
                     });
 
-                    async function cacheFirst(request) {
+                    static async #cacheFirst(request) {
                         const cached = await caches.match(request);
-                        return cached || networkFirst(request);
+                        return cached || SWManager.#networkFirst(request);
                     }
 
-                    async function networkFirst(request) {
+                    static async #networkFirst(request) {
                         try {
                             const response = await fetch(request);
                             const cache = await caches.open(CACHE_NAME);
@@ -403,11 +412,11 @@
                             return response;
                         } catch (error) {
                             const cached = await caches.match(request);
-                            return cached || offlineResponse(request);
+                            return cached || SWManager.#offlineResponse(request);
                         }
                     }
 
-                    function offlineResponse(request) {
+                    static #offlineResponse(request) {
                         if (request.mode === 'navigate') {
                             return caches.match('/offline.html') || 
                                 new Response('<h1>离线模式</h1><p>请连接网络后刷新页面</p>', {
@@ -417,42 +426,15 @@
                         return new Response('网络不可用', { status: 503 });
                     }
                 `;
-
-                // 创建 Service Worker Blob
-                try {
-                    const blob = new Blob([swScript], { type: 'application/javascript' });
-                    const swUrl = URL.createObjectURL(blob);
-
-                    // 注册 Service Worker
-                    navigator.serviceWorker.register(swUrl, {
-                        scope: '/',
-                        updateViaCache: 'none'
-                    }).then(registration => {
-                        // 自动更新检查
-                        if (registration.active) registration.update();
-                        
-                        // 监听更新事件
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', () => {
-                                if (newWorker.state === 'activated') {
-                                    console.log('新版本 Service Worker 已激活');
-                                    // 可在此处提示用户刷新页面
-                                }
-                            });
-                        });
-                        
-                        console.log('ServiceWorker 注册成功:', registration.scope);
-                    }).catch(error => {
-                        console.error('ServiceWorker 注册失败:', error);
-                    });
-
-                    // 清理不再需要的 Blob URL
-                    navigator.serviceWorker.ready.then(() => URL.revokeObjectURL(swUrl));
-                } catch (error) {
-                    console.error('ServiceWorker 创建失败:', error);
-                }
             }
+        }
+
+        // 主初始化逻辑
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+            new LoadManager();
+            SWManager.register();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
         });
     </script>
 </body>
