@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1976D2">
+    <meta name="theme-color" content="#616161">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     
     <!-- 预加载关键资源 -->
@@ -23,23 +23,29 @@
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
             
-            /* 亮色模式默认值 */
-            --primary: #1976D2;
+            /* 亮色模式颜色 */
+            --header-bg: #616161;
+            --header-text: #FFFFFF;
+            --primary: #757575;
             --on-primary: #FFFFFF;
             --surface: #FFFFFF;
             --surface-container: #F3F3F3;
-            --outline: #757575;
-            --on-surface: #1A1A1A;
+            --outline: #BDBDBD;
+            --on-surface: #212121;
             
-            /* 暗色模式默认值 */
-            --primary-dark: #90CAF9;
+            /* 暗色模式颜色 */
+            --header-bg-dark: #424242;
+            --header-text-dark: #EEEEEE;
+            --primary-dark: #9E9E9E;
             --surface-dark: #121212;
             --surface-container-dark: #242424;
-            --outline-dark: #949494;
-            --on-surface-dark: #E0E0E0;
+            --outline-dark: #616161;
+            --on-surface-dark: #EEEEEE;
         }
 
         [data-theme="dark"] {
+            --header-bg: var(--header-bg-dark);
+            --header-text: var(--header-text-dark);
             --primary: var(--primary-dark);
             --surface: var(--surface-dark);
             --surface-container: var(--surface-container-dark);
@@ -68,19 +74,25 @@
         }
 
         /* 标题系统 */
-        h1 { font-size: 2.125rem; font-weight: 400; }
+        h1 { 
+            font-size: 2.125rem; 
+            font-weight: 400;
+            color: var(--header-text);
+            margin: 0;
+        }
         h2 { font-size: 1.5rem; font-weight: 500; }
         h3 { font-size: 1.25rem; font-weight: 500; }
 
         /* 顶部应用栏 */
         header {
-            background: var(--primary);
-            color: var(--on-primary);
-            padding: 1rem;
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 1.5rem 1rem;
             position: sticky;
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s var(--transition);
         }
 
         /* 导航栏增强 */
@@ -240,7 +252,7 @@
 
             init() {
                 // 初始化颜色变量
-                document.documentElement.style.setProperty('--primary-rgb', this.hexToRgb('#1976D2'));
+                document.documentElement.style.setProperty('--primary-rgb', this.hexToRgb('#757575'));
                 
                 this.loadTheme();
                 this.toggleBtn.addEventListener('click', () => this.toggleTheme());
@@ -273,7 +285,7 @@
                 const isDark = document.documentElement.dataset.theme === 'dark';
                 this.themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
                 document.querySelector('meta[name="theme-color"]').content = 
-                    isDark ? '#242424' : '#1976D2';
+                    isDark ? '#262626' : '#616161';
             }
 
             handleSystemChange() {
