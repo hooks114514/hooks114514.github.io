@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#646464">
+    <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
+    
+    <!-- 跨平台预连接优化 -->
+    <link rel="preconnect" href="https://music.163.com">
+    <link rel="preconnect" href="https://space.bilibili.com">
+
+    <title>hooks1的个人空间</title>
+    
+    <style>
+        :root {
+            --radius: 0.5rem;
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
+            
+            --theme-bg: #ffffff;
+            --theme-text: #333;
+            --theme-primary: #646464;
+            --theme-surface: #f8f9fa;
+            --theme-border: #e9ecef;
+            
+            --theme-bg-dark: #1a1a1a;
+            --theme-text-dark: #e0e0e0;
+            --theme-primary-dark: #858585;
+            --theme-surface-dark: #2d2d2d;
+            --theme-border-dark: #404040;
+        }
+
+        [data-theme="dark"] {
+            --theme-bg: var(--theme-bg-dark);
+            --theme-text: var(--theme-text-dark);
+            --theme-primary: var(--theme-primary-dark);
+            --theme-surface: var(--theme-surface-dark);
+            --theme-border: var(--theme-border-dark);
+        }
+
+        body {
+            background: var(--theme-bg);
+            color: var(--theme-text);
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            transition: background-color 0.3s var(--transition), color 0.3s var(--transition);
+            margin: 0;
+        }
+
+        header {
+            padding: 2rem 1rem;
+            background: var(--theme-primary);
+            color: white;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--theme-surface);
+            justify-content: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--theme-border);
+        }
+
+        .nav-link, .theme-toggle {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            background: var(--theme-surface);
+            border: 1px solid var(--theme-border);
+            color: var(--theme-text);
+            cursor: pointer;
+            transition: 
+                background-color 0.3s var(--transition),
+                transform 0.2s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-toggle {
+            min-width: 44px;
+            min-height: 44px;
+            display: grid;
+            place-items: center;
+        }
+
+        .nav-link:hover,
+        .theme-toggle:hover {
+            background: var(--theme-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            width: min(90%, 1200px);
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--theme-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .article {
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 3px solid var(--theme-primary);
+            transition: transform 0.3s ease;
+            background: var(--theme-surface);
+            border-radius: calc(var(--radius) / 2);
+        }
+
+        .article:hover {
+            transform: translateX(5px);
+        }
+
+        footer {
+            background: var(--theme-primary);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--theme-bg);
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s var(--transition);
+        }
+
+        .progress-container {
+            width: min(90%, 300px);
+            height: 4px;
+            background: var(--theme-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--theme-primary);
+            transition: width 0.5s var(--transition);
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 1rem; }
+            nav { gap: 0.5rem; padding: 0.75rem; }
+            .nav-link, .theme-toggle { width: 100%; text-align: center; }
+            .container { padding: 1rem; width: 95%; }
+        }
+
+        @keyframes ripple {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <div class="progress-container" role="progressbar" 
+             aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <header>
+        <h1>欢迎来到hooks1的创作空间</h1>
+    </header>
+
+    <nav aria-label="主导航">
+        <a href="./" class="nav-link" aria-current="page">🏠 首页</a>
+        <a href="#about" class="nav-link">👤 关于我</a>
+        <button class="theme-toggle" id="theme-toggle" 
+                aria-label="切换主题" aria-pressed="false">🌓</button>
+    </nav>
+
+    <main class="container">
+        <section id="about">
+            <h2>关于创作者</h2>
+            <p>我是hooks1，视频制作与音乐爱好者</p>
+        </section>
+
+        <section id="links">
+            <h2>我的平台</h2>
+            <article class="article">
+                <h3>🎥 BiliBili频道</h3>
+                <p>
+                    <a href="https://space.bilibili.com/1312125285" 
+                       target="_blank" 
+                       rel="noopener"
+                       class="nav-link">
+                        浏览我的视频作品
+                    </a>
+                </p>
+            </article>
+            <article class="article">
+                <h3>🎵 网易云音乐</h3>
+                <p>
+                    <a href="https://music.163.com/user/home?id=3307535618"
+                       target="_blank"
+                       rel="noopener"
+                       class="nav-link">
+                        探索我的音乐收藏
+                    </a>
+                </p>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
+    </footer>
+
+    <script>
+        // 主题控制系统
+        class ThemeManager {
+            constructor() {
+                this.toggleElement = document.getElementById('theme-toggle');
+                this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                this.initialize();
+            }
+
+            initialize() {
+                this.loadThemeState();
+                this.toggleElement.addEventListener('click', e => this.toggleTheme(e));
+                this.mediaQuery.addEventListener('change', () => this.handleSystemThemeChange());
+            }
+
+            loadThemeState() {
+                const savedTheme = localStorage.getItem('user-theme') || 
+                                  (this.mediaQuery.matches ? 'dark' : '');
+                document.documentElement.dataset.theme = savedTheme;
+                this.updateThemeIndicator(savedTheme);
+            }
+
+            updateThemeIndicator(theme) {
+                const isDarkMode = theme === 'dark';
+                this.toggleElement.textContent = isDarkMode ? '🌞' : '🌙';
+                this.toggleElement.setAttribute('aria-pressed', isDarkMode);
+                document.querySelector('meta[name="theme-color"]').content = 
+                    isDarkMode ? '#2d2d2d' : '#646464';
+            }
+
+            toggleTheme(event) {
+                const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
+                localStorage.setItem('user-theme', newTheme);
+                this.loadThemeState();
+                this.generateRippleEffect(event);
+            }
+
+            generateRippleEffect(event) {
+                const btnRect = this.toggleElement.getBoundingClientRect();
+                const rippleElement = document.createElement('div');
+                
+                Object.assign(rippleElement.style, {
+                    position: 'absolute',
+                    width: '200%',
+                    height: '200%',
+                    background: `radial-gradient(circle, 
+                        ${document.documentElement.dataset.theme === 'dark' 
+                            ? 'rgba(255,255,255,0.2)' 
+                            : 'rgba(0,0,0,0.1)'} 0%, 
+                        transparent 70%)`,
+                    transform: 'translate(-50%, -50%)',
+                    left: `${event.clientX - btnRect.left}px`,
+                    top: `${event.clientY - btnRect.top}px`,
+                    animation: 'ripple 0.6s ease-out',
+                    pointerEvents: 'none'
+                });
+                
+                this.toggleElement.appendChild(rippleElement);
+                setTimeout(() => rippleElement.remove(), 600);
+            }
+
+            handleSystemThemeChange() {
+                if (!localStorage.getItem('user-theme')) this.loadThemeState();
+            }
+        }
+
+        // 加载进度系统
+        class ProgressSystem {
+            constructor() {
+                this.loaderContainer = document.getElementById('loader');
+                this.progressElement = document.getElementById('progress-bar');
+                this.initialize();
+            }
+
+            async initialize() {
+                try {
+                    await this.simulateLoadingProgress();
+                    window.addEventListener('load', () => this.finalizeLoading());
+                } catch {
+                    this.finalizeLoading();
+                }
+            }
+
+            simulateLoadingProgress() {
+                return new Promise(resolve => {
+                    let currentProgress = 0;
+                    const progressInterval = setInterval(() => {
+                        currentProgress += Math.random() * 15;
+                        this.progressElement.style.width = `${Math.min(currentProgress, 95)}%`;
+                        if (currentProgress >= 95) {
+                            clearInterval(progressInterval);
+                            resolve();
+                        }
+                    }, 200);
+                });
+            }
+
+            finalizeLoading() {
+                this.progressElement.style.width = '100%';
+                setTimeout(() => {
+                    this.loaderContainer.style.opacity = '0';
+                    setTimeout(() => this.loaderContainer.remove(), 500);
+                }, 300);
+            }
+        }
+
+        // 离线缓存系统
+        class OfflineService {
+            static async setup() {
+                if (!('serviceWorker' in navigator)) return;
+
+                try {
+                    const swScript = `
+                        const CACHE_VERSION = 'v4-${Date.now()}';
+                        const CACHE_LIST = [location.href];
+
+                        self.addEventListener('install', (installEvent) => {
+                            installEvent.waitUntil((async () => {
+                                const cacheStorage = await caches.open(CACHE_VERSION);
+                                await cacheStorage.addAll(CACHE_LIST);
+                                self.skipWaiting();
+                            })());
+                        });
+
+                        self.addEventListener('activate', (activateEvent) => {
+                            activateEvent.waitUntil((async () => {
+                                const existingCaches = await caches.keys();
+                                await Promise.all(
+                                    existingCaches.map(existingCache => 
+                                        existingCache !== CACHE_VERSION && caches.delete(existingCache)
+                                    )
+                                );
+                                clients.claim();
+                            })());
+                        });
+
+                        self.addEventListener('fetch', (fetchEvent) => {
+                            fetchEvent.respondWith((async () => {
+                                const cachedResponse = await caches.match(fetchEvent.request);
+                                return cachedResponse || fetch(fetchEvent.request);
+                            })());
+                        });
+                    `;
+
+                    const swBlob = new Blob([swScript], { type: 'application/javascript' });
+                    const swURL = URL.createObjectURL(swBlob);
+
+                    const registration = await navigator.serviceWorker.register(swURL, {
+                        scope: './',
+                        updateViaCache: 'none'
+                    });
+
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'activated') {
+                                console.log('离线服务已激活');
+                                URL.revokeObjectURL(swURL);
+                            }
+                        });
+                    });
+
+                } catch (error) {
+                    console.warn('离线服务初始化失败:', error);
+                }
+            }
+        }
+
+        // 主初始化流程
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+            new ProgressSystem();
+            OfflineService.setup();
+            document.getElementById('current-year').textContent = 
+                new Date().getFullYear().toString();
+        });
+    </script>
+</body>
+</html>
