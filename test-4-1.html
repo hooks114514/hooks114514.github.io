@@ -6,8 +6,7 @@
     <meta name="theme-color" content="#646464">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     
-    <!-- GitHub Pages 优化预加载 -->
-    <link rel="preload" href="./avatar.jpg" as="image">
+    <!-- 跨平台预连接优化 -->
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
 
@@ -223,48 +222,36 @@
     </footer>
 
     <script>
-        // GitHub Pages 适配增强版
-        class GitHubPagesAdapter {
-            static BASE_PATH = location.pathname.includes('github.io') 
-                ? location.pathname.split('/').slice(0,3).join('/') 
-                : '';
-
-            static normalizeURL(url) {
-                return url.startsWith('/') 
-                    ? this.BASE_PATH + url
-                    : url;
-            }
-        }
-
-        class ThemeManager {
+        // 通用主题管理器
+        class ThemeSystem {
             constructor() {
                 this.toggleBtn = document.getElementById('theme-toggle');
-                this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
                 this.init();
             }
 
             init() {
                 this.loadTheme();
-                this.toggleBtn.addEventListener('click', (e) => this.toggleTheme(e));
-                this.prefersDark.addEventListener('change', () => this.systemThemeChange());
+                this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
+                window.matchMedia('(prefers-color-scheme: dark)')
+                     .addEventListener('change', () => this.handleSystemChange());
             }
 
             loadTheme() {
                 const savedTheme = localStorage.getItem('theme') || 
-                                  (this.prefersDark.matches ? 'dark' : '');
+                                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : '');
                 document.documentElement.dataset.theme = savedTheme;
-                this.updateButtonState(savedTheme);
+                this.updateUI(savedTheme);
             }
 
-            updateButtonState(theme) {
+            updateUI(theme) {
                 const isDark = theme === 'dark';
                 this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
                 this.toggleBtn.setAttribute('aria-pressed', isDark);
-                document.querySelector('meta[name="theme-color"]')
-                    .setAttribute('content', isDark ? '#2d2d2d' : '#646464');
+                document.querySelector('meta[name="theme-color"]').content = 
+                    isDark ? '#2d2d2d' : '#646464';
             }
 
-            toggleTheme(event) {
+            handleToggle(event) {
                 const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
                 localStorage.setItem('theme', newTheme);
                 this.loadTheme();
@@ -295,144 +282,124 @@
                 setTimeout(() => ripple.remove(), 600);
             }
 
-            systemThemeChange() {
+            handleSystemChange() {
                 if (!localStorage.getItem('theme')) this.loadTheme();
             }
         }
 
-        class LoadManager {
+        // 通用加载控制器
+        class LoadController {
             constructor() {
                 this.loader = document.getElementById('loader');
                 this.progressBar = document.getElementById('progress-bar');
-                this.resources = [
-                    GitHubPagesAdapter.normalizeURL('/avatar.jpg')
-                ];
                 this.init();
             }
 
             async init() {
                 try {
-                    await this.loadResources();
-                    window.addEventListener('load', () => this.finishLoading());
-                } catch (error) {
-                    this.finishLoading();
+                    await this.simulateLoading();
+                    window.addEventListener('load', () => this.complete());
+                } catch {
+                    this.complete();
                 }
             }
 
-            async loadResources() {
-                const promises = this.resources.map((url, index) => 
-                    this.fetchResource(url)
-                        .then(() => this.updateProgress((index + 1) * 90))
-                        .catch(() => this.updateProgress((index + 1) * 90))
-                );
-
-                await Promise.allSettled(promises);
-                this.updateProgress(100);
-            }
-
-            fetchResource(url) {
-                return new Promise((resolve, reject) => {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => {
-                        controller.abort();
-                        reject(new Error('加载超时'));
-                    }, 3000);
-
-                    fetch(GitHubPagesAdapter.normalizeURL(url), { 
-                        signal: controller.signal,
-                        mode: 'no-cors' 
-                    })
-                        .then(response => {
-                            if (!response.ok) throw new Error('响应错误');
-                            return response.blob();
-                        })
-                        .then(resolve)
-                        .catch(reject)
-                        .finally(() => clearTimeout(timeoutId));
+            simulateLoading() {
+                return new Promise(resolve => {
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 15;
+                        this.progressBar.style.width = `${Math.min(progress, 95)}%`;
+                        if (progress >= 95) {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, 200);
                 });
             }
 
-            updateProgress(percent) {
-                this.progressBar.style.width = `${Math.min(percent, 100)}%`;
-            }
-
-            finishLoading() {
-                this.loader.style.opacity = '0';
-                setTimeout(() => this.loader.remove(), 500);
+            complete() {
+                this.progressBar.style.width = '100%';
+                setTimeout(() => {
+                    this.loader.style.opacity = '0';
+                    setTimeout(() => this.loader.remove(), 500);
+                }, 300);
             }
         }
 
-        class SWManager {
-            static async register() {
+        // 通用离线缓存
+        class OfflineManager {
+            static async setup() {
                 if (!('serviceWorker' in navigator)) return;
 
                 try {
-                    const swCode = `
-                        const CACHE_NAME = 'v3-${Date.now()}';
-                        const PRE_CACHE = ${JSON.stringify([
-                            GitHubPagesAdapter.normalizeURL('/'),
-                            GitHubPagesAdapter.normalizeURL('/index.html'),
-                            GitHubPagesAdapter.normalizeURL('/avatar.jpg')
-                        ])};
-
-                        self.addEventListener('install', (event) => {
-                            event.waitUntil((async () => {
-                                const cache = await caches.open(CACHE_NAME);
-                                await cache.addAll(PRE_CACHE);
-                                self.skipWaiting();
-                            })());
-                        });
-
-                        self.addEventListener('activate', (event) => {
-                            event.waitUntil((async () => {
-                                const keys = await caches.keys();
-                                await Promise.all(
-                                    keys.map(key => key !== CACHE_NAME && caches.delete(key))
-                                );
-                                self.clients.claim();
-                            })());
-                        });
-
-                        self.addEventListener('fetch', (event) => {
-                            const request = new URL(event.request.url);
-                            if (request.origin !== location.origin) return;
-
-                            event.respondWith(
-                                caches.match(event.request)
-                                    .then(cached => cached || fetch(event.request))
-                            );
-                        });
-                    `;
-
-                    const blob = new Blob([swCode], { type: 'application/javascript' });
-                    const swUrl = URL.createObjectURL(blob);
-
+                    const swUrl = this.generateSW();
                     const registration = await navigator.serviceWorker.register(swUrl, {
-                        scope: GitHubPagesAdapter.BASE_PATH + '/'
+                        scope: './'
                     });
 
                     registration.addEventListener('updatefound', () => {
                         const newWorker = registration.installing;
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'activated') {
-                                console.log('新版本已激活');
+                                console.log('新版本已生效');
                             }
                         });
                     });
 
                     URL.revokeObjectURL(swUrl);
                 } catch (error) {
-                    console.error('Service Worker 注册失败:', error);
+                    console.error('离线功能初始化失败:', error);
                 }
+            }
+
+            static generateSW() {
+                const swCode = `
+                    const CACHE_NAME = 'v1-${Date.now()}';
+                    const CACHE_FILES = [
+                        location.pathname,
+                        new Request(location.href, {cache: 'reload'})
+                    ];
+
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(CACHE_FILES))
+                                .then(() => self.skipWaiting())
+                        );
+                    });
+
+                    self.addEventListener('activate', event => {
+                        event.waitUntil(
+                            caches.keys().then(keys => 
+                                Promise.all(
+                                    keys.map(key => key !== CACHE_NAME && caches.delete(key))
+                                )
+                            )
+                        );
+                    });
+
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                        );
+                    });
+                `;
+
+                return URL.createObjectURL(
+                    new Blob([swCode], { type: 'application/javascript' })
+                );
             }
         }
 
-        // 初始化
+        // 初始化入口
         document.addEventListener('DOMContentLoaded', () => {
-            new ThemeManager();
-            new LoadManager();
-            SWManager.register();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+            new ThemeSystem();
+            new LoadController();
+            OfflineManager.setup();
+            document.getElementById('current-year').textContent = 
+                new Date().getFullYear();
         });
     </script>
 </body>
