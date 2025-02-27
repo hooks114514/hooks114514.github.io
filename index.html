@@ -83,7 +83,7 @@
         h2 { font-size: 1.5rem; font-weight: 500; }
         h3 { font-size: 1.25rem; font-weight: 500; }
 
-        /* 顶部应用栏 - 居中布局 */
+        /* 顶部应用栏 */
         header {
             background: var(--header-bg);
             color: var(--header-text);
@@ -98,7 +98,7 @@
             align-items: center;
         }
 
-        /* 导航栏布局 */
+        /* 导航栏 */
         nav {
             display: flex;
             justify-content: space-between;
@@ -153,20 +153,6 @@
             transform: scale(1.05);
         }
 
-        .theme-toggle .material-symbols-rounded {
-            font-size: var(--icon-size);
-            color: var(--primary);
-            transition: color 0.3s var(--transition);
-        }
-
-        [data-theme="dark"] .theme-toggle {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        [data-theme="dark"] .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
         /* 卡片容器 */
         .container {
             width: min(90%, 1280px);
@@ -198,7 +184,7 @@
             z-index: 9999;
         }
 
-        /* 新增页脚样式 */
+        /* 页脚优化 */
         footer.article-card {
             text-align: center;
             padding: 1.5rem 2rem;
@@ -215,6 +201,55 @@
             opacity: 0.8;
         }
 
+        /* 图标动画系统 */
+        .material-symbols-rounded {
+            --icon-scale: 1;
+            --icon-opacity: 1;
+            transform: scale(var(--icon-scale));
+            opacity: var(--icon-opacity);
+            transition: 
+                transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
+                opacity 0.4s ease;
+        }
+
+        .nav-link:hover .material-symbols-rounded,
+        .theme-toggle:hover .material-symbols-rounded {
+            --icon-scale: 1.15;
+        }
+
+        @keyframes icon-appear {
+            from {
+                opacity: 0;
+                transform: translateY(8px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .nav-link:nth-child(1) .material-symbols-rounded {
+            animation: icon-appear 0.6s ease both;
+        }
+        .nav-link:nth-child(2) .material-symbols-rounded {
+            animation: icon-appear 0.6s 0.1s ease both;
+        }
+        .theme-toggle .material-symbols-rounded {
+            animation: icon-appear 0.6s 0.2s ease both;
+        }
+
+        .nav-link:active .material-symbols-rounded {
+            transition-duration: 0.1s;
+            --icon-scale: 0.9;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .material-symbols-rounded {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+
         /* 移动端适配 */
         @media (max-width: 600px) {
             .container { 
@@ -229,7 +264,6 @@
                 padding: 1rem; 
             }
             
-            /* 页脚移动端优化 */
             footer.article-card {
                 padding: 1rem;
                 border-radius: 12px 12px 0 0;
@@ -239,7 +273,6 @@
                 line-height: 1.5;
             }
             
-            /* 全面屏适配 */
             @supports (padding: max(0px)) {
                 footer {
                     padding-bottom: max(1rem, env(safe-area-inset-bottom));
@@ -381,6 +414,27 @@
                 progressBar.style.width = `${Math.min(progress, 95)}%`;
                 if (progress >= 95) clearInterval(interval);
             }, 200);
+
+            // 图标动画交互增强
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    const icon = this.querySelector('.material-symbols-rounded');
+                    icon.style.transform = `scale(1.15)`;
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    const icon = this.querySelector('.material-symbols-rounded');
+                    icon.style.transform = 'scale(1)';
+                });
+            });
+
+            const themeIcon = document.querySelector('.theme-toggle .material-symbols-rounded');
+            themeIcon.addEventListener('click', function() {
+                this.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
 
             window.addEventListener('load', () => {
                 progressBar.style.width = '100%';
