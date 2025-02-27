@@ -83,7 +83,7 @@
         h2 { font-size: 1.5rem; font-weight: 500; }
         h3 { font-size: 1.25rem; font-weight: 500; }
 
-        /* 顶部应用栏 - 新增居中布局 */
+        /* 顶部应用栏 - 居中布局 */
         header {
             background: var(--header-bg);
             color: var(--header-text);
@@ -98,7 +98,7 @@
             align-items: center;
         }
 
-        /* 导航栏布局优化 */
+        /* 导航栏布局 */
         nav {
             display: flex;
             justify-content: space-between;
@@ -132,7 +132,7 @@
             color: var(--primary);
         }
 
-        /* 主题切换按钮优化 */
+        /* 主题切换按钮 */
         .theme-toggle {
             --icon-size: 24px;
             width: 48px;
@@ -198,10 +198,53 @@
             z-index: 9999;
         }
 
+        /* 新增页脚样式 */
+        footer.article-card {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            margin-top: auto;
+            background: var(--surface-container);
+            border-radius: var(--radius) var(--radius) 0 0;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        footer.article-card p {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--on-surface);
+            opacity: 0.8;
+        }
+
+        /* 移动端适配 */
         @media (max-width: 600px) {
-            .container { padding: 1rem; width: 95%; }
-            .nav-link { padding: 12px; flex: 1; }
-            nav { padding: 1rem; }
+            .container { 
+                padding: 1rem; 
+                width: 95%; 
+            }
+            .nav-link { 
+                padding: 12px; 
+                flex: 1; 
+            }
+            nav { 
+                padding: 1rem; 
+            }
+            
+            /* 页脚移动端优化 */
+            footer.article-card {
+                padding: 1rem;
+                border-radius: 12px 12px 0 0;
+            }
+            footer.article-card p {
+                font-size: 0.75rem;
+                line-height: 1.5;
+            }
+            
+            /* 全面屏适配 */
+            @supports (padding: max(0px)) {
+                footer {
+                    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+                }
+            }
         }
     </style>
 </head>
