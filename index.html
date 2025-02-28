@@ -125,6 +125,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            will-change: transform;
         }
 
         .nav-link[aria-current="page"] {
@@ -146,11 +147,7 @@
             transition: 
                 background-color 0.3s var(--transition),
                 transform 0.2s ease;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(var(--primary-rgb), 0.2);
-            transform: scale(1.05);
+            will-change: transform;
         }
 
         /* 卡片容器 */
@@ -161,6 +158,7 @@
             background: var(--surface);
             border-radius: var(--radius);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            will-change: transform;
         }
 
         /* 文章卡片 */
@@ -171,6 +169,7 @@
             border-radius: var(--radius);
             transition: transform 0.3s ease;
             border: 1px solid var(--outline);
+            will-change: transform;
         }
 
         /* 加载进度条 */
@@ -210,6 +209,7 @@
             transition: 
                 transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
                 opacity 0.4s ease;
+            will-change: transform;
         }
 
         .nav-link:hover .material-symbols-rounded,
@@ -243,11 +243,49 @@
             --icon-scale: 0.9;
         }
 
+        /* 悬浮动画系统 */
+        .nav-link,
+        .article-card,
+        .theme-toggle {
+            transition: 
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 6px 10px rgba(0, 0, 0, 0.12),
+                0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-link:hover {
+            background: rgba(var(--primary-rgb), 0.08);
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.08);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .article-card a.nav-link:hover {
+            background: rgba(var(--primary-rgb), 0.12);
+            color: var(--primary);
+        }
+
+        /* 无障碍适配 */
         @media (prefers-reduced-motion: reduce) {
-            .material-symbols-rounded {
+            * {
                 transition: none !important;
+                transform: none !important;
                 animation: none !important;
             }
+        }
+
+        .nav-link:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
 
         /* 移动端适配 */
@@ -279,6 +317,13 @@
                 }
             }
         }
+
+        @media (hover: none) {
+            .article-card:hover {
+                transform: none;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
     </style>
 </head>
 <body>
@@ -287,7 +332,7 @@
     </div>
 
     <header>
-        <h1>hooks1的创作空间</h1>
+        <h1>hooks1的个人空间</h1>
     </header>
 
     <nav aria-label="主导航">
@@ -308,14 +353,14 @@
 
     <main class="container">
         <section id="about">
-            <h2>关于创作者</h2>
+            <h2>关于我</h2>
             <div class="article-card">
-                <p>我是hooks1，视频制作与音乐爱好者</p>
+                <p>我是hooks1，一个视频创作者，一个冰与火之舞玩家</p>
             </div>
         </section>
 
         <section id="links">
-            <h2>我的平台</h2>
+            <h2>个人账号</h2>
             <article class="article-card">
                 <h3><span class="material-symbols-rounded">video_library</span> BiliBili频道</h3>
                 <a href="https://space.bilibili.com/1312125285" 
@@ -434,6 +479,16 @@
                 setTimeout(() => {
                     this.style.transform = 'scale(1)';
                 }, 200);
+            });
+
+            // 悬浮音效系统
+            const hoverSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
+            document.querySelectorAll('.nav-link, .article-card').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    hoverSound.currentTime = 0;
+                    hoverSound.volume = 0.1;
+                    hoverSound.play();
+                });
             });
 
             window.addEventListener('load', () => {
