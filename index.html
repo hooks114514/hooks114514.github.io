@@ -1,89 +1,47 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#616161">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
     
-    <!-- 预加载关键资源 -->
-    <link rel="preload" href="https://fonts.googleapis.com" as="style">
-    <link rel="preload" href="https://fonts.gstatic.com" crossorigin as="style">
+    <!-- 字体和图标 -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
 
-    <!-- Material Design资源 -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-
-    <title>hooks1的个人空间</title>
-    
     <style>
+        /* 基础设计变量 */
         :root {
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            
-            /* 亮色模式颜色 */
             --header-bg: #616161;
             --header-text: #FFFFFF;
             --primary: #757575;
+            --primary-rgb: 117, 117, 117;
             --on-primary: #FFFFFF;
             --surface: #FFFFFF;
             --surface-container: #F3F3F3;
             --outline: #BDBDBD;
             --on-surface: #212121;
-            
-            /* 暗色模式颜色 */
-            --header-bg-dark: #424242;
-            --header-text-dark: #EEEEEE;
-            --primary-dark: #9E9E9E;
-            --surface-dark: #121212;
-            --surface-container-dark: #242424;
-            --outline-dark: #616161;
-            --on-surface-dark: #EEEEEE;
         }
 
-        [data-theme="dark"] {
-            --header-bg: var(--header-bg-dark);
-            --header-text: var(--header-text-dark);
-            --primary: var(--primary-dark);
-            --surface: var(--surface-dark);
-            --surface-container: var(--surface-container-dark);
-            --outline: var(--outline-dark);
-            --on-surface: var(--on-surface-dark);
-        }
-
-        /* 防止未加载CSS前的白屏 */
-        :root:not([data-theme]) { 
-            background: #1A1A1A; 
-            color-scheme: dark light;
-        }
-
+        /* 基础样式 */
         body {
-            background: var(--surface);
-            color: var(--on-surface);
             font-family: 'Roboto', system-ui, sans-serif;
             line-height: 1.6;
+            margin: 0;
             min-height: 100vh;
             display: grid;
             grid-template-rows: auto 1fr auto;
-            transition: 
-                background-color 0.3s var(--transition),
-                color 0.3s var(--transition);
-            margin: 0;
+            background: var(--surface);
+            color: var(--on-surface);
         }
 
-        /* 标题系统 */
-        h1 { 
-            font-size: 2.125rem; 
-            font-weight: 400;
-            color: var(--header-text);
-            margin: 0;
-        }
-        h2 { font-size: 1.5rem; font-weight: 500; }
-        h3 { font-size: 1.25rem; font-weight: 500; }
-
-        /* 顶部应用栏 */
+        /* 页眉样式 */
         header {
             background: var(--header-bg);
             color: var(--header-text);
@@ -92,19 +50,13 @@
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s var(--transition);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center;
         }
 
-        /* 导航栏 */
+        /* 导航栏样式 */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: var(--surface-container);
+            padding: 1rem;
+            background: var(--surface);
             border-bottom: 1px solid var(--outline);
         }
 
@@ -112,8 +64,12 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
+        /* 导航链接样式 */
         .nav-link {
             padding: 12px 24px;
             border-radius: var(--radius);
@@ -121,36 +77,26 @@
             text-decoration: none;
             transition: 
                 background-color 0.3s var(--transition),
-                box-shadow 0.3s var(--transition);
+                transform 0.3s var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            will-change: transform;
+            background: var(--surface);
+            border: 1px solid var(--outline);
         }
 
-        .nav-link[aria-current="page"] {
+        .nav-link:hover,
+        .nav-link:focus {
+            background: rgba(var(--primary-rgb), 0.08);
+            transform: translateY(-2px);
+        }
+
+        [aria-current="page"] {
             background: rgba(var(--primary-rgb), 0.12);
-            color: var(--primary);
+            font-weight: bold;
         }
 
-        /* 主题切换按钮 */
-        .theme-toggle {
-            --icon-size: 24px;
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
-            display: grid;
-            place-items: center;
-            background: rgba(var(--primary-rgb), 0.1);
-            border: none;
-            cursor: pointer;
-            transition: 
-                background-color 0.3s var(--transition),
-                transform 0.2s ease;
-            will-change: transform;
-        }
-
-        /* 卡片容器 */
+        /* 主内容区样式 */
         .container {
             width: min(90%, 1280px);
             margin: 2rem auto;
@@ -158,21 +104,35 @@
             background: var(--surface);
             border-radius: var(--radius);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            will-change: transform;
         }
 
-        /* 文章卡片 */
+        /* 文章卡片样式 */
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
             background: var(--surface-container);
             border-radius: var(--radius);
-            transition: transform 0.3s ease;
             border: 1px solid var(--outline);
-            will-change: transform;
+            transition: 
+                transform 0.3s var(--transition),
+                box-shadow 0.3s ease;
         }
 
-        /* 加载进度条 */
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 页脚样式 */
+        footer {
+            background: var(--header-bg);
+            color: var(--header-text);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        /* 加载进度条样式 */
         .progress-container {
             height: 4px;
             background: rgba(var(--primary-rgb), 0.24);
@@ -183,322 +143,27 @@
             z-index: 9999;
         }
 
-        /* 页脚优化 */
-        footer.article-card {
-            text-align: center;
-            padding: 1.5rem 2rem;
-            margin-top: auto;
-            background: var(--surface-container);
-            border-radius: var(--radius) var(--radius) 0 0;
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
         }
 
-        footer.article-card p {
-            margin: 0;
-            font-size: 0.875rem;
-            color: var(--on-surface);
-            opacity: 0.8;
-        }
-
-        /* 图标动画系统 */
-        .material-symbols-rounded {
-            --icon-scale: 1;
-            --icon-opacity: 1;
-            transform: scale(var(--icon-scale));
-            opacity: var(--icon-opacity);
-            transition: 
-                transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
-                opacity 0.4s ease;
-            will-change: transform;
-        }
-
-        .nav-link:hover .material-symbols-rounded,
-        .theme-toggle:hover .material-symbols-rounded {
-            --icon-scale: 1.15;
-        }
-
-        @keyframes icon-appear {
-            from {
-                opacity: 0;
-                transform: translateY(8px) scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .nav-link:nth-child(1) .material-symbols-rounded {
-            animation: icon-appear 0.6s ease both;
-        }
-        .nav-link:nth-child(2) .material-symbols-rounded {
-            animation: icon-appear 0.6s 0.1s ease both;
-        }
-        .theme-toggle .material-symbols-rounded {
-            animation: icon-appear 0.6s 0.2s ease both;
-        }
-
-        .nav-link:active .material-symbols-rounded {
-            transition-duration: 0.1s;
-            --icon-scale: 0.9;
-        }
-
-        /* 悬浮动画系统 */
-        .nav-link,
-        .article-card,
-        .theme-toggle {
-            transition: 
-                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.3s ease;
-        }
-
-        .article-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 
-                0 6px 10px rgba(0, 0, 0, 0.12),
-                0 2px 4px rgba(0, 0, 0, 0.08);
-        }
-
-        .nav-link:hover {
-            background: rgba(var(--primary-rgb), 0.08);
-            transform: translateY(-2px);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.08);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
-        }
-
-        .article-card a.nav-link:hover {
-            background: rgba(var(--primary-rgb), 0.12);
-            color: var(--primary);
-        }
-
-        /* 无障碍适配 */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                transition: none !important;
-                transform: none !important;
-                animation: none !important;
-            }
-        }
-
-        .nav-link:focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        /* 移动端适配 */
+        /* 响应式设计 */
         @media (max-width: 600px) {
-            .container { 
-                padding: 1rem; 
-                width: 95%; 
-            }
-            .nav-link { 
-                padding: 12px; 
-                flex: 1; 
-            }
-            nav { 
-                padding: 1rem; 
-            }
-            
-            footer.article-card {
+            .container {
                 padding: 1rem;
-                border-radius: 12px 12px 0 0;
-            }
-            footer.article-card p {
-                font-size: 0.75rem;
-                line-height: 1.5;
+                width: 95%;
             }
             
-            @supports (padding: max(0px)) {
-                footer {
-                    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-                }
+            .nav-link {
+                padding: 12px;
+                flex: 1;
+                justify-content: center;
             }
-        }
-
-        @media (hover: none) {
-            .article-card:hover {
-                transform: none;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="progress-container" id="loader">
-        <div class="progress-bar" id="progress-bar"></div>
-    </div>
-
-    <header>
-        <h1>hooks1的个人空间</h1>
-    </header>
-
-    <nav aria-label="主导航">
-        <div class="nav-group">
-            <a href="./" class="nav-link" aria-current="page">
-                <span class="material-symbols-rounded">home</span>
-                首页
-            </a>
-            <a href="#about" class="nav-link">
-                <span class="material-symbols-rounded">person</span>
-                关于
-            </a>
-        </div>
-        <button class="theme-toggle" id="theme-toggle">
-            <span class="material-symbols-rounded">dark_mode</span>
-        </button>
-    </nav>
-
-    <main class="container">
-        <section id="about">
-            <h2>关于我</h2>
-            <div class="article-card">
-                <p>我是hooks1，一个视频创作者，一个冰与火之舞玩家</p>
-            </div>
-        </section>
-
-        <section id="links">
-            <h2>个人账号</h2>
-            <article class="article-card">
-                <h3><span class="material-symbols-rounded">video_library</span> BiliBili频道</h3>
-                <a href="https://space.bilibili.com/1312125285" 
-                   class="nav-link"
-                   target="_blank"
-                   rel="noopener">
-                    <span class="material-symbols-rounded">launch</span>
-                    浏览作品
-                </a>
-            </article>
-            <article class="article-card">
-                <h3><span class="material-symbols-rounded">music_note</span> 网易云音乐</h3>
-                <a href="https://music.163.com/user/home?id=3307535618"
-                   class="nav-link"
-                   target="_blank"
-                   rel="noopener">
-                    <span class="material-symbols-rounded">launch</span>
-                    音乐收藏
-                </a>
-            </article>
-        </section>
-    </main>
-
-    <footer class="article-card">
-        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
-    </footer>
-
-    <script>
-        // 强化主题管理系统
-        class ThemeManager {
-            constructor() {
-                this.toggleBtn = document.getElementById('theme-toggle');
-                this.themeIcon = this.toggleBtn.querySelector('.material-symbols-rounded');
-                this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-                this.init();
-            }
-
-            init() {
-                document.documentElement.style.setProperty('--primary-rgb', this.hexToRgb('#757575'));
-                this.loadTheme();
-                this.toggleBtn.addEventListener('click', () => this.toggleTheme());
-                this.mediaQuery.addEventListener('change', () => this.handleSystemChange());
-            }
-
-            hexToRgb(hex) {
-                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                return result 
-                    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-                    : '';
-            }
-
-            loadTheme() {
-                const savedTheme = localStorage.getItem('user-theme');
-                const systemDark = this.mediaQuery.matches;
-                
-                document.documentElement.dataset.theme = 
-                    savedTheme !== null ? savedTheme : (systemDark ? 'dark' : '');
-                this.updateThemeMeta();
-            }
-
-            toggleTheme() {
-                const isDark = document.documentElement.dataset.theme === 'dark';
-                localStorage.setItem('user-theme', isDark ? '' : 'dark');
-                this.loadTheme();
-            }
-
-            updateThemeMeta() {
-                const isDark = document.documentElement.dataset.theme === 'dark';
-                this.themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
-                this.themeIcon.style.color = isDark ? '#EEEEEE' : '#616161';
-                document.querySelector('meta[name="theme-color"]').content = 
-                    isDark ? '#262626' : '#616161';
-            }
-
-            handleSystemChange() {
-                if (!localStorage.getItem('user-theme')) {
-                    document.documentElement.dataset.theme = 
-                        this.mediaQuery.matches ? 'dark' : '';
-                    this.updateThemeMeta();
-                }
-            }
-        }
-
-        // 页面初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            new ThemeManager();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
             
-            // 加载进度模拟
-            let progress = 0;
-            const progressBar = document.getElementById('progress-bar');
-            const loader = document.getElementById('loader');
-            
-            const interval = setInterval(() => {
-                progress += Math.random() * 15;
-                progressBar.style.width = `${Math.min(progress, 95)}%`;
-                if (progress >= 95) clearInterval(interval);
-            }, 200);
-
-            // 图标动画交互增强
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('mouseenter', function() {
-                    const icon = this.querySelector('.material-symbols-rounded');
-                    icon.style.transform = `scale(1.15)`;
-                });
-                
-                link.addEventListener('mouseleave', function() {
-                    const icon = this.querySelector('.material-symbols-rounded');
-                    icon.style.transform = 'scale(1)';
-                });
-            });
-
-            const themeIcon = document.querySelector('.theme-toggle .material-symbols-rounded');
-            themeIcon.addEventListener('click', function() {
-                this.style.transform = 'scale(0.8)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 200);
-            });
-
-            // 悬浮音效系统
-            const hoverSound = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU');
-            document.querySelectorAll('.nav-link, .article-card').forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    hoverSound.currentTime = 0;
-                    hoverSound.volume = 0.1;
-                    hoverSound.play();
-                });
-            });
-
-            window.addEventListener('load', () => {
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.remove(), 500);
-                }, 300);
-            });
-        });
-    </script>
-</body>
-</html>
+            .article-card {
+                padding: 1rem;
+                margin: 1rem 0;
+           
