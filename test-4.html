@@ -2,16 +2,17 @@
 <html lang="zh-CN" data-theme>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#616161">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
-
-    <!-- 预加载关键资源 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    
+    <!-- 字体和图标 -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
 
-    <!-- 内联所有CSS -->
     <style>
         :root {
             --radius: 16px;
@@ -19,6 +20,7 @@
             --header-bg: #616161;
             --header-text: #FFFFFF;
             --primary: #757575;
+            --primary-rgb: 117, 117, 117;
             --on-primary: #FFFFFF;
             --surface: #FFFFFF;
             --surface-container: #F3F3F3;
@@ -72,6 +74,7 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .nav-link {
@@ -85,6 +88,18 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--outline);
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            background: rgba(var(--primary-rgb), 0.08);
+            transform: translateY(-2px);
+        }
+
+        [aria-current="page"] {
+            background: rgba(var(--primary-rgb), 0.12);
         }
 
         .theme-toggle {
@@ -97,6 +112,10 @@
             border: none;
             cursor: pointer;
             transition: transform 0.3s var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
         }
 
         .container {
@@ -117,6 +136,11 @@
             transition: 
                 transform 0.3s var(--transition),
                 box-shadow 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .progress-container {
@@ -162,123 +186,98 @@
                 <span class="material-symbols-rounded">person</span>
                 关于
             </a>
+            <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+                <span class="material-symbols-rounded">brightness_medium</span>
+            </button>
         </div>
-        <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
-            <span class="material-symbols-rounded">dark_mode</span>
-        </button>
     </nav>
 
     <main class="container">
-        <section id="about">
-            <h2>关于我</h2>
-            <div class="article-card">
-                <p>我是hooks1，一个视频创作者，一个冰与火之舞玩家</p>
-            </div>
+        <section id="about" aria-labelledby="about-title">
+            <h2 id="about-title">关于我</h2>
+            <p>我是hooks1，视频制作与音乐爱好者</p>
         </section>
 
-        <section id="links">
-            <h2>个人账号</h2>
-            <article class="article-card">
-                <h3><span class="material-symbols-rounded">video_library</span> BiliBili频道</h3>
-                <a href="https://space.bilibili.com/1312125285" 
-                   class="nav-link"
-                   target="_blank"
-                   rel="noopener">
-                    <span class="material-symbols-rounded">launch</span>
-                    浏览作品
-                </a>
+        <section id="links" aria-labelledby="articles-title">
+            <h2 id="articles-title">我的平台</h2>
+            
+            <article class="article-card" aria-labelledby="bilibili-title">
+                <h2 id="bilibili-title">🎥 BiliBili频道</h2>
+                <p>
+                    <a href="https://space.bilibili.com/1312125285" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="nav-link">
+                        <span class="material-symbols-rounded">play_circle</span>
+                        浏览视频作品
+                    </a>
+                </p>
             </article>
-            <article class="article-card">
-                <h3><span class="material-symbols-rounded">music_note</span> 网易云音乐</h3>
-                <a href="https://music.163.com/user/home?id=3307535618"
-                   class="nav-link"
-                   target="_blank"
-                   rel="noopener">
-                    <span class="material-symbols-rounded">launch</span>
-                    音乐收藏
-                </a>
+            
+            <article class="article-card" aria-labelledby="netease-title">
+                <h2 id="netease-title">🎵 网易云音乐</h2>
+                <p>
+                    <a href="https://music.163.com/user/home?id=3307535618"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="nav-link">
+                        <span class="material-symbols-rounded">music_note</span>
+                        探索音乐收藏
+                    </a>
+                </p>
             </article>
         </section>
     </main>
 
-    <footer class="article-card">
+    <footer>
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-    <!-- 内联所有JavaScript -->
     <script>
-        // 主题管理系统
-        class ThemeManager {
-            constructor() {
-                this.toggleBtn = document.getElementById('theme-toggle');
-                this.themeIcon = this.toggleBtn.querySelector('span');
-                this.init();
-            }
-
-            init() {
-                document.documentElement.style.setProperty('--primary-rgb', '117, 117, 117');
-                this.loadTheme();
-                this.toggleBtn.addEventListener('click', () => this.toggleTheme());
-            }
-
-            loadTheme() {
-                const savedTheme = localStorage.getItem('user-theme');
-                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                document.documentElement.dataset.theme = savedTheme || (systemDark ? 'dark' : '');
-                this.updateTheme();
-            }
-
-            toggleTheme() {
-                const isDark = document.documentElement.dataset.theme === 'dark';
-                localStorage.setItem('user-theme', isDark ? '' : 'dark');
-                document.documentElement.dataset.theme = isDark ? '' : 'dark';
-                this.updateTheme();
-                navigator.vibrate?.(50);
-            }
-
-            updateTheme() {
-                const isDark = document.documentElement.dataset.theme === 'dark';
-                this.themeIcon.textContent = isDark ? 'light_mode' : 'dark_mode';
-            }
+        // 主题切换功能
+        const themeToggle = document.getElementById('theme-toggle');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentYear = document.getElementById('current-year');
+        
+        function updateTheme() {
+            const isDark = document.documentElement.dataset.theme === 'dark' || 
+                          (!document.documentElement.dataset.theme && prefersDark.matches);
+            themeToggle.innerHTML = isDark ? 
+                '<span class="material-symbols-rounded">light_mode</span>' : 
+                '<span class="material-symbols-rounded">dark_mode</span>';
+            document.querySelector('meta[name="theme-color"]')
+                .setAttribute('content', isDark ? '#424242' : '#616161');
         }
-
-        // 页面初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            new ThemeManager();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-
-            // 加载进度控制
-            const progressBar = document.querySelector('.progress-bar');
-            let progress = 0;
-            let raf;
-
-            function animateProgress() {
-                progress += (100 - progress) * 0.1;
-                progressBar.style.width = `${Math.min(progress, 95)}%`;
-                if (progress < 95) raf = requestAnimationFrame(animateProgress);
-            }
-            raf = requestAnimationFrame(animateProgress);
-
-            window.addEventListener('load', () => {
-                cancelAnimationFrame(raf);
-                progressBar.style.transition = 'width 0.3s ease';
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    document.querySelector('.progress-container').style.opacity = '0';
-                    setTimeout(() => document.querySelector('.progress-container').remove(), 500);
-                }, 300);
-            });
-
-            // 悬停交互
-            document.querySelectorAll('.nav-link, .article-card').forEach(el => {
-                el.addEventListener('mouseenter', () => {
-                    el.style.transform = 'translateY(-2px)';
-                });
-                el.addEventListener('mouseleave', () => {
-                    el.style.transform = 'none';
-                });
-            });
+        
+        themeToggle.addEventListener('click', () => {
+            const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
+            document.documentElement.dataset.theme = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateTheme();
         });
+        
+        prefersDark.addListener(updateTheme);
+        updateTheme();
+        
+        // 进度条功能
+        const progressBar = document.querySelector('.progress-bar');
+        window.addEventListener('load', () => {
+            progressBar.style.width = '100%';
+            setTimeout(() => {
+                document.querySelector('.progress-container').style.opacity = '0';
+            }, 500);
+        });
+
+        // 模拟加载进度
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 10;
+            progressBar.style.width = `${Math.min(progress, 90)}%`;
+            if (progress >= 90) clearInterval(interval);
+        }, 300);
+
+        // 设置年份
+        currentYear.textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
