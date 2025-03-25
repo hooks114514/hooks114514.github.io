@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
@@ -26,23 +26,6 @@
             --surface-container: #F3F3F3;
             --outline: #BDBDBD;
             --on-surface: #212121;
-            --header-bg-dark: #424242;
-            --header-text-dark: #EEEEEE;
-            --primary-dark: #9E9E9E;
-            --surface-dark: #121212;
-            --surface-container-dark: #242424;
-            --outline-dark: #616161;
-            --on-surface-dark: #EEEEEE;
-        }
-
-        [data-theme="dark"] {
-            --header-bg: var(--header-bg-dark);
-            --header-text: var(--header-text-dark);
-            --primary: var(--primary-dark);
-            --surface: var(--surface-dark);
-            --surface-container: var(--surface-container-dark);
-            --outline: var(--outline-dark);
-            --on-surface: var(--on-surface-dark);
         }
 
         body {
@@ -54,9 +37,6 @@
             grid-template-rows: auto 1fr auto;
             background: var(--surface);
             color: var(--on-surface);
-            transition: 
-                background-color 0.3s var(--transition),
-                color 0.3s var(--transition);
         }
 
         header {
@@ -67,7 +47,6 @@
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s var(--transition);
         }
 
         .nav-group {
@@ -100,22 +79,6 @@
 
         [aria-current="page"] {
             background: rgba(var(--primary-rgb), 0.12);
-        }
-
-        .theme-toggle {
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
-            display: grid;
-            place-items: center;
-            background: rgba(var(--primary-rgb), 0.1);
-            border: none;
-            cursor: pointer;
-            transition: transform 0.3s var(--transition);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
         }
 
         .container {
@@ -186,9 +149,6 @@
                 <span class="material-symbols-rounded">person</span>
                 关于
             </a>
-            <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
-                <span class="material-symbols-rounded">brightness_medium</span>
-            </button>
         </div>
     </nav>
 
@@ -201,83 +161,4 @@
         <section id="links" aria-labelledby="articles-title">
             <h2 id="articles-title">我的平台</h2>
             
-            <article class="article-card" aria-labelledby="bilibili-title">
-                <h2 id="bilibili-title">🎥 BiliBili频道</h2>
-                <p>
-                    <a href="https://space.bilibili.com/1312125285" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       class="nav-link">
-                        <span class="material-symbols-rounded">play_circle</span>
-                        浏览视频作品
-                    </a>
-                </p>
-            </article>
-            
-            <article class="article-card" aria-labelledby="netease-title">
-                <h2 id="netease-title">🎵 网易云音乐</h2>
-                <p>
-                    <a href="https://music.163.com/user/home?id=3307535618"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="nav-link">
-                        <span class="material-symbols-rounded">music_note</span>
-                        探索音乐收藏
-                    </a>
-                </p>
-            </article>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
-    </footer>
-
-    <script>
-        // 主题切换功能
-        const themeToggle = document.getElementById('theme-toggle');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-        const currentYear = document.getElementById('current-year');
-        
-        function updateTheme() {
-            const isDark = document.documentElement.dataset.theme === 'dark' || 
-                          (!document.documentElement.dataset.theme && prefersDark.matches);
-            themeToggle.innerHTML = isDark ? 
-                '<span class="material-symbols-rounded">light_mode</span>' : 
-                '<span class="material-symbols-rounded">dark_mode</span>';
-            document.querySelector('meta[name="theme-color"]')
-                .setAttribute('content', isDark ? '#424242' : '#616161');
-        }
-        
-        themeToggle.addEventListener('click', () => {
-            const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
-            document.documentElement.dataset.theme = newTheme;
-            localStorage.setItem('theme', newTheme);
-            updateTheme();
-        });
-        
-        prefersDark.addListener(updateTheme);
-        updateTheme();
-        
-        // 进度条功能
-        const progressBar = document.querySelector('.progress-bar');
-        window.addEventListener('load', () => {
-            progressBar.style.width = '100%';
-            setTimeout(() => {
-                document.querySelector('.progress-container').style.opacity = '0';
-            }, 500);
-        });
-
-        // 模拟加载进度
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 10;
-            progressBar.style.width = `${Math.min(progress, 90)}%`;
-            if (progress >= 90) clearInterval(interval);
-        }, 300);
-
-        // 设置年份
-        currentYear.textContent = new Date().getFullYear();
-    </script>
-</body>
-</html>
+            <article class=
