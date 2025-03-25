@@ -167,3 +167,134 @@
                 padding: 1rem;
                 margin: 1rem 0;
            
+            
+            header {
+                padding: 1rem;
+            }
+        }
+
+        /* 图标基础样式 */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 页面加载进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- 页面头部 -->
+    <header>
+        <h1>hooks1的个人空间</h1>
+    </header>
+
+    <!-- 主导航 -->
+    <nav aria-label="主导航">
+        <div class="nav-group">
+            <a href="./" class="nav-link" aria-current="page">
+                <span class="material-symbols-rounded">home</span>
+                首页
+            </a>
+            <a href="#about" class="nav-link">
+                <span class="material-symbols-rounded">person</span>
+                关于
+            </a>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container">
+        <!-- 关于我部分 -->
+        <section id="about" aria-labelledby="about-title">
+            <h2 id="about-title">关于我</h2>
+            <p>我是hooks1，视频制作与音乐爱好者。这个网站用来分享我的创作和技术心得。</p>
+        </section>
+
+        <!-- 平台链接部分 -->
+        <section id="links" aria-labelledby="articles-title">
+            <h2 id="articles-title">我的平台</h2>
+            
+            <!-- B站卡片 -->
+            <article class="article-card" aria-labelledby="bilibili-title">
+                <h2 id="bilibili-title">
+                    <span class="material-symbols-rounded">play_circle</span>
+                    BiliBili频道
+                </h2>
+                <p>这里是我发布视频创作的主要平台。</p>
+                <p>
+                    <a href="https://space.bilibili.com/1312125285" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="nav-link">
+                        <span class="material-symbols-rounded">open_in_new</span>
+                        浏览我的视频作品
+                    </a>
+                </p>
+            </article>
+            
+            <!-- 网易云音乐卡片 -->
+            <article class="article-card" aria-labelledby="netease-title">
+                <h2 id="netease-title">
+                    <span class="material-symbols-rounded">music_note</span>
+                    网易云音乐
+                </h2>
+                <p>这里收藏了我喜欢的音乐和歌单。</p>
+                <p>
+                    <a href="https://music.163.com/user/home?id=3307535618"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="nav-link">
+                        <span class="material-symbols-rounded">open_in_new</span>
+                        探索我的音乐收藏
+                    </a>
+                </p>
+            </article>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
+    </footer>
+
+    <!-- JavaScript 功能 -->
+    <script>
+        // 页面加载进度功能
+        (function() {
+            const progressBar = document.querySelector('.progress-bar');
+            const progressContainer = document.querySelector('.progress-container');
+            
+            // 模拟加载进度
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                progressBar.style.width = `${Math.min(progress, 90)}%`;
+                if (progress >= 90) clearInterval(interval);
+            }, 300);
+            
+            // 页面完全加载后完成进度条
+            window.addEventListener('load', () => {
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                setTimeout(() => {
+                    progressContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 500);
+                }, 500);
+            });
+            
+            // 设置当前年份
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        })();
+    </script>
+</body>
+</html>
