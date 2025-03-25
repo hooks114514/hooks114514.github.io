@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://space.bilibili.com">
 
     <style>
+        /* 基础设计变量 */
         :root {
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
@@ -28,6 +29,7 @@
             --on-surface: #212121;
         }
 
+        /* 基础样式 */
         body {
             font-family: 'Roboto', system-ui, sans-serif;
             line-height: 1.6;
@@ -39,6 +41,7 @@
             color: var(--on-surface);
         }
 
+        /* 页眉样式 */
         header {
             background: var(--header-bg);
             color: var(--header-text);
@@ -47,6 +50,14 @@
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* 导航栏样式 */
+        nav {
+            padding: 1rem;
+            background: var(--surface);
+            border-bottom: 1px solid var(--outline);
         }
 
         .nav-group {
@@ -54,8 +65,11 @@
             gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
+        /* 导航链接样式 */
         .nav-link {
             padding: 12px 24px;
             border-radius: var(--radius);
@@ -79,8 +93,10 @@
 
         [aria-current="page"] {
             background: rgba(var(--primary-rgb), 0.12);
+            font-weight: bold;
         }
 
+        /* 主内容区样式 */
         .container {
             width: min(90%, 1280px);
             margin: 2rem auto;
@@ -90,6 +106,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        /* 文章卡片样式 */
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
@@ -106,6 +123,16 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        /* 页脚样式 */
+        footer {
+            background: var(--header-bg);
+            color: var(--header-text);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        /* 加载进度条样式 */
         .progress-container {
             height: 4px;
             background: rgba(var(--primary-rgb), 0.24);
@@ -123,22 +150,53 @@
             transition: width 0.3s ease;
         }
 
+        /* 响应式设计 */
         @media (max-width: 600px) {
-            .container { padding: 1rem; width: 95%; }
-            .nav-link { padding: 12px; flex: 1; }
+            .container {
+                padding: 1rem;
+                width: 95%;
+            }
+            
+            .nav-link {
+                padding: 12px;
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .article-card {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            header {
+                padding: 1rem;
+            }
+        }
+
+        /* 图标基础样式 */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+            vertical-align: middle;
         }
     </style>
 </head>
 
 <body>
+    <!-- 页面加载进度条 -->
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
 
+    <!-- 页面头部 -->
     <header>
         <h1>hooks1的个人空间</h1>
     </header>
 
+    <!-- 主导航 -->
     <nav aria-label="主导航">
         <div class="nav-group">
             <a href="./" class="nav-link" aria-current="page">
@@ -152,13 +210,91 @@
         </div>
     </nav>
 
+    <!-- 主内容区 -->
     <main class="container">
+        <!-- 关于我部分 -->
         <section id="about" aria-labelledby="about-title">
             <h2 id="about-title">关于我</h2>
-            <p>我是hooks1，视频制作与音乐爱好者</p>
+            <p>我是hooks1，视频制作与音乐爱好者。这个网站用来分享我的创作和技术心得。</p>
         </section>
 
+        <!-- 平台链接部分 -->
         <section id="links" aria-labelledby="articles-title">
             <h2 id="articles-title">我的平台</h2>
             
-            <article class=
+            <!-- B站卡片 -->
+            <article class="article-card" aria-labelledby="bilibili-title">
+                <h2 id="bilibili-title">
+                    <span class="material-symbols-rounded">play_circle</span>
+                    BiliBili频道
+                </h2>
+                <p>这里是我发布视频创作的主要平台。</p>
+                <p>
+                    <a href="https://space.bilibili.com/1312125285" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="nav-link">
+                        <span class="material-symbols-rounded">open_in_new</span>
+                        浏览我的视频作品
+                    </a>
+                </p>
+            </article>
+            
+            <!-- 网易云音乐卡片 -->
+            <article class="article-card" aria-labelledby="netease-title">
+                <h2 id="netease-title">
+                    <span class="material-symbols-rounded">music_note</span>
+                    网易云音乐
+                </h2>
+                <p>这里收藏了我喜欢的音乐和歌单。</p>
+                <p>
+                    <a href="https://music.163.com/user/home?id=3307535618"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="nav-link">
+                        <span class="material-symbols-rounded">open_in_new</span>
+                        探索我的音乐收藏
+                    </a>
+                </p>
+            </article>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
+    </footer>
+
+    <!-- JavaScript 功能 -->
+    <script>
+        // 页面加载进度功能
+        (function() {
+            const progressBar = document.querySelector('.progress-bar');
+            const progressContainer = document.querySelector('.progress-container');
+            
+            // 模拟加载进度
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                progressBar.style.width = `${Math.min(progress, 90)}%`;
+                if (progress >= 90) clearInterval(interval);
+            }, 300);
+            
+            // 页面完全加载后完成进度条
+            window.addEventListener('load', () => {
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                setTimeout(() => {
+                    progressContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 500);
+                }, 500);
+            });
+            
+            // 设置当前年份
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        })();
+    </script>
+</body>
+</html>
