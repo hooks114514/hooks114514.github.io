@@ -1,337 +1,219 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="hooks1的个人网站 - 分享创作与技术心得">
-    <title>hooks1的创作空间</title>
+    <!-- 移动端视口优化 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- 主题色与SEO优化 -->
+    <meta name="theme-color" content="#616161">
+    <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
+    
+    <!-- 资源预加载优化 -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://music.163.com">
+    <link rel="preconnect" href="https://space.bilibili.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- 字体加载策略优化 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" 
+          rel="stylesheet"
+          crossorigin="anonymous"
+          integrity="sha384-EXAMPLE-HASH" 
+          media="print" 
+          onload="this.media='all'">
+    
+    <!-- 关键渲染路径CSS（内联） -->
     <style>
+        /* 颜色变量系统 */
         :root {
-            /* 基础变量 */
-            --radius: 8px;
+            --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
             
-            /* 亮色主题 */
-            --color-bg: #ffffff;
-            --color-text: #333333;
-            --color-primary: #646464;
-            --color-surface: #f5f5f5;
-            --color-border: #e0e0e0;
+            /* 亮色模式 */
+            --header-bg: #616161;
+            --header-text: #FFFFFF;
+            --primary: #757575;
+            --on-primary: #FFFFFF;
+            --surface: #FFFFFF;
+            --surface-container: #F3F3F3;
+            --outline: #BDBDBD;
+            --on-surface: #212121;
             
-            /* 深色主题 */
-            --dark-bg: #1a1a1a;
-            --dark-text: #e0e0e0;
-            --dark-primary: #858585;
-            --dark-surface: #2d2d2d;
-            --dark-border: #404040;
-
-            /* 动态变量 */
-            --current-bg: var(--color-bg);
-            --current-text: var(--color-text);
-            --current-primary: var(--color-primary);
-            --current-surface: var(--color-surface);
-            --current-border: var(--color-border);
+            /* 暗色模式 */
+            --header-bg-dark: #424242;
+            --header-text-dark: #EEEEEE;
+            --primary-dark: #9E9E9E;
+            --surface-dark: #121212;
+            --surface-container-dark: #242424;
+            --outline-dark: #616161;
+            --on-surface-dark: #EEEEEE;
         }
 
-        /* 深色模式适配 */
-        @media (prefers-color-scheme: dark) {
-            :root:not([data-theme]) {
-                --current-bg: var(--dark-bg);
-                --current-text: var(--dark-text);
-                --current-primary: var(--dark-primary);
-                --current-surface: var(--dark-surface);
-                --current-border: var(--dark-border);
-            }
-        }
-
-        [data-theme="dark"] {
-            --current-bg: var(--dark-bg);
-            --current-text: var(--dark-text);
-            --current-primary: var(--dark-primary);
-            --current-surface: var(--dark-surface);
-            --current-border: var(--dark-border);
-        }
-
+        /* 基础样式 */
         body {
-            background: var(--current-bg);
-            color: var(--current-text);
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Roboto', system-ui, sans-serif;
             line-height: 1.6;
-            min-height: 100vh;
             margin: 0;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* 加载动画 */
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--current-bg);
+            min-height: 100vh;
             display: grid;
-            place-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s var(--transition);
+            grid-template-rows: auto 1fr auto;
+            background: var(--surface);
+            color: var(--on-surface);
+            transition: 
+                background-color 0.3s var(--transition),
+                color 0.3s var(--transition);
         }
 
-        .progress-container {
-            width: min(90%, 300px);
-            height: 4px;
-            background: var(--current-surface);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            width: 0%;
-            height: 100%;
-            background: var(--current-primary);
-            transition: width 0.5s var(--transition);
-            will-change: width;
-        }
-
-        /* 导航样式 */
-        nav {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--current-surface);
-            justify-content: center;
-            flex-wrap: wrap;
-            border-bottom: 1px solid var(--current-border);
-        }
-
-        .nav-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius);
-            background: var(--current-surface);
-            border: 1px solid var(--current-border);
-            color: var(--current-text);
-            cursor: pointer;
-            transition: all 0.3s var(--transition);
-        }
-
-        .nav-btn:hover {
-            background: var(--current-primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* 内容容器 */
-        .container {
-            width: min(90%, 1200px);
-            margin: 2rem auto;
-            padding: 2rem;
-            background: var(--current-bg);
-            border-radius: var(--radius);
-            border: 1px solid var(--current-border);
-        }
-
-        .article {
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 3px solid var(--current-primary);
-            transition: transform 0.3s ease;
-        }
-
-        .article:hover {
-            transform: translateX(5px);
-        }
-
-        footer {
-            background: var(--current-primary);
-            color: white;
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-                margin: 1rem auto;
-            }
-            .nav-btn {
-                width: 100%;
-                text-align: center;
-            }
+        /* 首屏关键样式 */
+        header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 1.5rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
+
+    <!-- 非关键CSS异步加载 -->
+    <link rel="preload" href="styles/main.css" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="styles/main.css">
+    </noscript>
+
+    <title>hooks1的个人空间</title>
 </head>
+
 <body>
-    <div class="loader" id="loader">
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
+    <!-- 加载进度指示器 -->
+    <div class="progress-container" aria-hidden="true">
+        <div class="progress-bar"></div>
     </div>
 
-    <nav>
-        <a href="#home" class="nav-btn" id="home-link">🏠 首页</a>
-        <a href="#about" class="nav-btn" id="about-link">👤 关于</a>
-        <button class="nav-btn" id="theme-toggle">🌓 主题</button>
-        <button class="nav-btn" id="lang-toggle">🌐 中/EN</button>
+    <!-- 语义化头部 -->
+    <header role="banner">
+        <h1>hooks1的个人空间</h1>
+    </header>
+
+    <!-- 导航系统优化 -->
+    <nav aria-label="主导航" role="navigation">
+        <div class="nav-group">
+            <a href="./" class="nav-link" aria-current="page">
+                <span class="material-symbols-rounded" aria-hidden="true">home</span>
+                首页
+            </a>
+            <a href="#about" class="nav-link">
+                <span class="material-symbols-rounded" aria-hidden="true">person</span>
+                关于
+            </a>
+        </div>
+        
+        <!-- 主题切换控件 -->
+        <button class="theme-toggle" 
+                id="theme-toggle"
+                aria-label="切换主题模式"
+                data-tooltip="点击切换亮/暗模式">
+            <span class="material-symbols-rounded">dark_mode</span>
+        </button>
     </nav>
 
-    <main class="container">
-        <section id="about">
-            <h1 id="about-title">欢迎来到创作空间</h1>
-            <p id="about-text">我是hooks1，数字内容创作者</p>
-        </section>
+    <!-- 主要内容区域 -->
+    <main class="container" role="main">
+        <!-- 关于模块 -->
+        <article id="about" itemscope itemtype="https://schema.org/Person">
+            <h2>关于我</h2>
+            <div class="article-card">
+                <p itemprop="description">我是hooks1，一个视频创作者，一个冰与火之舞玩家</p>
+            </div>
+        </article>
 
+        <!-- 账号链接模块 -->
         <section id="links">
-            <div class="article">
-                <h2 id="bilibili-title">🎥 B站主页</h2>
-                <p>
-                    <a href="https://space.bilibili.com/1312125285" 
-                       target="_blank" 
-                       rel="noopener"
-                       class="nav-btn">
-                        浏览视频作品
-                    </a>
-                </p>
-            </div>
-            <div class="article">
-                <h2 id="music-title">🎵 音乐主页</h2>
-                <p>
-                    <a href="https://music.163.com/user/home?id=3307535618"
-                       target="_blank"
-                       rel="noopener"
-                       class="nav-btn">
-                        查看音乐收藏
-                    </a>
-                </p>
-            </div>
+            <h2>个人账号</h2>
+            
+            <!-- B站卡片 -->
+            <article class="article-card" itemscope itemtype="https://schema.org/ProfilePage">
+                <h3>
+                    <span class="material-symbols-rounded" aria-hidden="true">video_library</span>
+                    BiliBili频道
+                </h3>
+                <a href="https://space.bilibili.com/1312125285" 
+                   class="nav-link"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   itemprop="url">
+                    <span class="material-symbols-rounded" aria-hidden="true">launch</span>
+                    浏览作品
+                </a>
+            </article>
+
+            <!-- 网易云卡片 -->
+            <article class="article-card" itemscope itemtype="https://schema.org/MusicGroup">
+                <h3>
+                    <span class="material-symbols-rounded" aria-hidden="true">music_note</span>
+                    网易云音乐
+                </h3>
+                <a href="https://music.163.com/user/home?id=3307535618"
+                   class="nav-link"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   itemprop="url">
+                    <span class="material-symbols-rounded" aria-hidden="true">launch</span>
+                    音乐收藏
+                </a>
+            </article>
         </section>
     </main>
 
-    <footer>
-        <p id="footer-text">&copy; <span id="current-year"></span> hooks1</p>
+    <!-- 语义化页脚 -->
+    <footer class="article-card" role="contentinfo">
+        <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
+    <!-- 异步加载主JS -->
+    <script src="scripts/main.js" defer></script>
+
+    <!-- 关键初始化脚本 -->
     <script>
-        // 主题管理
-        class ThemeManager {
-            static init() {
-                this.themeToggle = document.getElementById('theme-toggle');
-                this.prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-                this.loadTheme();
-                this.bindEvents();
+        // 初始化年份显示
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // 增强的加载进度控制
+        (function() {
+            const loader = document.querySelector('.progress-container');
+            const progressBar = document.querySelector('.progress-bar');
+            let progress = 0;
+            let rafId;
+
+            function updateProgress() {
+                progress += (100 - progress) * 0.1;
+                progressBar.style.width = `${Math.min(progress, 95)}%`;
+                rafId = requestAnimationFrame(updateProgress);
+                if (progress >= 95) cancelAnimationFrame(rafId);
             }
 
-            static loadTheme() {
-                const savedTheme = localStorage.getItem('theme');
-                const systemDark = this.prefersDark.matches;
-                const theme = savedTheme || (systemDark ? 'dark' : 'light');
-                document.documentElement.setAttribute('data-theme', theme);
-                this.updateButton(theme);
-            }
+            // 启动渐进加载动画
+            rafId = requestAnimationFrame(updateProgress);
 
-            static updateButton(theme) {
-                const isDark = theme === 'dark';
-                this.themeToggle.textContent = isDark ? '🌞 浅色' : '🌙 深色';
-            }
-
-            static toggleTheme() {
-                const current = document.documentElement.getAttribute('data-theme');
-                const newTheme = current === 'dark' ? 'light' : 'dark';
-                localStorage.setItem('theme', newTheme);
-                this.loadTheme();
-            }
-
-            static bindEvents() {
-                this.themeToggle.addEventListener('click', () => this.toggleTheme());
-                this.prefersDark.addEventListener('change', () => {
-                    if (!localStorage.getItem('theme')) this.loadTheme();
-                });
-            }
-        }
-
-        // 语言管理
-        class LanguageManager {
-            static translations = {
-                zh: {
-                    'home-link': '🏠 首页',
-                    'about-link': '👤 关于',
-                    'about-title': '欢迎来到创作空间',
-                    'about-text': '我是hooks1，数字内容创作者',
-                    'bilibili-title': '🎥 B站主页',
-                    'music-title': '🎵 音乐主页',
-                    'footer-text': '© {year} hooks1'
-                },
-                en: {
-                    'home-link': '🏠 Home',
-                    'about-link': '👤 About',
-                    'about-title': 'Welcome to Creative Space',
-                    'about-text': 'I\'m hooks1, digital content creator',
-                    'bilibili-title': '🎥 Bilibili Channel',
-                    'music-title': '🎵 Music Profile',
-                    'footer-text': '© {year} hooks1'
-                }
-            };
-
-            static init() {
-                this.langToggle = document.getElementById('lang-toggle');
-                this.currentLang = localStorage.getItem('lang') || 'zh';
-                this.applyLanguage();
-                this.bindEvents();
-            }
-
-            static applyLanguage() {
-                const texts = this.translations[this.currentLang];
-                Object.entries(texts).forEach(([key, value]) => {
-                    const element = document.getElementById(key);
-                    if (element) {
-                        element.textContent = value.replace('{year}', new Date().getFullYear());
-                    }
-                });
-                this.langToggle.textContent = this.currentLang === 'zh' ? '🌐 EN' : '🌐 中文';
-            }
-
-            static toggleLanguage() {
-                this.currentLang = this.currentLang === 'zh' ? 'en' : 'zh';
-                localStorage.setItem('lang', this.currentLang);
-                this.applyLanguage();
-            }
-
-            static bindEvents() {
-                this.langToggle.addEventListener('click', () => this.toggleLanguage());
-            }
-        }
-
-        // 加载管理
-        class LoadManager {
-            static init() {
-                this.loader = document.getElementById('loader');
-                this.progressBar = document.getElementById('progress-bar');
-                this.startLoading();
-            }
-
-            static startLoading() {
-                let progress = 0;
-                const animate = () => {
-                    progress = Math.min(progress + Math.random() * 3, 95);
-                    this.progressBar.style.width = `${progress}%`;
-                    progress < 95 ? requestAnimationFrame(animate) : null;
+            // 加载完成处理
+            window.addEventListener('load', () => {
+                cancelAnimationFrame(rafId);
+                progress = 100;
+                progressBar.style.transition = 'width 0.3s ease';
+                progressBar.style.width = '100%';
+                
+                // 动画完成后移除元素
+                const removeLoader = () => {
+                    loader.removeEventListener('transitionend', removeLoader);
+                    loader.remove();
                 };
-                animate();
-
-                window.addEventListener('load', () => {
-                    this.progressBar.style.width = '100%';
-                    setTimeout(() => {
-                        this.loader.style.opacity = '0';
-                        this.loader.addEventListener('transitionend', () => {
-                            this.loader.remove();
-                        }, { once: true });
-                    }, 500);
-                });
-            }
-        }
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            ThemeManager.init();
-            LanguageManager.init();
-            LoadManager.init();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        });
+                
+                loader.addEventListener('transitionend', removeLoader);
+                loader.style.opacity = '0';
+            });
+        })();
     </script>
 </body>
 </html>
