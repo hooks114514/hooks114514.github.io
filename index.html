@@ -24,9 +24,29 @@
             --primary-rgb: 117, 117, 117;
             --on-primary: #FFFFFF;
             --surface: #FFFFFF;
-            --surface-container: #F3F3F3;
+            --surface-container: rgba(243, 243, 243, 0.85);
             --outline: #BDBDBD;
             --on-surface: #212121;
+        }
+
+        /* 背景动画元素 */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
+            filter: blur(40px);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
         }
 
         /* 基础样式 */
@@ -39,11 +59,12 @@
             grid-template-rows: auto 1fr auto;
             background: var(--surface);
             color: var(--on-surface);
+            overflow-x: hidden;
         }
 
         /* 页眉样式 */
         header {
-            background: var(--header-bg);
+            background: rgba(97, 97, 97, 0.85);
             color: var(--header-text);
             padding: 1.5rem 1rem;
             position: sticky;
@@ -51,13 +72,15 @@
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         /* 导航栏样式 */
         nav {
             padding: 1rem;
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.85);
             border-bottom: 1px solid var(--outline);
+            backdrop-filter: blur(10px);
         }
 
         .nav-group {
@@ -81,18 +104,19 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.7);
             border: 1px solid var(--outline);
+            backdrop-filter: blur(5px);
         }
 
         .nav-link:hover,
         .nav-link:focus {
-            background: rgba(var(--primary-rgb), 0.08);
+            background: rgba(var(--primary-rgb), 0.15);
             transform: translateY(-2px);
         }
 
         [aria-current="page"] {
-            background: rgba(var(--primary-rgb), 0.12);
+            background: rgba(var(--primary-rgb), 0.2);
             font-weight: bold;
         }
 
@@ -101,16 +125,17 @@
             width: min(90%, 1280px);
             margin: 2rem auto;
             padding: 2rem;
-            background: var(--surface);
+            background: var(--surface-container);
             border-radius: var(--radius);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
         }
 
         /* 文章卡片样式 */
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
-            background: var(--surface-container);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: var(--radius);
             border: 1px solid var(--outline);
             transition: 
@@ -125,11 +150,12 @@
 
         /* 页脚样式 */
         footer {
-            background: var(--header-bg);
+            background: rgba(97, 97, 97, 0.85);
             color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
+            backdrop-filter: blur(10px);
         }
 
         /* 加载进度条样式 */
@@ -166,7 +192,7 @@
             .article-card {
                 padding: 1rem;
                 margin: 1rem 0;
-           
+            }
             
             header {
                 padding: 1rem;
@@ -186,6 +212,9 @@
 </head>
 
 <body>
+    <!-- 背景动画元素 -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
     <!-- 页面加载进度条 -->
     <div class="progress-container">
         <div class="progress-bar"></div>
@@ -267,6 +296,78 @@
 
     <!-- JavaScript 功能 -->
     <script>
+        // 背景动画功能
+        (function() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            const circles = [];
+            const colors = [
+                'rgba(117, 117, 117, 0.1)',
+                'rgba(97, 97, 97, 0.1)',
+                'rgba(77, 77, 77, 0.1)'
+            ];
+            
+            // 创建背景圆圈
+            function createCircles() {
+                for (let i = 0; i < 5; i++) {
+                    const circle = document.createElement('div');
+                    circle.className = 'bg-circle';
+                    
+                    // 随机大小和位置
+                    const size = Math.random() * 400 + 100;
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    circle.style.width = `${size}px`;
+                    circle.style.height = `${size}px`;
+                    circle.style.left = `${x}%`;
+                    circle.style.top = `${y}%`;
+                    circle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+                    
+                    bgAnimation.appendChild(circle);
+                    circles.push({
+                        element: circle,
+                        x: x,
+                        y: y,
+                        targetX: x,
+                        targetY: y,
+                        speed: Math.random() * 0.02 + 0.01
+                    });
+                }
+            }
+            
+            // 鼠标移动效果
+            function handleMouseMove(e) {
+                const mouseX = (e.clientX / window.innerWidth) * 100;
+                const mouseY = (e.clientY / window.innerHeight) * 100;
+                
+                circles.forEach(circle => {
+                    // 计算目标位置（向鼠标反方向移动）
+                    circle.targetX = circle.x - (mouseX - 50) * 0.2;
+                    circle.targetY = circle.y - (mouseY - 50) * 0.2;
+                });
+            }
+            
+            // 动画循环
+            function animate() {
+                circles.forEach(circle => {
+                    // 平滑移动到目标位置
+                    circle.x += (circle.targetX - circle.x) * circle.speed;
+                    circle.y += (circle.targetY - circle.y) * circle.speed;
+                    
+                    circle.element.style.left = `${circle.x}%`;
+                    circle.element.style.top = `${circle.y}%`;
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // 初始化
+            createCircles();
+            document.addEventListener('mousemove', handleMouseMove);
+            animate();
+        })();
+
         // 页面加载进度功能
         (function() {
             const progressBar = document.querySelector('.progress-bar');
