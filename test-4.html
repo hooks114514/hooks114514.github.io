@@ -24,9 +24,57 @@
             --primary-rgb: 117, 117, 117;
             --on-primary: #FFFFFF;
             --surface: #FFFFFF;
-            --surface-container: #F3F3F3;
+            --surface-container: rgba(243, 243, 243, 0.85);
             --outline: #BDBDBD;
             --on-surface: #212121;
+        }
+
+        /* 背景动画元素 */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* 粒子系统样式 */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            background-color: rgba(var(--primary-rgb), 0.8);
+            will-change: transform;
+        }
+        
+        .particle-line {
+            position: absolute;
+            background: rgba(var(--primary-rgb), 0.2);
+            z-index: -1;
+            transform-origin: left center;
+            pointer-events: none;
+            height: 1px;
         }
 
         /* 基础样式 */
@@ -39,11 +87,12 @@
             grid-template-rows: auto 1fr auto;
             background: var(--surface);
             color: var(--on-surface);
+            overflow-x: hidden;
         }
 
         /* 页眉样式 */
         header {
-            background: var(--header-bg);
+            background: rgba(97, 97, 97, 0.85);
             color: var(--header-text);
             padding: 1.5rem 1rem;
             position: sticky;
@@ -51,13 +100,15 @@
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
         /* 导航栏样式 */
         nav {
             padding: 1rem;
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.85);
             border-bottom: 1px solid var(--outline);
+            backdrop-filter: blur(10px);
         }
 
         .nav-group {
@@ -81,18 +132,19 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.7);
             border: 1px solid var(--outline);
+            backdrop-filter: blur(5px);
         }
 
         .nav-link:hover,
         .nav-link:focus {
-            background: rgba(var(--primary-rgb), 0.08);
+            background: rgba(var(--primary-rgb), 0.15);
             transform: translateY(-2px);
         }
 
         [aria-current="page"] {
-            background: rgba(var(--primary-rgb), 0.12);
+            background: rgba(var(--primary-rgb), 0.2);
             font-weight: bold;
         }
 
@@ -101,16 +153,17 @@
             width: min(90%, 1280px);
             margin: 2rem auto;
             padding: 2rem;
-            background: var(--surface);
+            background: var(--surface-container);
             border-radius: var(--radius);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(8px);
         }
 
         /* 文章卡片样式 */
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
-            background: var(--surface-container);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: var(--radius);
             border: 1px solid var(--outline);
             transition: 
@@ -125,11 +178,12 @@
 
         /* 页脚样式 */
         footer {
-            background: var(--header-bg);
+            background: rgba(97, 97, 97, 0.85);
             color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
+            backdrop-filter: blur(10px);
         }
 
         /* 加载进度条样式 */
@@ -186,6 +240,11 @@
 </head>
 
 <body>
+    <!-- 背景动画元素 -->
+    <div class="bg-animation" id="bgAnimation"></div>
+    <!-- 粒子容器 -->
+    <div id="particles-js"></div>
+
     <!-- 页面加载进度条 -->
     <div class="progress-container">
         <div class="progress-bar"></div>
@@ -267,6 +326,240 @@
 
     <!-- JavaScript 功能 -->
     <script>
+        // 背景动画功能
+        (function() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            const circles = [];
+            const colors = [
+                'rgba(117, 117, 117, 0.1)',
+                'rgba(97, 97, 97, 0.1)',
+                'rgba(77, 77, 77, 0.1)'
+            ];
+            
+            // 创建背景圆圈
+            function createCircles() {
+                for (let i = 0; i < 5; i++) {
+                    const circle = document.createElement('div');
+                    circle.className = 'bg-circle';
+                    
+                    // 随机大小和位置
+                    const size = Math.random() * 400 + 100;
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    circle.style.width = `${size}px`;
+                    circle.style.height = `${size}px`;
+                    circle.style.left = `${x}%`;
+                    circle.style.top = `${y}%`;
+                    circle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+                    
+                    bgAnimation.appendChild(circle);
+                    circles.push({
+                        element: circle,
+                        x: x,
+                        y: y,
+                        targetX: x,
+                        targetY: y,
+                        speed: Math.random() * 0.02 + 0.01
+                    });
+                }
+            }
+            
+            // 鼠标移动效果
+            function handleMouseMove(e) {
+                const mouseX = (e.clientX / window.innerWidth) * 100;
+                const mouseY = (e.clientY / window.innerHeight) * 100;
+                
+                circles.forEach(circle => {
+                    // 计算目标位置（向鼠标反方向移动）
+                    circle.targetX = circle.x - (mouseX - 50) * 0.2;
+                    circle.targetY = circle.y - (mouseY - 50) * 0.2;
+                });
+            }
+            
+            // 动画循环
+            function animate() {
+                circles.forEach(circle => {
+                    // 平滑移动到目标位置
+                    circle.x += (circle.targetX - circle.x) * circle.speed;
+                    circle.y += (circle.targetY - circle.y) * circle.speed;
+                    
+                    circle.element.style.left = `${circle.x}%`;
+                    circle.element.style.top = `${circle.y}%`;
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // 初始化
+            createCircles();
+            document.addEventListener('mousemove', handleMouseMove);
+            animate();
+        })();
+
+        // 粒子效果
+        (function() {
+            const particlesContainer = document.getElementById('particles-js');
+            if (!particlesContainer) {
+                console.error('找不到粒子容器');
+                return;
+            }
+            
+            const particles = [];
+            const lines = [];
+            const colors = ['#9E9E9E', '#757575', '#616161'];
+            const particleCount = 500; // 增加到500个粒子
+            const maxDistance = window.innerWidth < 600 ? 100 : 150;
+            
+            function initParticles() {
+                // 清空容器
+                particlesContainer.innerHTML = '';
+                particles.length = 0;
+                lines.length = 0;
+                
+                // 创建粒子
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    const size = Math.random() * 3 + 1;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    const opacity = 0.8; // 固定不透明度
+                    
+                    Object.assign(particle.style, {
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        backgroundColor: color,
+                        opacity: opacity
+                    });
+                    
+                    particlesContainer.appendChild(particle);
+                    
+                    particles.push({
+                        element: particle,
+                        x: x,
+                        y: y,
+                        size: size,
+                        baseX: x,
+                        baseY: y,
+                        speedX: Math.random() * 2 - 1,
+                        speedY: Math.random() * 2 - 1,
+                        mouseX: 0,
+                        mouseY: 0,
+                        mouseRadius: window.innerWidth / 3,
+                        density: Math.random() * 30 + 1
+                    });
+                }
+                
+                // 创建连接线
+                for (let i = 0; i < particleCount * 2; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'particle-line';
+                    Object.assign(line.style, {
+                        width: '0px',
+                        height: '1px',
+                        opacity: '0',
+                        backgroundColor: 'rgba(117, 117, 117, 0.2)'
+                    });
+                    particlesContainer.appendChild(line);
+                    lines.push(line);
+                }
+            }
+            
+            function handleMouseMove(e) {
+                particles.forEach(p => {
+                    p.mouseX = e.clientX;
+                    p.mouseY = e.clientY;
+                });
+            }
+            
+            function connectParticles() {
+                let lineIndex = 0;
+                
+                // 重置所有线条
+                lines.forEach(line => {
+                    line.style.width = '0px';
+                    line.style.opacity = '0';
+                });
+                
+                // 连接粒子
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p1 = particles[i];
+                        const p2 = particles[j];
+                        
+                        const dx = p1.x - p2.x;
+                        const dy = p1.y - p2.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < maxDistance && lineIndex < lines.length) {
+                            const opacity = 1 - (distance / maxDistance);
+                            const line = lines[lineIndex++];
+                            
+                            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                            Object.assign(line.style, {
+                                width: `${distance}px`,
+                                left: `${p1.x}px`,
+                                top: `${p1.y}px`,
+                                transform: `rotate(${angle}deg)`,
+                                opacity: `${opacity * 0.5}`
+                            });
+                        }
+                    }
+                }
+            }
+            
+            function animateParticles() {
+                particles.forEach(p => {
+                    // 鼠标交互
+                    const dx = p.mouseX - p.x;
+                    const dy = p.mouseY - p.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < p.mouseRadius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (p.mouseRadius - distance) / p.mouseRadius * 0.6;
+                        
+                        p.x -= forceDirectionX * force * p.density;
+                        p.y -= forceDirectionY * force * p.density;
+                    } else {
+                        // 回弹到原始位置
+                        p.x += (p.baseX - p.x) * 0.05;
+                        p.y += (p.baseY - p.y) * 0.05;
+                    }
+                    
+                    // 随机移动
+                    p.x += p.speedX * 0.5;
+                    p.y += p.speedY * 0.5;
+                    
+                    // 边界检查
+                    if (p.x < 0 || p.x > window.innerWidth) p.speedX *= -1;
+                    if (p.y < 0 || p.y > window.innerHeight) p.speedY *= -1;
+                    
+                    // 更新位置
+                    p.element.style.transform = `translate(${p.x}px, ${p.y}px)`;
+                });
+                
+                connectParticles();
+                requestAnimationFrame(animateParticles);
+            }
+            
+            // 初始化
+            initParticles();
+            document.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('resize', () => {
+                initParticles();
+            });
+            
+            animateParticles();
+        })();
+
         // 页面加载进度功能
         (function() {
             const progressBar = document.querySelector('.progress-bar');
