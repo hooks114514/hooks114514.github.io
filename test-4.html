@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#616161">
+    <meta name="theme-color" content="#121212">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
     
@@ -14,19 +14,19 @@
     <link rel="preconnect" href="https://space.bilibili.com">
 
     <style>
-        /* 基础设计变量 */
+        /* 深色模式设计变量 */
         :root {
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            --header-bg: #616161;
-            --header-text: #FFFFFF;
-            --primary: #757575;
-            --primary-rgb: 117, 117, 117;
-            --on-primary: #FFFFFF;
-            --surface: #FFFFFF;
-            --surface-container: rgba(243, 243, 243, 0.85);
-            --outline: #BDBDBD;
-            --on-surface: #212121;
+            --header-bg: #121212;
+            --header-text: #E0E0E0;
+            --primary: #BB86FC;
+            --primary-rgb: 187, 134, 252;
+            --on-primary: #000000;
+            --surface: #121212;
+            --surface-container: rgba(30, 30, 30, 0.85);
+            --outline: #3700B3;
+            --on-surface: #E0E0E0;
         }
 
         /* 背景动画元素 */
@@ -39,6 +39,7 @@
             z-index: -3;
             overflow: hidden;
             contain: strict;
+            background: #121212;
         }
 
         .bg-circle {
@@ -101,13 +102,13 @@
 
         /* 页眉样式 */
         header {
-            background: rgba(97, 97, 97, 0.85);
+            background: rgba(18, 18, 18, 0.9);
             color: var(--header-text);
             padding: 1.5rem 1rem;
             position: sticky;
             top: 0;
             z-index: 10;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             text-align: center;
             backdrop-filter: blur(10px);
         }
@@ -115,7 +116,7 @@
         /* 导航栏样式 */
         nav {
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(30, 30, 30, 0.85);
             border-bottom: 1px solid var(--outline);
             backdrop-filter: blur(10px);
         }
@@ -141,7 +142,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(48, 48, 48, 0.7);
             border: 1px solid var(--outline);
             backdrop-filter: blur(5px);
         }
@@ -164,7 +165,7 @@
             padding: 2rem;
             background: var(--surface-container);
             border-radius: var(--radius);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(8px);
         }
 
@@ -172,7 +173,7 @@
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(30, 30, 30, 0.9);
             border-radius: var(--radius);
             border: 1px solid var(--outline);
             transition: 
@@ -182,17 +183,16 @@
 
         .article-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* 页脚样式 */
+        /* 页脚样式 - 10%透明度 */
         footer {
-            background: rgba(97, 97, 97, 0.85);
+            background: rgba(18, 18, 18, 0.1);
             color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
-            backdrop-filter: blur(10px);
         }
 
         /* 加载进度条样式 */
@@ -328,126 +328,35 @@
         </section>
     </main>
 
-    <!-- 页脚 -->
+    <!-- 页脚 - 10%透明度 -->
     <footer>
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-    <!-- JavaScript 功能 - 优化版本 -->
+    <!-- JavaScript 功能 - 高性能优化版本 -->
     <script>
-        // 优化性能的背景动画
-        (function() {
-            const bgAnimation = document.getElementById('bgAnimation');
-            if (!bgAnimation) return;
-            
-            const circles = [];
-            const colors = [
-                'rgba(117, 117, 117, 0.1)',
-                'rgba(97, 97, 97, 0.1)',
-                'rgba(77, 77, 77, 0.1)'
-            ];
-            
-            // 创建背景圆圈 - 减少数量提高性能
-            function createCircles() {
-                const fragment = document.createDocumentFragment();
-                
-                for (let i = 0; i < 3; i++) { // 减少到3个背景圆圈
-                    const circle = document.createElement('div');
-                    circle.className = 'bg-circle';
-                    
-                    const size = Math.random() * 400 + 100;
-                    const x = Math.random() * 100;
-                    const y = Math.random() * 100;
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    Object.assign(circle.style, {
-                        width: `${size}px`,
-                        height: `${size}px`,
-                        left: `${x}%`,
-                        top: `${y}%`,
-                        background: `radial-gradient(circle, ${color} 0%, transparent 70%)`
-                    });
-                    
-                    fragment.appendChild(circle);
-                    circles.push({
-                        element: circle,
-                        x, y,
-                        targetX: x,
-                        targetY: y,
-                        speed: Math.random() * 0.02 + 0.01
-                    });
-                }
-                
-                bgAnimation.appendChild(fragment);
-            }
-            
-            // 节流鼠标移动事件
-            let mouseX = window.innerWidth / 2;
-            let mouseY = window.innerHeight / 2;
-            
-            const handleMouseMove = (function() {
-                let lastCalled = 0;
-                const throttle = 50; // 50ms节流
-                
-                return function(e) {
-                    const now = Date.now();
-                    if (now - lastCalled < throttle) return;
-                    lastCalled = now;
-                    
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                };
-            })();
-            
-            // 动画循环
-            function animate() {
-                circles.forEach(circle => {
-                    // 计算目标位置（向鼠标反方向移动）
-                    const mousePercentX = (mouseX / window.innerWidth) * 100;
-                    const mousePercentY = (mouseY / window.innerHeight) * 100;
-                    
-                    circle.targetX = circle.x - (mousePercentX - 50) * 0.2;
-                    circle.targetY = circle.y - (mousePercentY - 50) * 0.2;
-                    
-                    // 平滑移动到目标位置
-                    circle.x += (circle.targetX - circle.x) * circle.speed;
-                    circle.y += (circle.targetY - circle.y) * circle.speed;
-                    
-                    circle.element.style.left = `${circle.x}%`;
-                    circle.element.style.top = `${circle.y}%`;
-                });
-                
-                requestAnimationFrame(animate);
-            }
-            
-            // 初始化
-            createCircles();
-            document.addEventListener('mousemove', handleMouseMove);
-            animate();
-        })();
-
-        // 高性能粒子系统
+        // 高性能粒子系统 (1000个粒子)
         (function() {
             const particlesContainer = document.getElementById('particles-js');
             if (!particlesContainer) return;
             
             // 性能优化配置
             const OPTIONS = {
-                PARTICLE_COUNT: 500,       // 粒子数量
-                MAX_DISTANCE: 180,         // 最大连接距离
+                PARTICLE_COUNT: 1000,      // 1000个粒子
+                MAX_DISTANCE: 150,         // 最大连接距离
                 MOUSE_RADIUS: window.innerWidth / 3,
                 LINE_OPACITY: 0.25,        // 连接线透明度
-                MOUSE_FORCE: 0.6,          // 鼠标作用力
-                BASE_SPEED: 0.5,           // 基础移动速度
-                RETURN_SPEED: 0.05         // 返回原始位置速度
+                MOUSE_FORCE: 0.5,          // 鼠标作用力
+                BASE_SPEED: 0.3,           // 基础移动速度
+                RETURN_SPEED: 0.03         // 返回原始位置速度
             };
             
             // 预计算颜色值
             const COLORS = [
                 `rgb(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')})`,
+                '#BB86FC',
                 '#9E9E9E',
-                '#757575',
-                '#616161'
+                '#757575'
             ];
             
             // 性能优化变量
@@ -475,7 +384,7 @@
                     const particle = document.createElement('div');
                     particle.className = 'particle';
                     
-                    const size = Math.random() * 3 + 1;
+                    const size = Math.random() * 2 + 1; // 减小粒子大小
                     const color = COLORS[Math.floor(Math.random() * COLORS.length)];
                     const x = Math.random() * window.innerWidth;
                     const y = Math.random() * window.innerHeight;
@@ -486,7 +395,7 @@
                         left: `${x}px`,
                         top: `${y}px`,
                         backgroundColor: color,
-                        opacity: 0.8
+                        opacity: 0.7 // 降低粒子透明度
                     });
                     
                     fragment.appendChild(particle);
@@ -496,14 +405,14 @@
                         x, y, size,
                         baseX: x,
                         baseY: y,
-                        speedX: Math.random() * 2 - 1,
-                        speedY: Math.random() * 2 - 1,
-                        density: Math.random() * 30 + 1
+                        speedX: Math.random() * 1.5 - 0.75, // 降低速度
+                        speedY: Math.random() * 1.5 - 0.75,
+                        density: Math.random() * 20 + 5 // 调整密度
                     });
                 }
                 
                 // 创建连接线 - 减少数量优化性能
-                for (let i = 0; i < OPTIONS.PARTICLE_COUNT * 2; i++) {
+                for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) { // 减少到粒子数量的1倍
                     const line = document.createElement('div');
                     line.className = 'particle-line';
                     lineFragment.appendChild(line);
@@ -517,7 +426,7 @@
             // 节流鼠标移动事件
             const handleMouseMove = (function() {
                 let lastCalled = 0;
-                const throttle = 30; // 30ms节流
+                const throttle = 50; // 50ms节流
                 
                 return function(e) {
                     const now = Date.now();
