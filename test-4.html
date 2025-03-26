@@ -36,7 +36,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
+            z-index: -3;
             overflow: hidden;
         }
 
@@ -55,7 +55,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
             overflow: hidden;
         }
         
@@ -68,13 +68,20 @@
             will-change: transform;
         }
         
+        /* 增强的连接线样式 */
         .particle-line {
             position: absolute;
-            background: rgba(var(--primary-rgb), 0.2);
+            background: linear-gradient(to right, 
+                rgba(var(--primary-rgb), 0.3), 
+                rgba(var(--primary-rgb), 0.7), 
+                rgba(var(--primary-rgb), 0.3));
             z-index: -1;
             transform-origin: left center;
             pointer-events: none;
-            height: 1px;
+            height: 1.5px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 0 3px rgba(var(--primary-rgb), 0.5);
         }
 
         /* 基础样式 */
@@ -398,7 +405,7 @@
             animate();
         })();
 
-        // 粒子效果
+        // 增强版粒子系统
         (function() {
             const particlesContainer = document.getElementById('particles-js');
             if (!particlesContainer) {
@@ -409,11 +416,10 @@
             const particles = [];
             const lines = [];
             const colors = ['#9E9E9E', '#757575', '#616161'];
-            const particleCount = 500; // 增加到500个粒子
-            const maxDistance = window.innerWidth < 600 ? 100 : 150;
+            const particleCount = 500; // 500个粒子
+            const maxDistance = window.innerWidth < 600 ? 120 : 180; // 增加连接距离
             
             function initParticles() {
-                // 清空容器
                 particlesContainer.innerHTML = '';
                 particles.length = 0;
                 lines.length = 0;
@@ -427,7 +433,6 @@
                     const color = colors[Math.floor(Math.random() * colors.length)];
                     const x = Math.random() * window.innerWidth;
                     const y = Math.random() * window.innerHeight;
-                    const opacity = 0.8; // 固定不透明度
                     
                     Object.assign(particle.style, {
                         width: `${size}px`,
@@ -435,7 +440,7 @@
                         left: `${x}px`,
                         top: `${y}px`,
                         backgroundColor: color,
-                        opacity: opacity
+                        opacity: 0.8
                     });
                     
                     particlesContainer.appendChild(particle);
@@ -452,20 +457,15 @@
                         mouseX: 0,
                         mouseY: 0,
                         mouseRadius: window.innerWidth / 3,
-                        density: Math.random() * 30 + 1
+                        density: Math.random() * 30 + 1,
+                        color: color
                     });
                 }
                 
-                // 创建连接线
-                for (let i = 0; i < particleCount * 2; i++) {
+                // 创建更多连接线
+                for (let i = 0; i < particleCount * 3; i++) {
                     const line = document.createElement('div');
                     line.className = 'particle-line';
-                    Object.assign(line.style, {
-                        width: '0px',
-                        height: '1px',
-                        opacity: '0',
-                        backgroundColor: 'rgba(117, 117, 117, 0.2)'
-                    });
                     particlesContainer.appendChild(line);
                     lines.push(line);
                 }
@@ -481,33 +481,38 @@
             function connectParticles() {
                 let lineIndex = 0;
                 
-                // 重置所有线条
                 lines.forEach(line => {
                     line.style.width = '0px';
                     line.style.opacity = '0';
                 });
                 
-                // 连接粒子
+                // 增强连接线逻辑
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
+                        if (lineIndex >= lines.length) break;
+                        
                         const p1 = particles[i];
                         const p2 = particles[j];
-                        
                         const dx = p1.x - p2.x;
                         const dy = p1.y - p2.y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                        if (distance < maxDistance && lineIndex < lines.length) {
-                            const opacity = 1 - (distance / maxDistance);
+                        if (distance < maxDistance) {
+                            const opacity = 0.3 + (1 - distance / maxDistance) * 0.7; // 提高基础不透明度
                             const line = lines[lineIndex++];
-                            
                             const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                            
                             Object.assign(line.style, {
                                 width: `${distance}px`,
                                 left: `${p1.x}px`,
                                 top: `${p1.y}px`,
                                 transform: `rotate(${angle}deg)`,
-                                opacity: `${opacity * 0.5}`
+                                opacity: `${opacity}`,
+                                background: `linear-gradient(to right, 
+                                    ${p1.color.replace(')', ', 0.4)')}, 
+                                    ${p1.color.replace(')', ', 0.8)')}, 
+                                    ${p1.color.replace(')', ', 0.4)')})`,
+                                height: `${1 + (1 - distance / maxDistance) * 2}px` // 距离越近线条越粗
                             });
                         }
                     }
