@@ -1,214 +1,301 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#646464">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#121212">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
-    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
 
-    <title>hooks1的个人空间</title>
-    
     <style>
         :root {
-            --radius: 0.5rem;
+            --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            
-            --theme-bg: #ffffff;
-            --theme-text: #333;
-            --theme-primary: #646464;
-            --theme-surface: #f8f9fa;
-            --theme-border: #e9ecef;
-            
-            --theme-bg-dark: #1a1a1a;
-            --theme-text-dark: #e0e0e0;
-            --theme-primary-dark: #858585;
-            --theme-surface-dark: #2d2d2d;
-            --theme-border-dark: #404040;
+            --header-bg: #121212;
+            --header-text: #FFFFFF;
+            --primary: #A0A0A0;
+            --primary-rgb: 160, 160, 160;
+            --on-primary: #000000;
+            --surface: #121212;
+            --surface-container: rgba(30, 30, 30, 0.85);
+            --outline: #505050;
+            --on-surface: #E1E1E1;
         }
 
-        [data-theme="dark"] {
-            --theme-bg: var(--theme-bg-dark);
-            --theme-text: var(--theme-text-dark);
-            --theme-primary: var(--theme-primary-dark);
-            --theme-surface: var(--theme-surface-dark);
-            --theme-border: var(--theme-border-dark);
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+            contain: strict;
+            background: #121212;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            contain: strict;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            background-color: rgba(var(--primary-rgb), 0.6);
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        
+        .particle-line {
+            position: absolute;
+            background: rgba(var(--primary-rgb), 0.15);
+            z-index: -1;
+            transform-origin: left center;
+            pointer-events: none;
+            height: 1px;
+            opacity: 0.25;
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
 
         body {
-            background: var(--theme-bg);
-            color: var(--theme-text);
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Roboto', system-ui, sans-serif;
             line-height: 1.6;
+            margin: 0;
             min-height: 100vh;
             display: grid;
             grid-template-rows: auto 1fr auto;
-            transition: background-color 0.3s var(--transition), color 0.3s var(--transition);
-            margin: 0;
+            background: var(--surface);
+            color: var(--on-surface);
+            overflow-x: hidden;
         }
 
         header {
-            padding: 2rem 1rem;
-            background: var(--theme-primary);
-            color: white;
+            background: rgba(18, 18, 18, 0.95);
+            color: var(--header-text);
+            padding: 1.5rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         nav {
+            padding: 1rem;
+            background: rgba(30, 30, 30, 0.9);
+            border-bottom: 1px solid var(--outline);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-group {
             display: flex;
             gap: 1rem;
-            padding: 1rem;
-            background: var(--theme-surface);
-            justify-content: center;
             flex-wrap: wrap;
-            border-bottom: 1px solid var(--theme-border);
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .nav-link, .theme-toggle {
-            padding: 0.75rem 1.5rem;
+        .nav-link {
+            padding: 12px 24px;
             border-radius: var(--radius);
-            background: var(--theme-surface);
-            border: 1px solid var(--theme-border);
-            color: var(--theme-text);
-            cursor: pointer;
+            color: var(--on-surface);
+            text-decoration: none;
             transition: 
                 background-color 0.3s var(--transition),
-                transform 0.2s ease;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .theme-toggle {
-            min-width: 44px;
-            min-height: 44px;
-            display: grid;
-            place-items: center;
+                transform 0.3s var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 59, 59, 0.7);
+            border: 1px solid var(--outline);
+            backdrop-filter: blur(5px);
         }
 
         .nav-link:hover,
-        .theme-toggle:hover {
-            background: var(--theme-primary);
-            color: white;
+        .nav-link:focus {
+            background: rgba(var(--primary-rgb), 0.2);
             transform: translateY(-2px);
         }
 
+        [aria-current="page"] {
+            background: rgba(var(--primary-rgb), 0.25);
+            font-weight: bold;
+        }
+
         .container {
-            width: min(90%, 1200px);
+            width: min(90%, 1280px);
             margin: 2rem auto;
             padding: 2rem;
-            background: var(--theme-bg);
+            background: var(--surface-container);
             border-radius: var(--radius);
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
         }
 
-        .article {
+        .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
-            border-left: 3px solid var(--theme-primary);
-            transition: transform 0.3s ease;
-            background: var(--theme-surface);
-            border-radius: calc(var(--radius) / 2);
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: var(--radius);
+            border: 1px solid var(--outline);
+            transition: 
+                transform 0.3s var(--transition),
+                box-shadow 0.3s ease;
         }
 
-        .article:hover {
-            transform: translateX(5px);
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         footer {
-            background: var(--theme-primary);
-            color: white;
+            background: rgba(18, 18, 18, 0.1);
+            color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
-        }
-
-        .loader {
-            position: fixed;
-            inset: 0;
-            background: var(--theme-bg);
-            display: grid;
-            place-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s var(--transition);
+            backdrop-filter: blur(5px);
         }
 
         .progress-container {
-            width: min(90%, 300px);
             height: 4px;
-            background: var(--theme-surface);
-            border-radius: var(--radius);
-            overflow: hidden;
+            background: rgba(var(--primary-rgb), 0.24);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
         }
 
         .progress-bar {
-            width: 0%;
             height: 100%;
-            background: var(--theme-primary);
-            transition: width 0.5s var(--transition);
+            width: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
         }
 
-        @media (max-width: 768px) {
-            header { padding: 1rem; }
-            nav { gap: 0.5rem; padding: 0.75rem; }
-            .nav-link, .theme-toggle { width: 100%; text-align: center; }
-            .container { padding: 1rem; width: 95%; }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+                width: 95%;
+            }
+            
+            .nav-link {
+                padding: 12px;
+                flex: 1;
+                justify-content: center;
+            }
+            
+            .article-card {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+            
+            header {
+                padding: 1rem;
+            }
         }
 
-        @keyframes ripple {
-            from { transform: scale(0); opacity: 1; }
-            to { transform: scale(2); opacity: 0; }
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+            vertical-align: middle;
         }
     </style>
 </head>
+
 <body>
-    <div class="loader" id="loader">
-        <div class="progress-container" role="progressbar" 
-             aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
+    <div class="bg-animation" id="bgAnimation"></div>
+    <div id="particles-js"></div>
+
+    <div class="progress-container">
+        <div class="progress-bar"></div>
     </div>
 
     <header>
-        <h1>欢迎来到hooks1的创作空间</h1>
+        <h1>hooks1的个人空间</h1>
     </header>
 
     <nav aria-label="主导航">
-        <a href="./" class="nav-link" aria-current="page">🏠 首页</a>
-        <a href="#about" class="nav-link">👤 关于我</a>
-        <button class="theme-toggle" id="theme-toggle" 
-                aria-label="切换主题" aria-pressed="false">🌓</button>
+        <div class="nav-group">
+            <a href="./" class="nav-link" aria-current="page">
+                <span class="material-symbols-rounded">home</span>
+                首页
+            </a>
+            <a href="#about" class="nav-link">
+                <span class="material-symbols-rounded">person</span>
+                关于
+            </a>
+        </div>
     </nav>
 
     <main class="container">
-        <section id="about">
-            <h2>关于创作者</h2>
-            <p>我是hooks1，视频制作与音乐爱好者</p>
+        <section id="about" aria-labelledby="about-title">
+            <h2 id="about-title">关于我</h2>
+            <p>我是hooks1，视频制作与音乐爱好者。这个网站用来分享我的创作和技术心得。</p>
         </section>
 
-        <section id="links">
-            <h2>我的平台</h2>
-            <article class="article">
-                <h3>🎥 BiliBili频道</h3>
+        <section id="links" aria-labelledby="articles-title">
+            <h2 id="articles-title">我的平台</h2>
+            
+            <article class="article-card" aria-labelledby="bilibili-title">
+                <h2 id="bilibili-title">
+                    <span class="material-symbols-rounded">play_circle</span>
+                    BiliBili频道
+                </h2>
+                <p>这里是我发布视频创作的主要平台。</p>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
-                       rel="noopener"
+                       rel="noopener noreferrer"
                        class="nav-link">
+                        <span class="material-symbols-rounded">open_in_new</span>
                         浏览我的视频作品
                     </a>
                 </p>
             </article>
-            <article class="article">
-                <h3>🎵 网易云音乐</h3>
+            
+            <article class="article-card" aria-labelledby="netease-title">
+                <h2 id="netease-title">
+                    <span class="material-symbols-rounded">music_note</span>
+                    网易云音乐
+                </h2>
+                <p>这里收藏了我喜欢的音乐和歌单。</p>
                 <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
                        target="_blank"
-                       rel="noopener"
+                       rel="noopener noreferrer"
                        class="nav-link">
+                        <span class="material-symbols-rounded">open_in_new</span>
                         探索我的音乐收藏
                     </a>
                 </p>
@@ -220,178 +307,230 @@
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-   <script>
-    // 主题控制系统
-    class ThemeController {
-        constructor() {
-            this.toggleBtn = document.getElementById('theme-toggle');
-            this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-            this.init();
-        }
-
-        init() {
-            this.loadTheme();
-            this.toggleBtn.addEventListener('click', (e) => this.handleToggle(e));
-            this.mediaQuery.addEventListener('change', () => this.handleSystemChange());
-        }
-
-        loadTheme() {
-            const savedTheme = localStorage.getItem('theme') || 
-                              (this.mediaQuery.matches ? 'dark' : '');
-            document.documentElement.dataset.theme = savedTheme;
-            this.updateUI(savedTheme);
-        }
-
-        updateUI(theme) {
-            const isDark = theme === 'dark';
-            this.toggleBtn.textContent = isDark ? '🌞' : '🌙';
-            this.toggleBtn.setAttribute('aria-pressed', isDark);
-            document.querySelector('meta[name="theme-color"]').content = 
-                isDark ? '#2d2d2d' : '#646464';
-        }
-
-        handleToggle(event) {
-            const newTheme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
-            localStorage.setItem('theme', newTheme);
-            this.loadTheme();
-            this.createRipple(event);
-        }
-
-        createRipple(event) {
-            const rect = this.toggleBtn.getBoundingClientRect();
-            const ripple = document.createElement('div');
+    <script>
+        (function() {
+            const particlesContainer = document.getElementById('particles-js');
+            if (!particlesContainer) return;
             
-            Object.assign(ripple.style, {
-                position: 'absolute',
-                width: '200%',
-                height: '200%',
-                background: `radial-gradient(circle, 
-                    ${document.documentElement.dataset.theme === 'dark' 
-                        ? 'rgba(255,255,255,0.2)' 
-                        : 'rgba(0,0,0,0.1)'} 0%, 
-                    transparent 70%)`,
-                transform: 'translate(-50%, -50%)',
-                left: `${event.clientX - rect.left}px`,
-                top: `${event.clientY - rect.top}px`,
-                animation: 'ripple 0.6s ease-out',
-                pointerEvents: 'none'
-            });
+            const OPTIONS = {
+                PARTICLE_COUNT: 1000,
+                MAX_DISTANCE: 150,
+                MOUSE_RADIUS: window.innerWidth / 3,
+                LINE_OPACITY: 0.25,
+                MOUSE_FORCE: 0.5,
+                BASE_SPEED: 0.3,
+                RETURN_SPEED: 0.03
+            };
             
-            this.toggleBtn.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        }
-
-        handleSystemChange() {
-            if (!localStorage.getItem('theme')) this.loadTheme();
-        }
-    }
-
-    // 加载进度控制器
-    class LoadManager {
-        constructor() {
-            this.loader = document.getElementById('loader');
-            this.progressBar = document.getElementById('progress-bar');
-            this.init();
-        }
-
-        async init() {
-            try {
-                await this.simulateLoading();
-                window.addEventListener('load', () => this.complete());
-            } catch {
-                this.complete();
+            const COLORS = [
+                `rgb(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')}`,
+                '#A0A0A0',
+                '#9E9E9E',
+                '#B0B0B0'
+            ];
+            
+            const particles = [];
+            const lines = [];
+            let animationId = null;
+            let lastTime = 0;
+            const frameInterval = 1000 / 60;
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            
+            function initParticles() {
+                particlesContainer.innerHTML = '';
+                particles.length = 0;
+                lines.length = 0;
+                
+                const fragment = document.createDocumentFragment();
+                const lineFragment = document.createDocumentFragment();
+                
+                for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    const size = Math.random() * 2 + 1;
+                    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    
+                    Object.assign(particle.style, {
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: `${x}px`,
+                        top: `${y}px`,
+                        backgroundColor: color,
+                        opacity: 0.6
+                    });
+                    
+                    fragment.appendChild(particle);
+                    
+                    particles.push({
+                        element: particle,
+                        x, y, size,
+                        baseX: x,
+                        baseY: y,
+                        speedX: Math.random() * 2 - 1,
+                        speedY: Math.random() * 2 - 1,
+                        density: Math.random() * 20 + 5
+                    });
+                }
+                
+                for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'particle-line';
+                    lineFragment.appendChild(line);
+                    lines.push(line);
+                }
+                
+                particlesContainer.appendChild(fragment);
+                particlesContainer.appendChild(lineFragment);
             }
-        }
-
-        simulateLoading() {
-            return new Promise(resolve => {
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += Math.random() * 15;
-                    this.progressBar.style.width = `${Math.min(progress, 95)}%`;
-                    if (progress >= 95) {
-                        clearInterval(interval);
-                        resolve();
-                    }
-                }, 200);
-            });
-        }
-
-        complete() {
-            this.progressBar.style.width = '100%';
-            setTimeout(() => {
-                this.loader.style.opacity = '0';
-                setTimeout(() => this.loader.remove(), 500);
-            }, 300);
-        }
-    }
-
-    // 离线缓存系统
-    class OfflineSystem {
-        static async activate() {
-            if (!('serviceWorker' in navigator)) return;
-
-            try {
-                const swContent = `
-                    const CACHE_NAME = 'v3-${Date.now()}';
-                    const CACHE_FILES = [location.href];
-
-                    self.addEventListener('install', event => {
-                        event.waitUntil((async () => {
-                            const cache = await caches.open(CACHE_NAME);
-                            await cache.addAll(CACHE_FILES);
-                            self.skipWaiting();
-                        })());
-                    });
-
-                    self.addEventListener('activate', event => {
-                        event.waitUntil((async () => {
-                            const keys = await caches.keys();
-                            await Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)));
-                            clients.claim();
-                        })());
-                    });
-
-                    self.addEventListener('fetch', event => {
-                        event.respondWith((async () => {
-                            const cached = await caches.match(event.request);
-                            return cached || fetch(event.request);
-                        })());
-                    });
-                `;
-
-                const swBlob = new Blob([swContent], { type: 'application/javascript' });
-                const swURL = URL.createObjectURL(swBlob);
-
-                const registration = await navigator.serviceWorker.register(swURL, {
-                    scope: './',
-                    updateViaCache: 'none'
-                });
-
-                registration.addEventListener('updatefound', () => {
-                    const worker = registration.installing;
-                    worker.addEventListener('statechange', () => {
-                        if (worker.state === 'activated') {
-                            console.log('Service Worker 已激活');
-                            URL.revokeObjectURL(swURL);
+            
+            const handleMouseMove = (function() {
+                let lastCalled = 0;
+                const throttle = 50;
+                
+                return function(e) {
+                    const now = Date.now();
+                    if (now - lastCalled < throttle) return;
+                    lastCalled = now;
+                    
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                };
+            })();
+            
+            function connectParticles() {
+                let lineIndex = 0;
+                const maxDistSq = OPTIONS.MAX_DISTANCE * OPTIONS.MAX_DISTANCE;
+                
+                for (let i = 0; i < lines.length; i++) {
+                    lines[i].style.width = '0';
+                    lines[i].style.opacity = '0';
+                }
+                
+                const sampleCount = Math.min(200, particles.length);
+                const step = Math.floor(particles.length / sampleCount);
+                
+                for (let i = 0; i < particles.length && lineIndex < lines.length; i += step) {
+                    const p1 = particles[i];
+                    
+                    for (let j = i + 1; j < Math.min(i + 50, particles.length); j++) {
+                        const p2 = particles[j];
+                        const dx = p1.x - p2.x;
+                        const dy = p1.y - p2.y;
+                        const distSq = dx * dx + dy * dy;
+                        
+                        if (distSq < maxDistSq) {
+                            const distance = Math.sqrt(distSq);
+                            const opacity = OPTIONS.LINE_OPACITY * (1 - distance / OPTIONS.MAX_DISTANCE);
+                            const line = lines[lineIndex++];
+                            
+                            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                            line.style.width = `${distance}px`;
+                            line.style.left = `${p1.x}px`;
+                            line.style.top = `${p1.y}px`;
+                            line.style.transform = `rotate(${angle}deg)`;
+                            line.style.opacity = `${opacity}`;
                         }
-                    });
-                });
-
-            } catch (error) {
-                console.log('离线系统初始化失败:', error);
+                    }
+                }
             }
-        }
-    }
+            
+            function animateParticles(timestamp) {
+                if (!lastTime) lastTime = timestamp;
+                const deltaTime = timestamp - lastTime;
+                
+                if (deltaTime >= frameInterval) {
+                    lastTime = timestamp - (deltaTime % frameInterval);
+                    
+                    for (let i = 0; i < particles.length; i++) {
+                        const p = particles[i];
+                        
+                        const dx = mouseX - p.x;
+                        const dy = mouseY - p.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < OPTIONS.MOUSE_RADIUS) {
+                            const forceDirectionX = dx / distance;
+                            const forceDirectionY = dy / distance;
+                            const force = (OPTIONS.MOUSE_RADIUS - distance) / OPTIONS.MOUSE_RADIUS * OPTIONS.MOUSE_FORCE;
+                            
+                            p.x -= forceDirectionX * force * p.density;
+                            p.y -= forceDirectionY * force * p.density;
+                        } else {
+                            p.x += (p.baseX - p.x) * OPTIONS.RETURN_SPEED;
+                            p.y += (p.baseY - p.y) * OPTIONS.RETURN_SPEED;
+                        }
+                        
+                        p.x += p.speedX * OPTIONS.BASE_SPEED;
+                        p.y += p.speedY * OPTIONS.BASE_SPEED;
+                        
+                        if (p.x < 0 || p.x > window.innerWidth) p.speedX *= -1;
+                        if (p.y < 0 || p.y > window.innerHeight) p.speedY *= -1;
+                        
+                        p.element.style.transform = `translate(${p.x}px, ${p.y}px)`;
+                    }
+                    
+                    connectParticles();
+                }
+                
+                animationId = requestAnimationFrame(animateParticles);
+            }
+            
+            initParticles();
+            document.addEventListener('mousemove', handleMouseMove);
+            
+            let hidden = false;
+            const handleVisibilityChange = () => {
+                if (document.hidden || document.webkitHidden) {
+                    hidden = true;
+                    cancelAnimationFrame(animationId);
+                } else {
+                    hidden = false;
+                    lastTime = 0;
+                    animationId = requestAnimationFrame(animateParticles);
+                }
+            };
+            
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            document.addEventListener('webkitvisibilitychange', handleVisibilityChange);
+            
+            window.addEventListener('resize', () => {
+                OPTIONS.MOUSE_RADIUS = window.innerWidth / 3;
+                cancelAnimationFrame(animationId);
+                initParticles();
+                animationId = requestAnimationFrame(animateParticles);
+            });
+            
+            animationId = requestAnimationFrame(animateParticles);
+        })();
 
-    // 统一初始化入口
-    document.addEventListener('DOMContentLoaded', () => {
-        new ThemeController();
-        new LoadManager();
-        OfflineSystem.activate();
-        document.getElementById('current-year').textContent = 
-            new Date().getFullYear().toString();
-    });
-</script>
+        (function() {
+            const progressBar = document.querySelector('.progress-bar');
+            const progressContainer = document.querySelector('.progress-container');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                progressBar.style.width = `${Math.min(progress, 90)}%`;
+                if (progress >= 90) clearInterval(interval);
+            }, 300);
+            
+            window.addEventListener('load', () => {
+                clearInterval(interval);
+                progressBar.style.width = '100%';
+                setTimeout(() => {
+                    progressContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 500);
+                }, 500);
+            });
+            
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        })();
+    </script>
 </body>
 </html>
