@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#121212">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
@@ -15,7 +15,7 @@
         :root {
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            --header-bg: #121212;
+            --header-bg: rgba(18, 18, 18, 0.85);
             --header-text: #FFFFFF;
             --primary: #A0A0A0;
             --primary-rgb: 160, 160, 160;
@@ -24,6 +24,15 @@
             --surface-container: rgba(30, 30, 30, 0.85);
             --outline: #505050;
             --on-surface: #E1E1E1;
+        }
+
+        :root.light-theme {
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --surface: #F5F5F5;
+            --surface-container: rgba(255, 255, 255, 0.9);
+            --outline: #E0E0E0;
+            --on-surface: #333333;
+            --header-text: #333333;
         }
 
         .bg-animation {
@@ -35,17 +44,7 @@
             z-index: -3;
             overflow: hidden;
             contain: strict;
-            background: #121212;
-        }
-
-        .bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            will-change: transform;
-            transform: translateZ(0);
+            background: var(--surface);
         }
 
         #particles-js {
@@ -58,28 +57,6 @@
             overflow: hidden;
             contain: strict;
         }
-        
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            background-color: rgba(var(--primary-rgb), 0.6);
-            will-change: transform;
-            transform: translateZ(0);
-        }
-        
-        .particle-line {
-            position: absolute;
-            background: rgba(var(--primary-rgb), 0.15);
-            z-index: -1;
-            transform-origin: left center;
-            pointer-events: none;
-            height: 1px;
-            opacity: 0.25;
-            will-change: transform, opacity;
-            transform: translateZ(0);
-        }
 
         body {
             font-family: 'Roboto', system-ui, sans-serif;
@@ -91,25 +68,28 @@
             background: var(--surface);
             color: var(--on-surface);
             overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
         header {
-            background: rgba(18, 18, 18, 0.95);
+            background: var(--header-bg);
             color: var(--header-text);
             padding: 1.5rem 1rem;
             position: sticky;
             top: 0;
             z-index: 10;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px) saturate(180%);
+            transition: all 0.5s ease;
         }
 
         nav {
             padding: 1rem;
             background: rgba(30, 30, 30, 0.9);
             border-bottom: 1px solid var(--outline);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            transition: all 0.5s ease;
         }
 
         .nav-group {
@@ -126,9 +106,7 @@
             border-radius: var(--radius);
             color: var(--on-surface);
             text-decoration: none;
-            transition: 
-                background-color 0.3s var(--transition),
-                transform 0.3s var(--transition);
+            transition: all 0.3s var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -137,15 +115,13 @@
             backdrop-filter: blur(5px);
         }
 
-        .nav-link:hover,
-        .nav-link:focus {
-            background: rgba(var(--primary-rgb), 0.2);
-            transform: translateY(-2px);
+        .light-theme .nav-link {
+            background: rgba(220, 220, 220, 0.7);
         }
 
-        [aria-current="page"] {
-            background: rgba(var(--primary-rgb), 0.25);
-            font-weight: bold;
+        .nav-link:hover {
+            background: rgba(var(--primary-rgb), 0.2);
+            transform: translateY(-2px);
         }
 
         .container {
@@ -154,24 +130,22 @@
             padding: 2rem;
             background: var(--surface-container);
             border-radius: var(--radius);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(8px);
         }
 
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
-            background: rgba(30, 30, 30, 0.9);
+            background: var(--surface-container);
             border-radius: var(--radius);
             border: 1px solid var(--outline);
-            transition: 
-                transform 0.3s var(--transition),
-                box-shadow 0.3s ease;
+            transition: transform 0.3s var(--transition), box-shadow 0.3s ease;
         }
 
         .article-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         footer {
@@ -205,36 +179,29 @@
                 padding: 1rem;
                 width: 95%;
             }
-            
             .nav-link {
                 padding: 12px;
                 flex: 1;
                 justify-content: center;
             }
-            
             .article-card {
                 padding: 1rem;
                 margin: 1rem 0;
             }
-            
             header {
                 padding: 1rem;
             }
         }
 
         .material-symbols-rounded {
-            font-variation-settings:
-            'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             vertical-align: middle;
         }
     </style>
 </head>
 
 <body>
-    <div class="bg-animation" id="bgAnimation"></div>
+    <div class="bg-animation"></div>
     <div id="particles-js"></div>
 
     <div class="progress-container">
@@ -309,226 +276,111 @@
 
     <script>
         (function() {
-            const particlesContainer = document.getElementById('particles-js');
-            if (!particlesContainer) return;
-            
-            const OPTIONS = {
-                PARTICLE_COUNT: 1000,
-                MAX_DISTANCE: 150,
-                MOUSE_RADIUS: window.innerWidth / 3,
-                LINE_OPACITY: 0.25,
-                MOUSE_FORCE: 0.5,
-                BASE_SPEED: 0.3,
-                RETURN_SPEED: 0.03
-            };
-            
-            const COLORS = [
-                `rgb(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')}`,
-                '#A0A0A0',
-                '#9E9E9E',
-                '#B0B0B0'
-            ];
-            
-            const particles = [];
-            const lines = [];
-            let animationId = null;
-            let lastTime = 0;
-            const frameInterval = 1000 / 60;
-            let mouseX = window.innerWidth / 2;
-            let mouseY = window.innerHeight / 2;
-            
-            function initParticles() {
-                particlesContainer.innerHTML = '';
-                particles.length = 0;
-                lines.length = 0;
-                
-                const fragment = document.createDocumentFragment();
-                const lineFragment = document.createDocumentFragment();
-                
-                for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    
-                    const size = Math.random() * 2 + 1;
-                    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight;
-                    
-                    Object.assign(particle.style, {
-                        width: `${size}px`,
-                        height: `${size}px`,
-                        left: `${x}px`,
-                        top: `${y}px`,
-                        backgroundColor: color,
-                        opacity: 0.6
-                    });
-                    
-                    fragment.appendChild(particle);
-                    
-                    particles.push({
-                        element: particle,
-                        x, y, size,
-                        baseX: x,
-                        baseY: y,
-                        speedX: Math.random() * 2 - 1,
-                        speedY: Math.random() * 2 - 1,
-                        density: Math.random() * 20 + 5
-                    });
-                }
-                
-                for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) {
-                    const line = document.createElement('div');
-                    line.className = 'particle-line';
-                    lineFragment.appendChild(line);
-                    lines.push(line);
-                }
-                
-                particlesContainer.appendChild(fragment);
-                particlesContainer.appendChild(lineFragment);
+            // 主题切换功能
+            function updateTheme() {
+                const currentHour = new Date().getHours();
+                const isNight = currentHour >= 18 || currentHour < 6;
+                document.documentElement.classList.toggle('light-theme', !isNight);
             }
-            
-            const handleMouseMove = (function() {
-                let lastCalled = 0;
-                const throttle = 50;
-                
-                return function(e) {
-                    const now = Date.now();
-                    if (now - lastCalled < throttle) return;
-                    lastCalled = now;
-                    
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
+            setInterval(updateTheme, 60000);
+            updateTheme();
+
+            // 粒子系统
+            const particlesJS = document.getElementById('particles-js');
+            if (particlesJS) {
+                const OPTIONS = {
+                    PARTICLE_COUNT: 800,
+                    MAX_DISTANCE: 120,
+                    MOUSE_RADIUS: window.innerWidth / 3,
+                    LINE_OPACITY: 0.2,
+                    MOUSE_FORCE: 0.4,
+                    BASE_SPEED: 0.25,
+                    RETURN_SPEED: 0.02
                 };
-            })();
-            
-            function connectParticles() {
-                let lineIndex = 0;
-                const maxDistSq = OPTIONS.MAX_DISTANCE * OPTIONS.MAX_DISTANCE;
-                
-                for (let i = 0; i < lines.length; i++) {
-                    lines[i].style.width = '0';
-                    lines[i].style.opacity = '0';
-                }
-                
-                const sampleCount = Math.min(200, particles.length);
-                const step = Math.floor(particles.length / sampleCount);
-                
-                for (let i = 0; i < particles.length && lineIndex < lines.length; i += step) {
-                    const p1 = particles[i];
-                    
-                    for (let j = i + 1; j < Math.min(i + 50, particles.length); j++) {
-                        const p2 = particles[j];
-                        const dx = p1.x - p2.x;
-                        const dy = p1.y - p2.y;
-                        const distSq = dx * dx + dy * dy;
-                        
-                        if (distSq < maxDistSq) {
-                            const distance = Math.sqrt(distSq);
-                            const opacity = OPTIONS.LINE_OPACITY * (1 - distance / OPTIONS.MAX_DISTANCE);
-                            const line = lines[lineIndex++];
-                            
-                            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                            line.style.width = `${distance}px`;
-                            line.style.left = `${p1.x}px`;
-                            line.style.top = `${p1.y}px`;
-                            line.style.transform = `rotate(${angle}deg)`;
-                            line.style.opacity = `${opacity}`;
-                        }
+
+                const particles = [];
+                let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+
+                function createParticles() {
+                    particlesJS.innerHTML = '';
+                    for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        Object.assign(particle.style, {
+                            width: `${Math.random()*2+1}px`,
+                            height: `${Math.random()*2+1}px`,
+                            left: `${Math.random()*window.innerWidth}px`,
+                            top: `${Math.random()*window.innerHeight}px`,
+                            backgroundColor: `rgba(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')}, 0.6)`
+                        });
+                        particlesJS.appendChild(particle);
+                        particles.push({
+                            element: particle,
+                            x: parseFloat(particle.style.left),
+                            y: parseFloat(particle.style.top),
+                            speedX: Math.random()*2-1,
+                            speedY: Math.random()*2-1
+                        });
                     }
                 }
-            }
-            
-            function animateParticles(timestamp) {
-                if (!lastTime) lastTime = timestamp;
-                const deltaTime = timestamp - lastTime;
-                
-                if (deltaTime >= frameInterval) {
-                    lastTime = timestamp - (deltaTime % frameInterval);
-                    
-                    for (let i = 0; i < particles.length; i++) {
-                        const p = particles[i];
-                        
-                        const dx = mouseX - p.x;
-                        const dy = mouseY - p.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (distance < OPTIONS.MOUSE_RADIUS) {
-                            const forceDirectionX = dx / distance;
-                            const forceDirectionY = dy / distance;
-                            const force = (OPTIONS.MOUSE_RADIUS - distance) / OPTIONS.MOUSE_RADIUS * OPTIONS.MOUSE_FORCE;
-                            
-                            p.x -= forceDirectionX * force * p.density;
-                            p.y -= forceDirectionY * force * p.density;
-                        } else {
-                            p.x += (p.baseX - p.x) * OPTIONS.RETURN_SPEED;
-                            p.y += (p.baseY - p.y) * OPTIONS.RETURN_SPEED;
-                        }
-                        
+
+                function animate() {
+                    particles.forEach(p => {
                         p.x += p.speedX * OPTIONS.BASE_SPEED;
                         p.y += p.speedY * OPTIONS.BASE_SPEED;
                         
+                        const dx = mouseX - p.x;
+                        const dy = mouseY - p.y;
+                        const distance = Math.sqrt(dx*dx + dy*dy);
+                        
+                        if (distance < OPTIONS.MOUSE_RADIUS) {
+                            const force = (OPTIONS.MOUSE_RADIUS - distance)/OPTIONS.MOUSE_RADIUS * OPTIONS.MOUSE_FORCE;
+                            p.x -= dx/distance * force;
+                            p.y -= dy/distance * force;
+                        }
+
                         if (p.x < 0 || p.x > window.innerWidth) p.speedX *= -1;
                         if (p.y < 0 || p.y > window.innerHeight) p.speedY *= -1;
-                        
-                        p.element.style.transform = `translate(${p.x}px, ${p.y}px)`;
-                    }
-                    
-                    connectParticles();
-                }
-                
-                animationId = requestAnimationFrame(animateParticles);
-            }
-            
-            initParticles();
-            document.addEventListener('mousemove', handleMouseMove);
-            
-            let hidden = false;
-            const handleVisibilityChange = () => {
-                if (document.hidden || document.webkitHidden) {
-                    hidden = true;
-                    cancelAnimationFrame(animationId);
-                } else {
-                    hidden = false;
-                    lastTime = 0;
-                    animationId = requestAnimationFrame(animateParticles);
-                }
-            };
-            
-            document.addEventListener('visibilitychange', handleVisibilityChange);
-            document.addEventListener('webkitvisibilitychange', handleVisibilityChange);
-            
-            window.addEventListener('resize', () => {
-                OPTIONS.MOUSE_RADIUS = window.innerWidth / 3;
-                cancelAnimationFrame(animationId);
-                initParticles();
-                animationId = requestAnimationFrame(animateParticles);
-            });
-            
-            animationId = requestAnimationFrame(animateParticles);
-        })();
 
-        (function() {
+                        p.element.style.transform = `translate(${p.x}px, ${p.y}px)`;
+                    });
+                    requestAnimationFrame(animate);
+                }
+
+                document.addEventListener('mousemove', e => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+
+                window.addEventListener('resize', () => {
+                    OPTIONS.MOUSE_RADIUS = window.innerWidth / 3;
+                    createParticles();
+                });
+
+                createParticles();
+                animate();
+            }
+
+            // 加载进度条
             const progressBar = document.querySelector('.progress-bar');
-            const progressContainer = document.querySelector('.progress-container');
-            
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 10;
-                progressBar.style.width = `${Math.min(progress, 90)}%`;
-                if (progress >= 90) clearInterval(interval);
-            }, 300);
-            
-            window.addEventListener('load', () => {
-                clearInterval(interval);
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    progressContainer.style.opacity = '0';
+            if (progressBar) {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random()*10;
+                    progressBar.style.width = `${Math.min(progress, 90)}%`;
+                    if (progress >= 90) clearInterval(interval);
+                }, 300);
+
+                window.addEventListener('load', () => {
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
                     setTimeout(() => {
-                        progressContainer.style.display = 'none';
+                        document.querySelector('.progress-container').style.opacity = '0';
                     }, 500);
-                }, 500);
-            });
-            
+                });
+            }
+
+            // 当前年份
             document.getElementById('current-year').textContent = new Date().getFullYear();
         })();
     </script>
