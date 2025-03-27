@@ -86,8 +86,8 @@
 
         nav {
             padding: 1rem;
-            background: rgba(80, 80, 80, 0.9);
-            border-bottom: 1px solid rgba(120, 120, 120, 0.3);
+            background: rgba(100, 100, 100, 0.85);
+            border-bottom: 1px solid rgba(120, 120, 120, 0.2);
             backdrop-filter: blur(12px);
             transition: all 0.5s ease;
         }
@@ -110,17 +110,17 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(100, 100, 100, 0.3);
+            background: rgba(120, 120, 120, 0.25);
             backdrop-filter: blur(5px);
         }
 
         .light-theme .nav-link {
-            background: rgba(100, 100, 100, 0.3);
-            color: #f0f0f0;
+            background: rgba(180, 180, 180, 0.25);
+            color: #333;
         }
 
         .nav-link:hover {
-            background: rgba(120, 120, 120, 0.4);
+            background: rgba(140, 140, 140, 0.35);
             transform: translateY(-2px);
         }
 
@@ -149,15 +149,15 @@
         }
 
         footer {
-            background: rgba(255, 255, 255, 0.03);
+            background: transparent !important;
             color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
-            backdrop-filter: blur(8px) saturate(160%);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
             position: relative;
             z-index: 5;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .progress-container {
@@ -196,7 +196,7 @@
             }
             footer {
                 padding: 1rem;
-                backdrop-filter: blur(6px);
+                backdrop-filter: blur(4px);
             }
         }
 
@@ -216,7 +216,7 @@
     </div>
 
     <header>
-        <h1>hooks1的个人空间</h1>
+        <h1>hooks1的个人网站</h1>
     </header>
 
     <nav aria-label="主导航">
@@ -235,17 +235,18 @@
     <main class="container">
         <section id="about" aria-labelledby="about-title">
             <h2 id="about-title">关于我</h2>
-            <p>我是hooks1，一个视频创作者，一个冰与火之舞玩家</p>
+            <p>我是hooks1，视频制作与音乐爱好者。这个网站用来分享我的创作和技术心得。</p>
         </section>
 
         <section id="links" aria-labelledby="articles-title">
-            <h2 id="articles-title">个人账号</h2>
+            <h2 id="articles-title">我的平台</h2>
             
             <article class="article-card" aria-labelledby="bilibili-title">
                 <h2 id="bilibili-title">
                     <span class="material-symbols-rounded">play_circle</span>
                     BiliBili频道
                 </h2>
+                <p>这里是我发布视频创作的主要平台。</p>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
@@ -262,6 +263,7 @@
                     <span class="material-symbols-rounded">music_note</span>
                     网易云音乐
                 </h2>
+                <p>这里收藏了我喜欢的音乐和歌单。</p>
                 <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
                        target="_blank"
