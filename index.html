@@ -3,53 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#616161">
+    <meta name="theme-color" content="#121212">
     <meta name="description" content="hooks1的个人网站 - 分享技术心得与创作成果">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
-    
-    <!-- 字体和图标 -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://music.163.com">
     <link rel="preconnect" href="https://space.bilibili.com">
 
     <style>
-        /* 基础设计变量 */
         :root {
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            --header-bg: #616161;
+            --header-bg: rgba(18, 18, 18, 0.85);
             --header-text: #FFFFFF;
-            --primary: #757575;
-            --primary-rgb: 117, 117, 117;
-            --on-primary: #FFFFFF;
-            --surface: #FFFFFF;
-            --surface-container: rgba(243, 243, 243, 0.85);
-            --outline: #BDBDBD;
-            --on-surface: #212121;
+            --primary: #A0A0A0;
+            --primary-rgb: 160, 160, 160;
+            --on-primary: #000000;
+            --surface: #121212;
+            --surface-container: rgba(30, 30, 30, 0.85);
+            --outline: #505050;
+            --on-surface: #E1E1E1;
         }
 
-        /* 背景动画元素 */
+        :root.light-theme {
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --surface: #F5F5F5;
+            --surface-container: rgba(255, 255, 255, 0.9);
+            --outline: #E0E0E0;
+            --on-surface: #333333;
+            --header-text: #333333;
+        }
+
         .bg-animation {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -3;
             overflow: hidden;
+            contain: strict;
+            background: var(--surface);
         }
 
-        .bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(var(--primary-rgb), 0.1) 0%, transparent 70%);
-            filter: blur(40px);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            contain: strict;
         }
 
-        /* 基础样式 */
         body {
             font-family: 'Roboto', system-ui, sans-serif;
             line-height: 1.6;
@@ -60,11 +68,11 @@
             background: var(--surface);
             color: var(--on-surface);
             overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* 页眉样式 */
         header {
-            background: rgba(97, 97, 97, 0.85);
+            background: var(--header-bg);
             color: var(--header-text);
             padding: 1.5rem 1rem;
             position: sticky;
@@ -72,15 +80,16 @@
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: center;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px) saturate(180%);
+            transition: all 0.5s ease;
         }
 
-        /* 导航栏样式 */
         nav {
             padding: 1rem;
-            background: rgba(255, 255, 255, 0.85);
-            border-bottom: 1px solid var(--outline);
-            backdrop-filter: blur(10px);
+            background: rgba(80, 80, 80, 0.9);
+            border-bottom: 1px solid rgba(120, 120, 120, 0.3);
+            backdrop-filter: blur(12px);
+            transition: all 0.5s ease;
         }
 
         .nav-group {
@@ -92,35 +101,29 @@
             margin: 0 auto;
         }
 
-        /* 导航链接样式 */
         .nav-link {
             padding: 12px 24px;
             border-radius: var(--radius);
             color: var(--on-surface);
             text-decoration: none;
-            transition: 
-                background-color 0.3s var(--transition),
-                transform 0.3s var(--transition);
+            transition: all 0.3s var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--outline);
+            background: rgba(100, 100, 100, 0.3);
             backdrop-filter: blur(5px);
         }
 
-        .nav-link:hover,
-        .nav-link:focus {
-            background: rgba(var(--primary-rgb), 0.15);
+        .light-theme .nav-link {
+            background: rgba(100, 100, 100, 0.3);
+            color: #f0f0f0;
+        }
+
+        .nav-link:hover {
+            background: rgba(120, 120, 120, 0.4);
             transform: translateY(-2px);
         }
 
-        [aria-current="page"] {
-            background: rgba(var(--primary-rgb), 0.2);
-            font-weight: bold;
-        }
-
-        /* 主内容区样式 */
         .container {
             width: min(90%, 1280px);
             margin: 2rem auto;
@@ -131,16 +134,13 @@
             backdrop-filter: blur(8px);
         }
 
-        /* 文章卡片样式 */
         .article-card {
             padding: 1.5rem;
             margin: 1.5rem 0;
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--surface-container);
             border-radius: var(--radius);
             border: 1px solid var(--outline);
-            transition: 
-                transform 0.3s var(--transition),
-                box-shadow 0.3s ease;
+            transition: transform 0.3s var(--transition), box-shadow 0.3s ease;
         }
 
         .article-card:hover {
@@ -148,17 +148,18 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* 页脚样式 */
         footer {
-            background: rgba(97, 97, 97, 0.85);
+            background: rgba(255, 255, 255, 0.03);
             color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px) saturate(160%);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 5;
         }
 
-        /* 加载进度条样式 */
         .progress-container {
             height: 4px;
             background: rgba(var(--primary-rgb), 0.24);
@@ -176,56 +177,48 @@
             transition: width 0.3s ease;
         }
 
-        /* 响应式设计 */
         @media (max-width: 600px) {
             .container {
                 padding: 1rem;
                 width: 95%;
             }
-            
             .nav-link {
                 padding: 12px;
                 flex: 1;
                 justify-content: center;
             }
-            
             .article-card {
                 padding: 1rem;
                 margin: 1rem 0;
             }
-            
             header {
                 padding: 1rem;
             }
+            footer {
+                padding: 1rem;
+                backdrop-filter: blur(6px);
+            }
         }
 
-        /* 图标基础样式 */
         .material-symbols-rounded {
-            font-variation-settings:
-            'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             vertical-align: middle;
         }
     </style>
 </head>
 
 <body>
-    <!-- 背景动画元素 -->
-    <div class="bg-animation" id="bgAnimation"></div>
+    <div class="bg-animation"></div>
+    <div id="particles-js"></div>
 
-    <!-- 页面加载进度条 -->
     <div class="progress-container">
         <div class="progress-bar"></div>
     </div>
 
-    <!-- 页面头部 -->
     <header>
         <h1>hooks1的个人空间</h1>
     </header>
 
-    <!-- 主导航 -->
     <nav aria-label="主导航">
         <div class="nav-group">
             <a href="./" class="nav-link" aria-current="page">
@@ -239,25 +232,20 @@
         </div>
     </nav>
 
-    <!-- 主内容区 -->
     <main class="container">
-        <!-- 关于我部分 -->
         <section id="about" aria-labelledby="about-title">
             <h2 id="about-title">关于我</h2>
-            <p>我是hooks1，视频制作与音乐爱好者。这个网站用来分享我的创作和技术心得。</p>
+            <p>我是hooks1，一个视频创作者，一个冰与火之舞玩家</p>
         </section>
 
-        <!-- 平台链接部分 -->
         <section id="links" aria-labelledby="articles-title">
-            <h2 id="articles-title">我的平台</h2>
+            <h2 id="articles-title">个人账号</h2>
             
-            <!-- B站卡片 -->
             <article class="article-card" aria-labelledby="bilibili-title">
                 <h2 id="bilibili-title">
                     <span class="material-symbols-rounded">play_circle</span>
                     BiliBili频道
                 </h2>
-                <p>这里是我发布视频创作的主要平台。</p>
                 <p>
                     <a href="https://space.bilibili.com/1312125285" 
                        target="_blank" 
@@ -269,13 +257,11 @@
                 </p>
             </article>
             
-            <!-- 网易云音乐卡片 -->
             <article class="article-card" aria-labelledby="netease-title">
                 <h2 id="netease-title">
                     <span class="material-symbols-rounded">music_note</span>
                     网易云音乐
                 </h2>
-                <p>这里收藏了我喜欢的音乐和歌单。</p>
                 <p>
                     <a href="https://music.163.com/user/home?id=3307535618"
                        target="_blank"
@@ -289,111 +275,106 @@
         </section>
     </main>
 
-    <!-- 页脚 -->
     <footer>
         <p>&copy; <span id="current-year"></span> hooks1 版权所有</p>
     </footer>
 
-    <!-- JavaScript 功能 -->
     <script>
-        // 背景动画功能
         (function() {
-            const bgAnimation = document.getElementById('bgAnimation');
-            const circles = [];
-            const colors = [
-                'rgba(117, 117, 117, 0.1)',
-                'rgba(97, 97, 97, 0.1)',
-                'rgba(77, 77, 77, 0.1)'
-            ];
-            
-            // 创建背景圆圈
-            function createCircles() {
-                for (let i = 0; i < 5; i++) {
-                    const circle = document.createElement('div');
-                    circle.className = 'bg-circle';
-                    
-                    // 随机大小和位置
-                    const size = Math.random() * 400 + 100;
-                    const x = Math.random() * 100;
-                    const y = Math.random() * 100;
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    circle.style.width = `${size}px`;
-                    circle.style.height = `${size}px`;
-                    circle.style.left = `${x}%`;
-                    circle.style.top = `${y}%`;
-                    circle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
-                    
-                    bgAnimation.appendChild(circle);
-                    circles.push({
-                        element: circle,
-                        x: x,
-                        y: y,
-                        targetX: x,
-                        targetY: y,
-                        speed: Math.random() * 0.02 + 0.01
-                    });
-                }
+            function updateTheme() {
+                const currentHour = new Date().getHours();
+                const isNight = currentHour >= 18 || currentHour < 6;
+                document.documentElement.classList.toggle('light-theme', !isNight);
             }
-            
-            // 鼠标移动效果
-            function handleMouseMove(e) {
-                const mouseX = (e.clientX / window.innerWidth) * 100;
-                const mouseY = (e.clientY / window.innerHeight) * 100;
-                
-                circles.forEach(circle => {
-                    // 计算目标位置（向鼠标反方向移动）
-                    circle.targetX = circle.x - (mouseX - 50) * 0.2;
-                    circle.targetY = circle.y - (mouseY - 50) * 0.2;
-                });
-            }
-            
-            // 动画循环
-            function animate() {
-                circles.forEach(circle => {
-                    // 平滑移动到目标位置
-                    circle.x += (circle.targetX - circle.x) * circle.speed;
-                    circle.y += (circle.targetY - circle.y) * circle.speed;
-                    
-                    circle.element.style.left = `${circle.x}%`;
-                    circle.element.style.top = `${circle.y}%`;
-                });
-                
-                requestAnimationFrame(animate);
-            }
-            
-            // 初始化
-            createCircles();
-            document.addEventListener('mousemove', handleMouseMove);
-            animate();
-        })();
+            setInterval(updateTheme, 60000);
+            updateTheme();
 
-        // 页面加载进度功能
-        (function() {
+            const particlesJS = document.getElementById('particles-js');
+            if (particlesJS) {
+                const OPTIONS = {
+                    PARTICLE_COUNT: 800,
+                    MOUSE_RADIUS: window.innerWidth / 3,
+                    MOUSE_FORCE: 0.4,
+                    BASE_SPEED: 0.25
+                };
+
+                const particles = [];
+                let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+
+                function createParticles() {
+                    particlesJS.innerHTML = '';
+                    for (let i = 0; i < OPTIONS.PARTICLE_COUNT; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        Object.assign(particle.style, {
+                            width: `${Math.random()*2+1}px`,
+                            height: `${Math.random()*2+1}px`,
+                            left: `${Math.random()*window.innerWidth}px`,
+                            top: `${Math.random()*window.innerHeight}px`,
+                            backgroundColor: `rgba(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')}, 0.6)`
+                        });
+                        particlesJS.appendChild(particle);
+                        particles.push({
+                            element: particle,
+                            x: parseFloat(particle.style.left),
+                            y: parseFloat(particle.style.top),
+                            speedX: Math.random()*2-1,
+                            speedY: Math.random()*2-1
+                        });
+                    }
+                }
+
+                function animate() {
+                    particles.forEach(p => {
+                        p.x += p.speedX * OPTIONS.BASE_SPEED;
+                        p.y += p.speedY * OPTIONS.BASE_SPEED;
+                        
+                        const dx = mouseX - p.x;
+                        const dy = mouseY - p.y;
+                        const distance = Math.sqrt(dx*dx + dy*dy);
+                        
+                        if (distance < OPTIONS.MOUSE_RADIUS) {
+                            const force = (OPTIONS.MOUSE_RADIUS - distance)/OPTIONS.MOUSE_RADIUS * OPTIONS.MOUSE_FORCE;
+                            p.x -= dx/distance * force;
+                            p.y -= dy/distance * force;
+                        }
+
+                        if (p.x < 0 || p.x > window.innerWidth) p.speedX *= -1;
+                        if (p.y < 0 || p.y > window.innerHeight) p.speedY *= -1;
+
+                        p.element.style.transform = `translate(${p.x}px, ${p.y}px)`;
+                    });
+                    requestAnimationFrame(animate);
+                }
+
+                document.addEventListener('mousemove', e => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+
+                window.addEventListener('resize', createParticles);
+                createParticles();
+                animate();
+            }
+
             const progressBar = document.querySelector('.progress-bar');
-            const progressContainer = document.querySelector('.progress-container');
-            
-            // 模拟加载进度
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 10;
-                progressBar.style.width = `${Math.min(progress, 90)}%`;
-                if (progress >= 90) clearInterval(interval);
-            }, 300);
-            
-            // 页面完全加载后完成进度条
-            window.addEventListener('load', () => {
-                clearInterval(interval);
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    progressContainer.style.opacity = '0';
+            if (progressBar) {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random()*10;
+                    progressBar.style.width = `${Math.min(progress, 90)}%`;
+                    if (progress >= 90) clearInterval(interval);
+                }, 300);
+
+                window.addEventListener('load', () => {
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
                     setTimeout(() => {
-                        progressContainer.style.display = 'none';
+                        document.querySelector('.progress-container').style.opacity = '0';
                     }, 500);
-                }, 500);
-            });
-            
-            // 设置当前年份
+                });
+            }
+
             document.getElementById('current-year').textContent = new Date().getFullYear();
         })();
     </script>
