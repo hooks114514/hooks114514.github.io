@@ -28,16 +28,15 @@
 
         :root.light-theme {
             --header-bg: rgba(255, 255, 255, 0.8);
-            --surface: #F8F8F8;  /* 背景色更明亮 */
-            --surface-container: rgba(255, 255, 255, 0.9);  /* 提高对比度 */
+            --surface: #F8F8F8;
+            --surface-container: rgba(255, 255, 255, 0.9);
             --outline: rgba(224, 224, 224, 0.6);
-            --on-surface: #404040;  /* 文字颜色微调 */
+            --on-surface: #404040;
             --header-text: #404040;
         }
 
-        /* 新增浅色模式导航栏样式 */
         .light-theme nav {
-            background: rgba(220, 220, 220, 0.65);  /* 浅灰色背景 */
+            background: rgba(220, 220, 220, 0.65);
             border-bottom: 1px solid rgba(200, 200, 200, 0.4);
         }
 
@@ -121,10 +120,9 @@
             backdrop-filter: blur(8px);
         }
 
-        /* 优化浅色模式按钮 */
         .light-theme .nav-link {
-            background: rgba(230, 230, 230, 0.35);  /* 更浅的按钮背景 */
-            color: #505050;  /* 文字颜色加深 */
+            background: rgba(230, 230, 230, 0.35);
+            color: #505050;
         }
 
         .nav-link:hover {
@@ -303,10 +301,10 @@
             const particlesJS = document.getElementById('particles-js');
             if (particlesJS) {
                 const OPTIONS = {
-                    PARTICLE_COUNT: 800,
+                    PARTICLE_COUNT: 2000,  // 粒子数量增加到2000
                     MOUSE_RADIUS: window.innerWidth / 3,
-                    MOUSE_FORCE: 0.4,
-                    BASE_SPEED: 0.25
+                    MOUSE_FORCE: 0.3,
+                    BASE_SPEED: 0.2
                 };
 
                 const particles = [];
