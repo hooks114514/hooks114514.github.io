@@ -15,24 +15,30 @@
         :root {
             --radius: 16px;
             --transition: cubic-bezier(0.4, 0, 0.2, 1);
-            --header-bg: rgba(18, 18, 18, 0.85);
+            --header-bg: rgba(18, 18, 18, 0.8);
             --header-text: #FFFFFF;
             --primary: #A0A0A0;
             --primary-rgb: 160, 160, 160;
             --on-primary: #000000;
             --surface: #121212;
-            --surface-container: rgba(30, 30, 30, 0.85);
-            --outline: #505050;
+            --surface-container: rgba(30, 30, 30, 0.75);
+            --outline: rgba(80, 80, 80, 0.5);
             --on-surface: #E1E1E1;
         }
 
         :root.light-theme {
-            --header-bg: rgba(255, 255, 255, 0.85);
-            --surface: #F5F5F5;
-            --surface-container: rgba(255, 255, 255, 0.9);
-            --outline: #E0E0E0;
-            --on-surface: #333333;
-            --header-text: #333333;
+            --header-bg: rgba(255, 255, 255, 0.8);
+            --surface: #F8F8F8;  /* 背景色更明亮 */
+            --surface-container: rgba(255, 255, 255, 0.9);  /* 提高对比度 */
+            --outline: rgba(224, 224, 224, 0.6);
+            --on-surface: #404040;  /* 文字颜色微调 */
+            --header-text: #404040;
+        }
+
+        /* 新增浅色模式导航栏样式 */
+        .light-theme nav {
+            background: rgba(220, 220, 220, 0.65);  /* 浅灰色背景 */
+            border-bottom: 1px solid rgba(200, 200, 200, 0.4);
         }
 
         .bg-animation {
@@ -86,9 +92,10 @@
 
         nav {
             padding: 1rem;
-            background: rgba(100, 100, 100, 0.85);
+            background: rgba(80, 80, 80, 0.5);
             border-bottom: 1px solid rgba(120, 120, 120, 0.2);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px) saturate(200%);
+            -webkit-backdrop-filter: blur(16px) saturate(200%);
             transition: all 0.5s ease;
         }
 
@@ -111,12 +118,13 @@
             align-items: center;
             gap: 8px;
             background: rgba(120, 120, 120, 0.25);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
+        /* 优化浅色模式按钮 */
         .light-theme .nav-link {
-            background: rgba(180, 180, 180, 0.25);
-            color: #333;
+            background: rgba(230, 230, 230, 0.35);  /* 更浅的按钮背景 */
+            color: #505050;  /* 文字颜色加深 */
         }
 
         .nav-link:hover {
@@ -149,20 +157,18 @@
         }
 
         footer {
-            background: transparent !important;
+            background: transparent;
             color: var(--header-text);
             text-align: center;
             padding: 1.5rem;
             margin-top: auto;
-            backdrop-filter: blur(8px);
-            position: relative;
-            z-index: 5;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(12px);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
 
         .progress-container {
             height: 4px;
-            background: rgba(var(--primary-rgb), 0.24);
+            background: rgba(var(--primary-rgb), 0.2);
             position: fixed;
             top: 0;
             left: 0;
@@ -194,9 +200,12 @@
             header {
                 padding: 1rem;
             }
+            nav {
+                backdrop-filter: blur(12px);
+            }
             footer {
                 padding: 1rem;
-                backdrop-filter: blur(4px);
+                backdrop-filter: blur(6px);
             }
         }
 
@@ -313,7 +322,7 @@
                             height: `${Math.random()*2+1}px`,
                             left: `${Math.random()*window.innerWidth}px`,
                             top: `${Math.random()*window.innerHeight}px`,
-                            backgroundColor: `rgba(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')}, 0.6)`
+                            backgroundColor: `rgba(${getComputedStyle(document.documentElement).getPropertyValue('--primary-rgb')}, 0.5)`
                         });
                         particlesJS.appendChild(particle);
                         particles.push({
