@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>百科图谱 - 武器炼化图谱</title>
+  <style>
+    body { margin: 0; }
+    svg { width: 100vw; height: 100vh; }
+    .node circle {
+      fill: #69b3a2;
+      stroke: #555;
+      stroke-width: 1.5px;
+    }
+    .node text {
+      font: 12px sans-serif;
+      pointer-events: none;
+    }
+    .link {
+      stroke: #999;
+      stroke-opacity: 0.6;
+      stroke-width: 2px;
+    }
+    .tooltip {
+      position: absolute;
+      text-align: left;
+      padding: 8px;
+      font: 12px sans-serif;
+      background: lightsteelblue;
+      border: 0px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <svg></svg>
+  <div class="tooltip" id="tooltip"></div>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // 节点数据：包括武器和炼化材料
+    const nodes = [
+      { id: "长剑", attack: 24, equip: "殷", effect: "-" },
+      { id: "青钢剑", attack: 40, equip: "殷", effect: "-" },
+      { id: "古印剑", attack: 50, equip: "殷", effect: "100%会心" },
+      { id: "沈碧剑", attack: 70, equip: "殷", effect: "-" },
+      { id: "灵剑·朱雀", attack: 70, equip: "殷", effect: "使用后火系伤害100" },
+      // 材料节点
+      { id: "燧石", type: "材料" },
+      { id: "西方神徽", type: "材料" },
+      { id: "妖燐石", type: "材料" }
+    ];
+
+    // 连线数据：根据炼化方式解析
+    const links = [
+      { source: "燧石", target: "青钢剑" },
+      { source: "长剑", target: "青钢剑" },
+      { source: "青钢剑", target: "古印剑" },
+      { source: "西方神徽", target: "古印剑" },
+      { source: "妖燐石", target: "沈碧剑" },
+      { source: "青钢剑", target: "沈碧剑" },
+      { source: "古印剑", target: "灵剑·朱雀" },
+      { source: "沈碧剑", target: "灵剑·朱雀" }
+    ];
+
+    const svg = d3.select("svg");
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // 创建 tooltip，用于显示节点详细信息
+    const tooltip = d3.select("#tooltip");
+
+    // 创建力导向仿真
+    const simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id).distance(120))
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 2, height / 2));
+
+    // 绘制连线
+    const link = svg.append("g")
+      .attr("class", "links")
+      .selectAll("line")
+      .data(links)
+      .enter()
+      .append("line")
+      .attr("class", "link");
+
+    // 绘制节点
+    const node = svg.append("g")
+      .attr("class", "nodes")
+      .selectAll("g")
+      .data(nodes)
+      .enter()
+      .append("g")
+      .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)
+      );
+
+    // 添加圆形
+    node.append("circle")
+      .attr("r", 20)
+      .on("mouseover", (event, d) => {
+        tooltip.transition().duration(200).style("opacity", .9);
+        let info = `<strong>${d.id}</strong><br/>`;
+        if(d.attack !== undefined){
+          info += `攻击力: ${d.attack}<br/>装备人物: ${d.equip}<br/>特效: ${d.effect}`;
+        } else if(d.type){
+          info += `【材料】`;
+        }
+        tooltip.html(info)
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
+      })
+      .on("mouseout", () => {
+        tooltip.transition().duration(500).style("opacity", 0);
+      });
+
+    // 添加文本标签
+    node.append("text")
+      .attr("dx", -15)
+      .attr("dy", 4)
+      .text(d => d.id);
+
+    simulation.on("tick", () => {
+      link
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
+      node.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
+    }
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+  </script>
+</body>
+</html>
