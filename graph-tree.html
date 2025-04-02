@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>D3.js 动态字体颜色和圆圈大小</title>
+  <title>D3.js 节点文字居中</title>
   <style>
     body { margin: 0; }
     svg { width: 100vw; height: 100vh; }
@@ -58,8 +58,10 @@
     // 添加文本标签
     node.append("text")
       .attr("dx", 0)
-      .attr("dy", 4)
+      .attr("dy", 0)
       .style("fill", "white")
+      .style("text-anchor", "middle")
+      .style("alignment-baseline", "middle")
       .text(d => d.text);
 
     // 每次仿真“tick”更新节点的位置
