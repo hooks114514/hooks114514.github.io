@@ -1,22 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>百科图谱 - 武器炼化图谱</title>
+  <title>武器炼化百科图谱</title>
   <style>
-    body { margin: 0; }
+    body { margin: 0; background: #333; }
     svg { width: 100vw; height: 100vh; }
-    .node circle {
-      fill: #69b3a2;
-      stroke: #555;
-      stroke-width: 1.5px;
-    }
     .node text {
       font: 12px sans-serif;
       pointer-events: none;
-      fill: white;
-      text-anchor: middle;
-      alignment-baseline: middle;
     }
     .link {
       stroke: #999;
@@ -28,10 +20,11 @@
       text-align: left;
       padding: 8px;
       font: 12px sans-serif;
-      background: lightsteelblue;
+      background: rgba(0,0,0,0.7);
       border: 0px;
       border-radius: 4px;
       pointer-events: none;
+      color: white;
       opacity: 0;
     }
   </style>
@@ -41,27 +34,37 @@
   <div class="tooltip" id="tooltip"></div>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
-    // 节点数据：包括武器和炼化材料
-    const nodes = [
-      { id: "长剑", attack: 24, equip: "殷", effect: "-" },
-      { id: "青钢剑", attack: 40, equip: "殷", effect: "-" },
-      { id: "古印剑", attack: 50, equip: "殷", effect: "100%会心" },
-      { id: "沈碧剑", attack: 70, equip: "殷", effect: "-" },
-      { id: "灵剑·朱雀", attack: 70, equip: "殷", effect: "使用后火系伤害100" },
-      // 材料节点
-      { id: "燧石", type: "材料" },
-      { id: "西方神徽", type: "材料" },
-      { id: "妖燐石", type: "材料" }
+    // 节点数据：包括武器节点和材料节点
+    // 来自表格数据的武器节点
+    const weaponNodes = [
+      { id: "长剑", text: "长剑", attack: 24, equip: "殷", effect: "-" },
+      { id: "青钢剑", text: "青钢剑", attack: 40, equip: "殷", effect: "-" },
+      { id: "古印剑", text: "古印剑", attack: 50, equip: "殷", effect: "100%会心" },
+      { id: "沈碧剑", text: "沈碧剑", attack: 70, equip: "殷", effect: "-" },
+      { id: "灵剑·朱雀", text: "灵剑·朱雀", attack: 70, equip: "殷", effect: "使用后火系伤害100" }
     ];
-
-    // 连线数据：根据炼化方式解析
+    // 材料节点（如果尚未出现在武器节点中）
+    const materialNodes = [
+      { id: "燧石", text: "燧石", type: "材料" },
+      { id: "西方神徽", text: "西方神徽", type: "材料" },
+      { id: "妖燐石", text: "妖燐石", type: "材料" }
+    ];
+    
+    // 合并所有节点
+    const nodes = weaponNodes.concat(materialNodes);
+    
+    // 连线数据，根据炼化方式解析
     const links = [
+      // 青钢剑炼化关系
       { source: "燧石", target: "青钢剑" },
       { source: "长剑", target: "青钢剑" },
+      // 古印剑炼化关系
       { source: "青钢剑", target: "古印剑" },
       { source: "西方神徽", target: "古印剑" },
+      // 沈碧剑炼化关系
       { source: "妖燐石", target: "沈碧剑" },
       { source: "青钢剑", target: "沈碧剑" },
+      // 灵剑·朱雀炼化关系
       { source: "古印剑", target: "灵剑·朱雀" },
       { source: "沈碧剑", target: "灵剑·朱雀" }
     ];
@@ -101,18 +104,32 @@
           .on("end", dragended)
       );
 
-    // 添加圆形并根据文本长度调整大小
+    // 添加圆形，圆圈大小随文本长度变化
     node.append("circle")
       .attr("r", function(d) {
-        const baseRadius = 20;
-        const charWidth = 6;
-        const textLength = d.id.length;
-        return baseRadius + charWidth * textLength; // 根据文本长度调整圆圈大小
+        // 如果有 attack 等属性，则为武器节点；否则为材料节点，设定较小的半径
+        if(d.attack !== undefined){
+          const baseRadius = 10;
+          const charWidth = 7;
+          const textLength = d.text.length;
+          return baseRadius + charWidth * textLength;
+        } else {
+          return 15;  // 材料节点固定半径
+        }
       })
-      .style("fill", "steelblue")
+      .style("fill", "steelblue");
+
+    // 添加文本标签，文字居中，颜色为白色
+    node.append("text")
+      .attr("dx", 0)
+      .attr("dy", 0)
+      .style("fill", "white")
+      .style("text-anchor", "middle")
+      .style("alignment-baseline", "middle")
+      .text(d => d.text)
       .on("mouseover", (event, d) => {
-        tooltip.transition().duration(200).style("opacity", .9);
-        let info = `<strong>${d.id}</strong><br/>`;
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        let info = `<strong>${d.text}</strong><br/>`;
         if(d.attack !== undefined){
           info += `攻击力: ${d.attack}<br/>装备人物: ${d.equip}<br/>特效: ${d.effect}`;
         } else if(d.type){
@@ -125,14 +142,6 @@
       .on("mouseout", () => {
         tooltip.transition().duration(500).style("opacity", 0);
       });
-
-    // 添加文本标签并确保其居中
-    node.append("text")
-      .attr("dx", 0)
-      .attr("dy", 0)
-      .style("text-anchor", "middle")
-      .style("alignment-baseline", "middle")
-      .text(d => d.id);
 
     simulation.on("tick", () => {
       link
