@@ -14,6 +14,9 @@
     .node text {
       font: 12px sans-serif;
       pointer-events: none;
+      fill: white;
+      text-anchor: middle;
+      alignment-baseline: middle;
     }
     .link {
       stroke: #999;
@@ -98,9 +101,15 @@
           .on("end", dragended)
       );
 
-    // 添加圆形
+    // 添加圆形并根据文本长度调整大小
     node.append("circle")
-      .attr("r", 20)
+      .attr("r", function(d) {
+        const baseRadius = 20;
+        const charWidth = 6;
+        const textLength = d.id.length;
+        return baseRadius + charWidth * textLength; // 根据文本长度调整圆圈大小
+      })
+      .style("fill", "steelblue")
       .on("mouseover", (event, d) => {
         tooltip.transition().duration(200).style("opacity", .9);
         let info = `<strong>${d.id}</strong><br/>`;
@@ -117,10 +126,12 @@
         tooltip.transition().duration(500).style("opacity", 0);
       });
 
-    // 添加文本标签
+    // 添加文本标签并确保其居中
     node.append("text")
-      .attr("dx", -15)
-      .attr("dy", 4)
+      .attr("dx", 0)
+      .attr("dy", 0)
+      .style("text-anchor", "middle")
+      .style("alignment-baseline", "middle")
       .text(d => d.id);
 
     simulation.on("tick", () => {
