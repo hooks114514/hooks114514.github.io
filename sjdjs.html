@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界杯倒计时？有趣日期统计</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent py-3">
+                <i class="fas fa-globe-americas"></i> 世界杯倒计时？
+            </h1>
+            <h2 class="text-gray-300 mt-3">2025年6月16日的神秘日期统计</h2>
+        </header>
+
+        <main>
+            <!-- 倒计时卡片 -->
+            <div class="bg-gray-800 rounded-xl shadow-2xl p-6 mb-8 max-w-4xl mx-auto">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 bg-gray-700 rounded-xl">
+                        <div id="days" class="text-4xl font-bold text-amber-400">365</div>
+                        <div class="text-gray-400 mt-2">天</div>
+                    </div>
+                    <div class="p-4 bg-gray-700 rounded-xl">
+                        <div id="hours" class="text-4xl font-bold text-amber-400">24</div>
+                        <div class="text-gray-400 mt-2">小时</div>
+                    </div>
+                    <div class="p-4 bg-gray-700 rounded-xl">
+                        <div id="minutes" class="text-4xl font-bold text-amber-400">60</div>
+                        <div class="text-gray-400 mt-2">分钟</div>
+                    </div>
+                    <div class="p-4 bg-gray-700 rounded-xl">
+                        <div id="seconds" class="text-4xl font-bold text-amber-400">00</div>
+                        <div class="text-gray-400 mt-2">秒</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 进度条 -->
+            <div class="max-w-3xl mx-auto mb-10">
+                <div class="flex justify-between text-sm text-gray-400 mb-1">
+                    <span>2025年1月1日</span>
+                    <span id="percentText" class="font-bold text-yellow-400">45% 已过</span>
+                    <span>2025年12月31日</span>
+                </div>
+                <div class="h-4 bg-gray-700 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full bg-gradient-to-r from-purple-500 to-pink-500" style="width: 45%"></div>
+                </div>
+            </div>
+
+            <!-- 有趣事实区域 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                <!-- 卡片1 -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-750 transition">
+                    <div class="text-yellow-400 mb-2">
+                        <i class="fas fa-calendar-day text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">年度位置</h3>
+                    <p class="text-gray-300">这一天是2025年的第<strong class="text-amber-400">167</strong>天</p>
+                    <p class="text-gray-300 mt-1">这一年还有<strong class="text-emerald-400">198</strong>天</p>
+                </div>
+
+                <!-- 卡片2 -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-750 transition">
+                    <div class="text-yellow-400 mb-2">
+                        <i class="fas fa-calendar-week text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">周分析</h3>
+                    <p class="text-gray-300">属于2025年第<strong class="text-amber-400">25</strong>周</p>
+                    <p class="text-gray-300 mt-1">夏季还有<strong class="text-emerald-400">5</strong>天</p>
+                </div>
+
+                <!-- 卡片3 -->
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:bg-gray-750 transition">
+                    <div class="text-yellow-400 mb-2">
+                        <i class="fas fa-calendar-alt text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">日期详情</h3>
+                    <p class="text-gray-300">星期<strong class="text-amber-400">一</strong></p>
+                    <p class="text-gray-300 mt-1"><strong class="text-emerald-400">美式格式：</strong> June 16, 2025</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-16 border-t border-gray-700 pt-6 pb-10 text-center">
+            <p class="text-gray-500">仅娱乐目的 | 日期信息参照可靠来源 [<sup data-citation='{&quot;id&quot;:1,&quot;url&quot;:&quot;https://www.epochconverter.com/days/2025&quot;,&quot;title&quot;:&quot;Day Numbers for 2025 - Epoch Converter&quot;,&quot;content&quot;:&quot;This page lists all days in 2025 with day and week numbers The year 2025 has 365 days Today day 164, Friday, June 13th is highlighted Percent of year shows the percentage the year is complete at midni&quot;}'>1</sup>](https://www.epochconverter.com/days/2025)[<sup data-citation='{&quot;id&quot;:2,&quot;url&quot;:&quot;https://www.wincalendar.com/Calendar/Date/June-15-2025&quot;,&quot;title&quot;:&quot;June 15, 2025 Calendar with Holidays &amp; Count Down - USA&quot;,&quot;content&quot;:&quot;June 15, 2025 is 166th day of the year There are then 199 days left in 2025 24th Sunday of 2025 on the 25th week of 2025 using US standard week number calculation 88th day of Spring There are 5 days l&quot;}'>2</sup>](https://www.wincalendar.com/Calendar/Date/June-15-2025)[<sup data-citation='{&quot;id&quot;:3,&quot;url&quot;:&quot;http://enriqi.qianwanku.com/?rq=2025-06-15&quot;,&quot;title&quot;:&quot;2025年6月15日的英文_2025-06-15英文日期写法&quot;,&quot;content&quot;:&quot;2025-06-14 英文日期（日期英文转换器） 日期英文转换器提供日期英文写法在线转换，英文日期格式分为美式日期格式和英式日期格式，英式英文日期为日，月，年的方式，美式英文日期为月，日，年的方式。&quot;}'>3</sup>](http://enriqi.qianwanku.com/?rq=2025-06-15)[<sup data-citation='{&quot;id&quot;:4,&quot;url&quot;:&quot;https://www.calendar-365.com/calendar/2025/June.html&quot;,&quot;title&quot;:&quot;June 2025 Calendar&quot;,&quot;content&quot;:&quot;All the times in the June 2025 calendar may differ when you eg live east or west in the United States To see the sunrise and sunset in your region select a city above this list See also the position o&quot;}'>4</sup>](https://www.calendar-365.com/calendar/2025/June.html)</p>
+            <p class="text-gray-600 mt-2">© 2025 神秘倒计时</p>
+        </footer>
+    </div>
+
+    <script>
+        // 设置目标日期 - 2025年6月16日
+        const targetDate = new Date('2025-06-16T00:00:00');
+        
+        // 更新倒计时
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+            
+            // 计算天、小时、分钟、秒
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // 更新显示
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            // 计算2025年的进度百分比
+            const startOfYear = new Date('2025-01-01T00:00:00');
+            const endOfYear = new Date('2025-12-31T23:59:59');
+            const totalYear = endOfYear - startOfYear;
+            const passed = now - startOfYear;
+            let percent = (passed / totalYear) * 100;
+            
+            // 确保百分比不会超过100%
+            if (percent < 0) percent = 0;
+            if (percent > 100) percent = 100;
+            
+            // 更新进度条
+            document.getElementById('progressBar').style.width = `${percent.toFixed(1)}%`;
+            document.getElementById('percentText').textContent = `${percent.toFixed(1)}% 已过`;
+        }
+        
+        // 每秒更新一次
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // 立即显示
+    </script>
+</body>
+</html>
