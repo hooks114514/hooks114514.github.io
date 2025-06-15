@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资本做局器 - 可视化模拟</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#3b82f6',
+                        accent: '#10b981',
+                        dark: '#0f172a',
+                        darker: '#0b1120',
+                        light: '#f1f5f9',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            background: linear-gradient(135deg, #0f172a, #0b1120);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: #e2e8f0;
+        }
+        
+        .card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 80, 129, 0.4);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        button {
+            transition: all 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            height: 100%;
+            border-radius: 0.5rem;
+            transition: width 0.5s ease;
+        }
+        
+        .step-number {
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+        
+        .chart-container {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(56, 80, 129, 0.4);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            height: 320px;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8">
+
+    <!-- Header -->
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col items-center text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 to-emerald-400 text-transparent bg-clip-text mb-3">
+                <i class="fas fa-chess-board mr-3"></i>资本做局器
+            </h1>
+            <p class="text-slate-300 text-lg max-w-2xl">
+                模拟资本运作全过程，可视化展示每个阶段对市场和资产的影响。
+                调节参数，设计您的资本运作策略并观察结果。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- 操作面板 -->
+            <div class="col-span-1 space-y-6">
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold mb-4 text-blue-300 flex items-center">
+                        <i class="fas fa-cogs mr-2"></i>做局配置
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-slate-300 mb-1">初始资本</label>
+                            <div class="flex">
+                                <input type="range" min="10" max="1000" value="500" class="w-full" id="initialCapital">
+                                <span class="ml-3 w-20 text-right font-mono" id="capitalValue">500万</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-slate-300 mb-1">杠杆比例</label>
+                            <select class="w-full bg-slate-800 text-slate-200 rounded-lg p-2 border border-slate-700 focus:border-blue-500 focus:outline-none">
+                                <option>1倍 (低风险)</option>
+                                <option>3倍 (中等风险)</option>
+                                <option selected>5倍 (高风险)</option>
+                                <option>10倍 (极高风险)</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-slate-300 mb-1">做局周期(月)</label>
+                            <div class="flex">
+                                <input type="range" min="3" max="24" value="12" class="w-full" id="timePeriod">
+                                <span class="ml-3 w-20 text-right font-mono" id="periodValue">12月</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-slate-300 mb-1">目标资产</label>
+                            <select class="w-full bg-slate-800 text-slate-200 rounded-lg p-2 border border-slate-700 focus:border-blue-500 focus:outline-none">
+                                <option>某上市科技公司股票</option>
+                                <option>NFT数字藏品</option>
+                                <option>加密货币</option>
+                                <option selected>某大宗商品期货</option>
+                                <option>房地产资产</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card p-6">
+                    <h2 class="text-xl font-bold mb-4 text-emerald-300 flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i>执行过程
+                    </h2>
+                    <div class="space-y-4">
+                        <button id="executeBtn" class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-lg glow flex justify-center items-center">
+                            <i class="fas fa-play-circle mr-2"></i>开始执行资本做局
+                        </button>
+                        
+                        <div class="space-y-2 mt-4">
+                            <div class="flex justify-between text-slate-300 text-sm">
+                                <span>当前进度</span>
+                                <span id="progressValue">0%</span>
+                            </div>
+                            <div class="h-3 bg-slate-800 rounded-lg overflow-hidden">
+                                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 流程图 -->
+            <div class="col-span-1 md:col-span-2">
+                <div class="card p-6 h-full">
+                    <h2 class="text-xl font-bold mb-4 text-sky-300 flex items-center">
+                        <i class="fas fa-project-diagram mr-2"></i>做局流程
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="step-item border-l-2 border-blue-500 pl-5 py-2">
+                            <div class="flex items-center mb-2">
+                                <div class="step-number">1</div>
+                                <h3 class="font-bold text-lg text-blue-300">秘密吸筹</h3>
+                            </div>
+                            <p class="text-slate-400 pl-12">通过多个关联账户分批低价买入目标资产，避免引起市场注意。</p>
+                        </div>
+                        
+                        <div class="step-item border-l-2 border-blue-400 pl-5 py-2">
+                            <div class="flex items-center mb-2">
+                                <div class="step-number">2</div>
+                                <h3 class="font-bold text-lg text-blue-200">释放消息</h3>
+                            </div>
+                            <p class="text-slate-400 pl-12">制造舆论热点，释放利好/利空消息操纵市场情绪。</p>
+                        </div>
+                        
+                        <div class="step-item border-l-2 border-emerald-500 pl-5 py-2">
+                            <div class="flex items-center mb-2">
+                                <div class="step-number">3</div>
+                                <h3 class="font-bold text-lg text-emerald-300">拉升价格</h3>
+                            </div>
+                            <p class="text-slate-400 pl-12">逐步推高资产价格，制造上涨趋势吸引跟风投资者。</p>
+                        </div>
+                        
+                        <div class="step-item border-l-2 border-red-500 pl-5 py-2">
+                            <div class="flex items-center mb-2">
+                                <div class="step-number">4</div>
+                                <h3 class="font-bold text-lg text-red-300">出货收割</h3>
+                            </div>
+                            <p class="text-slate-400 pl-12">在价格高位出货获利，引发价格崩塌实现资本收割。</p>
+                        </div>
+                        
+                        <div class="step-item border-l-2 border-purple-500 pl-5 py-2">
+                            <div class="flex items-center mb-2">
+                                <div class="step-number">5</div>
+                                <h3 class="font-bold text-lg text-purple-300">资产转移</h3>
+                            </div>
+                            <p class="text-slate-400 pl-12">通过离岸公司和复杂交易路径转移利润，规避监管和追踪。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="card p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-emerald-300 flex items-center">
+                        <i class="fas fa-chart-bar mr-2"></i>资产价格变化
+                    </h2>
+                    <div class="text-sm text-slate-400">
+                        周期: <span class="text-emerald-400">12个月</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-blue-300 flex items-center">
+                        <i class="fas fa-coins mr-2"></i>资本回报率
+                    </h2>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 rounded-full bg-blue-500 mr-1"></div>
+                        <span class="text-sm text-slate-400">目标回报: <span class="text-blue-400">270%</span></span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="roiChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果区 -->
+        <div class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-center mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-400">
+                <i class="fas fa-trophy mr-2"></i>做局结果分析
+            </h2>
+            <p class="text-center text-slate-300 mb-6">资本运作模拟结果 - 成功率估算</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="result-card bg-blue-900/30 p-4 rounded-xl border border-blue-500/40 text-center">
+                    <div class="text-4xl font-bold text-blue-300 mb-2">82%</div>
+                    <div class="text-blue-200">操盘成功率</div>
+                </div>
+                
+                <div class="result-card bg-emerald-900/30 p-4 rounded-xl border border-emerald-500/40 text-center">
+                    <div class="text-4xl font-bold text-emerald-300 mb-2">￥3420万</div>
+                    <div class="text-emerald-200">预估最终收益</div>
+                </div>
+                
+                <div class="result-card bg-amber-900/30 p-4 rounded-xl border border-amber-500/40 text-center">
+                    <div class="text-4xl font-bold text-amber-300 mb-2">8.3分</div>
+                    <div class="text-amber-200">监管风险指数</div>
+                </div>
+                
+                <div class="result-card bg-purple-900/30 p-4 rounded-xl border border-purple-500/40 text-center">
+                    <div class="text-4xl font-bold text-purple-300 mb-2">4.2倍</div>
+                    <div class="text-purple-200">预期杠杆收益</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 免责声明 -->
+        <div class="text-center text-slate-500 text-sm p-4">
+            <i class="fas fa-exclamation-triangle text-yellow-500 mr-1"></i> 
+            本工具仅用于金融市场教育和模拟目的。资本操纵市场是违法行为，在任何国家/地区均可能涉及法律风险。所有模拟数据均为虚构，不构成任何投资建议。
+        </div>
+    </div>
+    
+    <!-- 模拟执行的JS代码 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化滑块
+            const initialCapital = document.getElementById('initialCapital');
+            const capitalValue = document.getElementById('capitalValue');
+            const timePeriod = document.getElementById('timePeriod');
+            const periodValue = document.getElementById('periodValue');
+            
+            initialCapital.addEventListener('input', function() {
+                capitalValue.textContent = this.value + '万';
+            });
+            
+            timePeriod.addEventListener('input', function() {
+                periodValue.textContent = this.value + '月';
+            });
+            
+            // 初始化图表
+            const priceCtx = document.getElementById('priceChart').getContext('2d');
+            const roiCtx = document.getElementById('roiChart').getContext('2d');
+            
+            const priceChart = new Chart(priceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['初始', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [{
+                        label: '资产价格',
+                        data: [50, 52, 55, 48, 60, 65, 72, 85, 95, 120, 180, 250, 90],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(100, 116, 139, 0.2)'
+                            },
+                            ticks: {
+                                color: 'rgba(200, 209, 224, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(100, 116, 139, 0.2)'
+                            },
+                            ticks: {
+                                color: 'rgba(200, 209, 224, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const roiChart = new Chart(roiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['初始期(1-3月)', '震荡期(4-6月)', '拉升期(7-9月)', '收割期(10-12月)'],
+                    datasets: [{
+                        label: '资本回报率',
+                        data: [10, -5, 145, 120],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(220, 38, 38, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(139, 92, 246, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(220, 38, 38, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(139, 92, 246, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(100, 116, 139, 0.2)'
+                            },
+                            ticks: {
+                                color: 'rgba(200, 209, 224, 0.7)',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(200, 209, 224, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 进度条功能
+            const executeBtn = document.getElementById('executeBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progressValue = document.getElementById('progressValue');
+            
+            executeBtn.addEventListener('click', function() {
+                // 添加执行动画
+                executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>做局执行中...';
+                executeBtn.classList.add('cursor-not-allowed');
+                executeBtn.disabled = true;
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 2;
+                    if (progress > 100) progress = 100;
+                    
+                    progressBar.style.width = progress + '%';
+                    progressValue.textContent = progress + '%';
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        executeBtn.innerHTML = '<i class="fas fa-check-circle mr-2"></i>做局已完成';
+                        setTimeout(() => {
+                            executeBtn.innerHTML = '<i class="fas fa-redo mr-2"></i>重新执行';
+                            executeBtn.disabled = false;
+                            executeBtn.classList.remove('cursor-not-allowed');
+                        }, 2000);
+                    }
+                }, 100);
+            });
+            
+            // 添加步骤项的悬停效果
+            const stepItems = document.querySelectorAll('.step-item');
+            stepItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.classList.add('bg-slate-800/50');
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.classList.remove('bg-slate-800/50');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
