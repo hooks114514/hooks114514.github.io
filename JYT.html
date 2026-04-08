@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>锦亚桃花会 | 跨游戏精英公会</title>
+    <!-- 引入 Google Fonts 提升现代感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            color: #eef5ff;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e2a3a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f0a3be;
+            border-radius: 10px;
+        }
+
+        /* 动画关键帧 */
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                text-shadow: 0 0 2px #ffb7c5, 0 0 5px #ff9eb0;
+            }
+            100% {
+                text-shadow: 0 0 12px #ff6f91, 0 0 20px #ff3b6f;
+            }
+        }
+
+        @keyframes borderFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem 4rem;
+            animation: fadeSlideUp 0.9s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFE6F0, #FFB3C6, #C084FC, #60A5FA);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glowPulse 2s infinite alternate, borderFlow 5s ease infinite;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .sub {
+            font-size: 1.25rem;
+            background: rgba(255,255,240,0.08);
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .hero .catch-phrase {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 1.5rem auto 0;
+            color: #cdd9ff;
+        }
+
+        /* 三大战场卡片 */
+        .games-section {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .section-title span {
+            background: linear-gradient(120deg, #FFB3BA, #B5F0FF);
+            padding: 0 12px;
+            border-radius: 40px;
+        }
+
+        .game-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .game-card {
+            background: rgba(20, 28, 40, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            width: 280px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 180, 200, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeSlideUp 0.8s backwards;
+        }
+        .game-card:nth-child(1) { animation-delay: 0.1s; }
+        .game-card:nth-child(2) { animation-delay: 0.2s; }
+        .game-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .game-card:hover {
+            transform: translateY(-12px);
+            border-color: #ff99bb;
+            box-shadow: 0 25px 40px rgba(255, 100, 150, 0.25);
+            background: rgba(30, 38, 58, 0.85);
+        }
+
+        .game-icon {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+        }
+        .game-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .game-card p {
+            font-size: 0.95rem;
+            color: #cbd5ff;
+        }
+
+        /* 部门区域 多彩网格 */
+        .dept-section {
+            margin: 4rem 0;
+        }
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        .dept-item {
+            background: linear-gradient(125deg, #1f2a3e, #16202e);
+            border-radius: 1.5rem;
+            padding: 1rem 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s;
+            border-left: 5px solid;
+            cursor: default;
+            animation: fadeSlideUp 0.5s backwards;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        .dept-item:hover {
+            transform: scale(1.02) translateX(6px);
+            background: linear-gradient(125deg, #2a3750, #1e2a3c);
+        }
+
+        /* 部门个性色彩 */
+        .dept-item:nth-child(1) { border-left-color: #FFA07A; }
+        .dept-item:nth-child(2) { border-left-color: #6C9FFF; }
+        .dept-item:nth-child(3) { border-left-color: #FF6B6B; }
+        .dept-item:nth-child(4) { border-left-color: #F4D03F; }
+        .dept-item:nth-child(5) { border-left-color: #A3E4D7; }
+        .dept-item:nth-child(6) { border-left-color: #BB8FCE; }
+        .dept-item:nth-child(7) { border-left-color: #F7DC6F; }
+        .dept-item:nth-child(8) { border-left-color: #5DADE2; }
+        .dept-item:nth-child(9) { border-left-color: #EC7063; }
+        .dept-item:nth-child(10) { border-left-color: #48C9B0; }
+
+        .dept-icon {
+            font-size: 1.7rem;
+            width: 36px;
+            text-align: center;
+        }
+
+        /* 价值观 + 加入区域 */
+        .join-card {
+            background: linear-gradient(115deg, rgba(77, 48, 78, 0.7), rgba(31, 41, 75, 0.8));
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2.5rem;
+            text-align: center;
+            margin: 3rem 0;
+            border: 1px solid rgba(255,200,210,0.5);
+            animation: fadeSlideUp 0.8s;
+        }
+        .join-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .qq-group {
+            background: #00000055;
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 1rem 0;
+            font-family: monospace;
+            backdrop-filter: blur(4px);
+            border: 1px solid #ffaecc;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        .social-icon {
+            background: #2a2f42;
+            width: 52px;
+            height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            font-size: 1.9rem;
+            transition: all 0.3s;
+            color: #ffdbeb;
+        }
+        .social-icon:hover {
+            transform: translateY(-8px);
+            background: #ff7b9c;
+            color: white;
+        }
+        .btn-copy {
+            background: #ff708d;
+            border: none;
+            color: white;
+            padding: 0.6rem 1.6rem;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.8rem;
+        }
+        .btn-copy:hover {
+            background: #e05a78;
+            transform: scale(0.97);
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* 漂浮桃花动画 */
+        .blossom-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            background: radial-gradient(circle, #ffb7c5, #ff8aa8);
+            width: 12px;
+            height: 12px;
+            border-radius: 80% 0 80% 0;
+            opacity: 0.5;
+            animation: floatPetal 12s linear infinite;
+            filter: blur(1px);
+        }
+        @keyframes floatPetal {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 响应式 */
+        @media (max-width: 720px) {
+            .hero h1 { font-size: 2.4rem; }
+            .game-card { width: 100%; max-width: 320px; }
+            .dept-grid { grid-template-columns: 1fr 1fr; }
+            .qq-group { font-size: 1.2rem; padding: 0.5rem 1rem; }
+        }
+        @media (max-width: 480px) {
+            .dept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <meta name="AIGC" content='{"AIGC":{"Label":"2","ContentProducer":"WUSIGRAM","ProduceID":"VddB6mDYZ1gxxGBedDOavyxGJZMzsziADM4C7USyYHU=","ReservedCode1":"QpDjAEPBVJ5zb2V14Hvl9jF/uv8jqKOEJ6ziOGoZZ4cGngGF5EUw2x9oSM8WNEB72wM4KmCM1PmhIOVO9UftLQ==","ContentPropagator":"","PropagateID":"","ReservedCode2":""}}'>
+</head>
+<body>
+    <!-- 动态飘落花瓣背景 (动画色彩丰富) -->
+    <div class="blossom-bg" id="petalContainer"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
+        <!-- 头部与公会名称 -->
+        <div class="hero">
+            <h1>❀ 锦亚桃花会 ❀</h1>
+            <div class="sub">北风萧萧 · 桃花御北</div>
+            <p class="catch-phrase">
+                <i class="fas fa-users"></i> 无论你来自哪个游戏世界，这里都是温暖的家。<br>
+                创造、征战、探索 —— 我们包容一切，并肩同行。
+            </p>
+        </div>
+
+        <!-- 三大战场板块 -->
+        <div class="games-section">
+            <div class="section-title"><span>⚔️ 三大核心战场 ⚔️</span></div>
+            <div class="game-grid">
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-cubes"></i></div>
+                    <h3>《我的世界》</h3>
+                    <p>无限创造 · 红石科技 · 史诗建筑<br>从像素艺术到自动化机械，想象力即是边界。</p>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-tank"></i></div>
+                    <h3>《铁锈战争》</h3>
+                    <p>钢铁洪流 · 快节奏RTS · 战术博弈<br>指挥千军万马，每一秒都是决策的战场。</p>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-rocket"></i></div>
+                    <h3>《星际猎人》</h3>
+                    <p>深空星海 · 舰队远征 · 异星猎杀<br>跨越光年，书写银河史诗。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 包容理念与协作 简短介绍 -->
+        <div style="text-align: center; margin: 1rem 0 2rem; background: #1a1f2eaa; border-radius: 48px; padding: 1.2rem;">
+            <i class="fas fa-heart" style="color:#ff99bb;"></i> 
+            <strong>包容·协作·乐趣至上</strong> — 无论你是建筑大师、战术指挥官还是太空舰长，这里都有你的舞台。
+            <i class="fas fa-hand-peace"></i> 追求胜利，更享受过程。
+        </div>
+
+        <!-- 公会部门: 九大核心+自由玩家协会 (共10个) -->
+        <div class="dept-section">
+            <div class="section-title"><span>🌸 公会核心部门 🌸</span></div>
+            <div class="dept-grid">
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-city"></i></span> 茶北锦建集团</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-shield-alt"></i></span> 御北卫戍集团</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-bomb"></i></span> 锈锋火力集团</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-gavel"></i></span> 检察部</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-handshake"></i></span> 联合部</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-chart-line"></i></span> 规划部</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-dove"></i></span> 自由玩家协会</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-database"></i></span> 信息部</div>
+                <div class="dept-item"><span class="dept-icon"><i class="fas fa-bullhorn"></i></span> 宣传部</div>
+            </div>
+            <p style="text-align: center; font-size: 0.85rem; margin-top: 1rem; opacity: 0.8;">
+                <i class="fas fa-star-of-life"></i> 九大专部+自由协会，各司其职，共筑桃花盛世。
+            </p>
+        </div>
+
+        <!-- 加入与联络区块 色彩绚丽+动画 -->
+        <div class="join-card">
+            <h2><i class="fas fa-envelope-open-text"></i> 共铸传奇 · 即刻加入</h2>
+            <p style="margin-bottom: 0.8rem;">无论你热衷创造、指挥还是探索，锦亚桃花会的大门永远敞开。</p>
+            <div class="qq-group" id="qqGroupDisplay">
+                <i class="fab fa-qq"></i> 群号：1030191253
+            </div>
+            <button class="btn-copy" id="copyBtn"><i class="far fa-copy"></i> 复制QQ群号</button>
+            <div style="margin: 1.5rem 0 0.8rem;">
+                <span style="background: #ff708d30; padding: 5px 12px; border-radius: 28px; font-weight: 500;">
+                    <i class="fas fa-hashtag"></i> 全网同名：锦亚桃花会
+                </span>
+            </div>
+            <div class="social-links">
+                <a href="https://space.bilibili.com/" target="_blank" class="social-icon" style="text-decoration: none;"><i class="fab fa-bilibili"></i></a>
+                <a href="#" class="social-icon" style="text-decoration: none;"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="social-icon" style="text-decoration: none;"><i class="fab fa-snapchat"></i></a>
+                <div class="social-icon" style="cursor: default;"><i class="fab fa-youtube"></i></div>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 1rem;">
+                📱 哔哩哔哩 | 快手 | 抖音 账号全网同名 <strong>锦亚桃花会</strong><br>
+                最新战报、建筑巡礼、战术教学，尽在官方频道。
+            </p>
+        </div>
+
+        <!-- 额外彩蛋: 一段轻盈的座右铭动画 -->
+        <div style="text-align: center; margin: 1.5rem 0; animation: float 3s infinite ease-in-out;">
+            <i class="fas fa-tree" style="color:#ffb3c6;"></i> 北风御桃花，侠义共天涯 <i class="fas fa-feather-alt"></i>
+        </div>
+
+        <div class="footer">
+            © 锦亚桃花会 · 跨游戏精英社区 | 团结 创新 热血 | 期待你的传奇
+        </div>
+    </div>
+
+    <script>
+        // 动态生成漂浮桃花花瓣 (增强动画感)
+        function createPetal() {
+            const petalContainer = document.getElementById('petalContainer');
+            if (!petalContainer) return;
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const size = Math.random() * 12 + 6; // 6~18px
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${Math.random() * 100}%`;
+            petal.style.animationDuration = `${Math.random() * 8 + 7}s`; // 7~15s
+            petal.style.animationDelay = `${Math.random() * 10}s`;
+            petal.style.opacity = Math.random() * 0.5 + 0.2;
+            // 随机颜色偏向桃花粉
+            const hue = Math.random() * 20 + 330; // 330~350 red-pink range
+            petal.style.backgroundColor = `hsl(${hue}, 80%, 70%)`;
+            petalContainer.appendChild(petal);
+            // 动画结束后移除，避免dom堆积
+            petal.addEventListener('animationend', () => {
+                petal.remove();
+            });
+        }
+        // 初始化30片花瓣
+        for(let i = 0; i < 35; i++) {
+            setTimeout(() => createPetal(), i * 200);
+        }
+        // 每隔一段时间补充花瓣，维持动态
+        setInterval(() => {
+            if(document.getElementById('petalContainer').children.length < 60) {
+                createPetal();
+            }
+        }, 1800);
+
+        // 复制群号功能
+        const copyBtn = document.getElementById('copyBtn');
+        const groupNumber = "1030191253";
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(groupNumber).then(() => {
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> 已复制！';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(() => {
+                alert('手动复制吧: ' + groupNumber);
+            });
+        });
+
+        // 为社交链接模拟简单提示 (因为没有真实链接地址，所以占位，但用户知道全网同名)
+        const socialIcons = document.querySelectorAll('.social-icon');
+        socialIcons.forEach(icon => {
+            if(icon.getAttribute('href') === '#' || icon.getAttribute('href') === 'https://space.bilibili.com/') {
+                icon.addEventListener('click', (e) => {
+                    if(icon.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        alert('🔍 请在哔哩哔哩/快手/抖音搜索“锦亚桃花会”，期待您的关注~');
+                    } else {
+                        // 默认跳转bilibili主页占位，但用户知道实际可搜同名
+                        // 不强制跳转，弹出提醒
+                        e.preventDefault();
+                        alert('欢迎前往B站关注“锦亚桃花会”，获取精彩公会内容！');
+                    }
+                });
+            }
+        });
+
+        // 添加一点鼠标跟随的微光特效（可选趣味）
+        const heroTitle = document.querySelector('.hero h1');
+        if(heroTitle) {
+            heroTitle.addEventListener('mouseenter', () => {
+                heroTitle.style.transition = '0.2s';
+                heroTitle.style.transform = 'scale(1.02)';
+            });
+            heroTitle.addEventListener('mouseleave', () => {
+                heroTitle.style.transform = 'scale(1)';
+            });
+        }
+        // 为部门添加小动画悬浮增加趣味
+        const deptItems = document.querySelectorAll('.dept-item');
+        deptItems.forEach((item, idx) => {
+            item.style.animationDelay = `${idx * 0.03}s`;
+        });
+    </script>
+</body>
+</html>
