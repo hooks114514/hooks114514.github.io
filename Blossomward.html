@@ -88,7 +88,7 @@
             text-align: center; margin: 4rem 0 3rem; font-size: 2.2rem; font-weight: 700;
         }
 
-        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        。game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
         .game-card {
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
@@ -114,7 +114,7 @@
             gap: 1.2rem;
             margin-bottom: 5rem;
         }
-        .dept-item {
+        。dept-item {
             background: rgba(255,255,255,0.04);
             padding: 1.2rem;
             border-radius: 16px;
@@ -163,7 +163,7 @@
 
         .social-icons { margin-top: 3rem; display: flex; justify-content: center; gap: 30px; }
         .social-icon { font-size: 2rem; color: var(--text-dim); transition: var(--transition); }
-        .social-icon:hover { color: var(--primary-pink); transform: translateY(-5px); }
+        。social-icon:hover { color: var(--primary-pink); transform: translateY(-5px); }
 
         footer { text-align: center; padding: 4rem 0; opacity: 0.6; border-top: 1px solid rgba(255,255,255,0.05); }
 
@@ -180,36 +180,47 @@
     <div class="container">
         <header class="hero">
             <div class="sub-tagline">北风萧萧 · 桃花御北</div>
-            <h1>锦亚桃花会</h1>
-            <p style="font-size: 1.2rem; color: var(--text-dim); max-width: 700px; margin: 0 auto;">
-                “包容一切，并肩同行” —— 这里不仅是游戏公会，更是每一个流浪灵魂的栖息地。
+            <h1>❀ 锦亚桃花会 ❀</h1>
+            <p class="catch-phrase">
+                <i class="fas fa-users"></i> 无论你来自哪个游戏世界，这里都是温暖的家。<br>
+                创造、征战、探索 —— 我们包容一切，并肩同行。
             </p>
         </header>
 
         <main>
             <section id="games">
-                <h2 class="section-title">核心战场</h2>
+                <div class="section-title"><span>⚔️ 三大核心战场 ⚔️</span></div>
                 <div class="game-grid">
                     <article class="game-card">
                         <i class="fas fa-cubes"></i>
-                        <h3>我的世界 (Minecraft)</h3>
+                        <h3>我的世界<br>
+                            (Minecraft)</h3>
                         <p>无论是精妙绝伦的红石机械、气势恢宏的史诗建筑，还是纯粹的生存冒险，这里都有你的舞台。</p>
                     </article>
                     <article class="game-card">
                         <i class="fas fa-microchip"></i>
-                        <h3>铁锈战争 (Rusted Warfare)</h3>
+                        <h3>铁锈战争<br>
+                            (Rusted Warfare)</h3>
                         <p>即时战略的巅峰碰撞。从海陆空三线推进，指挥钢铁洪流，在硝烟中铸就公会的荣耀。</p>
                     </article>
                     <article class="game-card">
                         <i class="fas fa-rocket"></i>
-                        <h3>星际猎人 (Star Hunters)</h3>
+                        <h3>星际猎人<br>
+                            (Star Hunters)</h3>
                         <p>跨越光年的星际远征，在无垠银河中建立属于锦亚的哨所，探索未知的深空文明。</p>
                     </article>
                 </div>
             </section>
+            
+            <!-- 包容理念与协作 简短介绍 -->
+            <div style="text-align: center; margin: 1rem 0 2rem; background: #1a1f2eaa; border-radius: 48px; padding: 1.2rem;">
+                <i class="fas fa-heart" style="color:#ff99bb;"></i> 
+                <strong>包容·协作·乐趣至上</strong> — 无论你是建筑大师、战术指挥官还是太空舰长，这里都有你的舞台。
+                <i class="fas fa-hand-peace"></i> 追求胜利，更享受过程。
+            </div>
 
             <section id="departments" style="margin-top: 6rem;">
-                <h2 class="section-title">组织部门</h2>
+                <div class="section-title"><span>🌸 公会核心部门 🌸</span></div>
                 <div class="dept-grid">
                     <div class="dept-item dept-1"><i class="fas fa-city"></i> 茶北锦建集团</div>
                     <div class="dept-item dept-2"><i class="fas fa-shield-alt"></i> 御北卫戍集团</div>
@@ -220,29 +231,41 @@
                     <div class="dept-item dept-7"><i class="fas fa-dove"></i> 自由玩家协会</div>
                     <div class="dept-item dept-8"><i class="fas fa-bullhorn"></i> 宣传部</div>
                     <div class="dept-item dept-1"><i class="fas fa-database"></i> 信息部</div>
-                    <div class="dept-item dept-6"><i class="fas fa-palette"></i> 文艺部</div>
                 </div>
+                <p style="text-align: center; font-size: 0.85rem; margin-top: 1rem; opacity: 0.8;">
+                    <i class="fas fa-star-of-life"></i> 九大专部+自由协会，各司其职，共筑桃花盛世。
+                </p>
             </section>
 
             <section class="join-section">
-                <h2>加入锦亚桃花会</h2>
+                <h2><i class="fas fa-envelope-open-text"></i> 共铸传奇 · 即刻加入</h2>
                 <p>无论你是何种背景，只要心怀热爱，这里便有你的一席之地。</p>
                 <div class="qq-group-card">
                     <p style="font-size: 0.9rem; margin-bottom: 0.5rem; opacity: 0.8;">公会官方QQ群号</p>
                     <span class="qq-number" id="qqNum">1030191253</span>
                 </div>
                 <br>
-                <button class="btn-copy" onclick="copyQQ()">一键复制群号</button>
-                
+                <button class="btn-copy" onclick="copyQQ()"><i class="far fa-copy"></i> 一键复制群号</button>
+                <div style="margin: 1.5rem 0 0.8rem;">
+                <span style="background: #ff708d30; padding: 5px 12px; border-radius: 28px; font-weight: 500;">
+                    <i class="fas fa-hashtag"></i> 全网同名：锦亚桃花会
+                </span>
+            </div>
                 <div class="social-icons">
-                    <a href="https://space.bilibili.com/" target="_blank" rel="noopener noreferrer" class="social-icon" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a>
-                    <a href="#" class="social-icon" onclick="socialAlert()"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" class="social-icon" onclick="socialAlert()"><i class="fab fa-weibo"></i></a>
+                    <a href="https://space.bilibili.com/3546576387574104" target="_blank" rel="noopener noreferrer" class="social-icon" title="哔哩哔哩"><i class="fab fa-bilibili"></i></a>
+                    <a href="https://v.douyin.com/5EFRHX54pig/" class="social-icon" onclick="socialAlert()"><i class="fab fa-tiktok"></i></a>
                 </div>
-                <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-dim);">🔍 全网同名搜：<strong>锦亚桃花会</strong></p>
+                <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--text-dim);">📱 哔哩哔哩 | 快手 | 抖音 账号全网同名<br>
+                最新战报、建筑巡礼、战术教学，尽在官方频道。
+                </p>
             </section>
         </main>
-
+        
+        <!-- 额外彩蛋: 一段轻盈的座右铭动画 -->
+        <div style="text-align: center; margin: 1.5rem 0; animation: float 3s infinite ease-in-out;">
+            <i class="fas fa-tree" style="color:#ffb3c6;"></i> 北风御桃花，侠义共天涯 <i class="fas fa-feather-alt"></i>
+        </div>
+        
         <footer>
             <p>© 锦亚桃花会 · 跨游戏精英社区 · 自强不息，并肩前行</p>
             <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">Crafted for Peach Blossom Union Members</p>
@@ -266,7 +289,7 @@
             constructor() { this.init(true); }
             init(firstTime = false) {
                 this.x = Math.random() * canvas.width;
-                this.y = firstTime ? Math.random() * canvas.height : -20;
+                this。y = firstTime ? Math.random() * canvas.height : -20;
                 this.size = Math.random() * 5 + 5;
                 this.speed = Math.random() * 1 + 1;
                 this.angle = Math.random() * 360;
