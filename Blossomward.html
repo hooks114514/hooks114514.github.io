@@ -9,13 +9,17 @@
     
     <style>
         :root {
-            /* 主题色变量，方便后期维护 */
+            /* 主题色变量 */
             --bg-dark: #0a0f1e;
             --bg-gradient: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
-            --primary-pink: #ffb7c5;
-            --accent-pink: #ff708d;
             --text-main: #eef5ff;
             --text-dim: #cbd5ff;
+            
+            /* 桃花核心色 - 用于发光和粒子 */
+            --petal-base: #ffb7c5;
+            --petal-glow: #ff6f91;
+            --accent-pink: #ff708d;
+            
             --glass-bg: rgba(20, 28, 40, 0.7);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -29,22 +33,23 @@
             color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         /* 滚动条优化 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #1e2a3a; }
-        ::-webkit-scrollbar-thumb { background: var(--primary-pink); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--petal-base); border-radius: 10px; }
 
-        /* Canvas 背景容器 */
+        /* [关键修复] Canvas 背景容器 - 确保在最底层 */
         #petalCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            pointer-events: none; /* 不阻碍鼠标点击 */
+            z-index: 0; /* 在内容之下 */
         }
 
         .container {
@@ -52,142 +57,220 @@
             margin: 0 auto;
             padding: 0 1.5rem;
             position: relative;
-            z-index: 2;
+            z-index: 1; /* 在 Canvas 粒子之上 */
         }
 
         /* 动画定义 */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            到 { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* [关键修复] 还原文字发光和呼吸动画 */
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 5px rgba(255,183,197,0.4), 0 0 10px rgba(255,183,197,0.2); }
+            100% { text-shadow: 0 0 20px var(--petal-glow), 0 0 30px var(--accent-pink); }
         }
 
         /* 头部样式 */
         header.hero {
             text-align: center;
-            padding: 5rem 1rem;
-            animation: fadeUp 0.8s ease;
+            padding: 6rem 1rem 4rem;
+            animation: fadeUp 1s ease-out;
         }
 
+        /* [关键修复] 还原 H1 炫酷样式 */
         .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-size: clamp(2.8rem, 10vw, 4.5rem);
             font-weight: 800;
-            background: linear-gradient(135deg, #FFE6F0, var(--primary-pink), #C084FC, #60A5FA);
+            background: linear-gradient(135deg, #FFE6F0, var(--petal-base), #C084FC, #60A5FA);
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 1rem;
-            filter: drop-shadow(0 0 10px rgba(255,183,197,0.3));
+            letter-spacing: -0.02em;
+            
+            /* 应用呼吸发光动画 */
+            animation: glowPulse 2s infinite alternate;
         }
 
         .sub-tag {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(5px);
-            padding: 0.4rem 1.5rem;
+            -webkit-backdrop-filter: blur(5px);
+            padding: 0.5rem 1.8rem;
             border-radius: 50px;
             font-weight: 600;
             border: 1px solid rgba(255,255,255,0.1);
+            color: var(--petal-base);
         }
 
-        /* 游戏战场版块 */
+        /* 核心战场 */
         .section-title {
             text-align: center;
-            margin: 4rem 0 2rem;
-            font-size: 2rem;
+            margin: 5rem 0 3rem;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        .section-title span {
+            background: linear-gradient(120deg, var(--petal-base), #B5F0FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .game-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 183, 197, 0.2);
-            border-radius: 24px;
-            padding: 2.5rem;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 183, 197, 0.15);
+            border-radius: 28px;
+            padding: 3rem 2.5rem;
             transition: var(--transition);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        。game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-pink);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .game-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(255,112,141,0.1) 0%, transparent 70%);
+            opacity: 0; transition: var(--transition);
         }
 
-        。game-card i { font-size: 3rem; margin-bottom: 1.5rem; color: var(--primary-pink); }
+        .game-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--accent-pink);
+            box-shadow: 0 25px 50px rgba(255, 112, 141, 0.25);
+        }
+        
+        .game-card:hover::before { opacity: 1; }
 
-        /* 部门网格 */
+        .game-card i { 
+            font-size: 3.5rem; 
+            margin-bottom: 1.5rem; 
+            color: var(--petal-base);
+            filter: drop-shadow(0 0 10px var(--petal-glow));
+        }
+        .game-card h3 { font-size: 1.8rem; margin-bottom: 0.8rem; }
+        .game-card p { color: var(--text-dim); font-size: 0.95rem; }
+
+        /* 公会部门 */
         .dept-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
         }
 
         .dept-item {
-            background: rgba(255,255,255,0.05);
-            padding: 1rem;
-            border-radius: 16px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(5px);
+            padding: 1.2rem;
+            border-radius: 18px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-left: 4px solid var(--accent-pink);
+            gap: 12px;
+            border-left: 4px solid #444; /* 默认边框 */
             transition: var(--transition);
+            cursor: default;
         }
 
-        .dept-item:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+        .dept-item:hover { 
+            background: rgba(255,255,255,0.08); 
+            transform: translateX(8px) scale(1.02); 
+        }
+
+        /* 保持不同部门的个性色彩 */
+        .dept-item:nth-child(1) { border-left-color: #FFA07A; }
+        .dept-item:nth-child(2) { border-left-color: #6C9FFF; }
+        .dept-item:nth-child(3) { border-left-color: #FF6B6B; }
+        .dept-item:nth-child(4) { border-left-color: #F4D03F; }
+        .dept-item:nth-child(5) { border-left-color: #A3E4D7; }
+        .dept-item:nth-child(6) { border-left-color: #BB8FCE; }
+        .dept-item:nth-child(7) { border-left-color: #5DADE2; }
+        .dept-item:nth-child(8) { border-left-color: #EC7063; }
+
+        .dept-item i { font-size: 1.4rem; color: rgba(255,255,255,0.7); }
 
         /* 转化版块 */
-        。join-card {
-            background: linear-gradient(135deg, rgba(255,112,141,0.1), rgba(96,165,250,0.1));
-            border: 1px solid rgba(255,255,255,0.1);
+        .join-card {
+            background: linear-gradient(135deg, rgba(255,112,141,0.15) 0%, rgba(30, 40, 60, 0.4) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,183,197,0.3);
             border-radius: 32px;
-            padding: 3rem;
+            padding: 4rem 3rem;
             text-align: center;
-            margin: 5rem 0;
+            margin: 6rem 0;
+            animation: fadeUp 1s ease;
         }
 
+        .join-card h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+
         .qq-box {
-            background: #000;
+            background: rgba(0,0,0,0.4);
             display: inline-block;
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            font-size: 1.5rem;
-            font-family: monospace;
-            margin: 1.5rem 0;
-            border: 1px solid var(--primary-pink);
+            padding: 1rem 2.5rem;
+            border-radius: 15px;
+            font-size: clamp(1.2rem, 5vw, 2rem);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 2rem 0;
+            border: 1px solid var(--petal-base);
+            box-shadow: 0 0 15px rgba(255,183,197,0.2);
+            position: relative;
         }
 
         .btn-copy {
             background: var(--accent-pink);
             color: white;
             border: none;
-            padding: 0.8rem 2rem;
+            padding: 1rem 2.5rem;
             border-radius: 50px;
             font-weight: bold;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: 0.2s;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(255,112,141,0.3);
         }
 
-        。btn-copy:active { transform: scale(0.95); }
+        .btn-copy:hover { background: #e05a78; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255,112,141,0.4); }
+        .btn-copy:active { transform: translateY(-1px) scale(0.98); }
+
+        .social-link {
+            color: var(--text-dim);
+            font-size: 2rem;
+            margin: 0 15px;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        .social-link:hover { color: var(--accent-pink); transform: scale(1.1) translateY(-5px); }
 
         footer {
             text-align: center;
-            padding: 3rem 0;
+            padding: 4rem 0 2rem;
             font-size: 0.9rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255,255,255,0.05);
             opacity: 0.6;
         }
 
-        /* 移动端适配 */
-        @media (max-width: 600px) {
+        /* 移动端适配渐进式调整 */
+        @media (max-width: 768px) {
+            header.hero { padding: 4rem 1rem 3rem; }
             .dept-grid { grid-template-columns: 1fr 1fr; }
-            .join-card { padding: 1.5rem; }
+            .join-card { padding: 2.5rem 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .dept-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -199,35 +282,35 @@
         <header class="hero">
             <h1>❀ 锦亚桃花会 ❀</h1>
             <div class="sub-tag">北风萧萧 · 桃花御北</div>
-            <p style="margin-top: 1.5rem; color: var(--text-dim);">
-                无论你来自哪个游戏世界，这里都是温暖的家。
+            <p style="margin-top: 2rem; color: var(--text-dim); max-width: 600px; margin-left: auto; margin-right: auto;">
+                <i class="fas fa-users" aria-hidden="true" style="color: var(--petal-base);"></i> 无论你来自哪个游戏世界，这里都是温暖的家。创造、征战、探索 —— 我们包容一切。
             </p>
         </header>
 
         <main>
             <section class="game-section">
-                <h2 class="section-title">核心战场</h2>
+                <h2 class="section-title"><span>⚔️ 核心战场 ⚔️</span></h2>
                 <div class="game-grid">
                     <article class="game-card">
                         <i class="fas fa-cubes" aria-hidden="true"></i>
                         <h3>我的世界</h3>
-                        <p>无限创造，红石科技，史诗建筑。</p>
+                        <p>无限创造，红石科技，史诗建筑。从像素到自动化，想象力是唯一的边界。</p>
                     </article>
                     <article class="game-card">
                         <i class="fas fa-tank" aria-hidden="true"></i>
                         <h3>铁锈战争</h3>
-                        <p>钢铁洪流，指挥千军万马的即时战略。</p>
+                        <p>钢铁洪流，快节奏 RTS。指挥千军万马，每一秒都是决策的战场。</p>
                     </article>
                     <article class="game-card">
                         <i class="fas fa-rocket" aria-hidden="true"></i>
                         <h3>星际猎人</h3>
-                        <p>跨越光年，书写属于你的银河史诗。</p>
+                        <p>深空星海，舰队远征。跨越光年，书写属于你的银河史诗。</p>
                     </article>
                 </div>
             </section>
 
-            <section style="margin: 4rem 0;">
-                <h2 class="section-title">公会部门</h2>
+            <section style="margin: 5rem 0;">
+                <h2 class="section-title"><span>🌸 公会部门 🌸</span></h2>
                 <div class="dept-grid">
                     <div class="dept-item"><i class="fas fa-city" aria-hidden="true"></i> 茶北锦建集团</div>
                     <div class="dept-item"><i class="fas fa-shield-alt" aria-hidden="true"></i> 御北卫戍集团</div>
@@ -241,34 +324,50 @@
             </section>
 
             <section class="join-card">
-                <h2>立即加入我们</h2>
-                <p>点击下方复制群号，开启你的传奇之旅</p>
-                <div class="qq-box" id="qqNum">1030191253</div>
+                <h2><i class="fas fa-envelope-open-text" aria-hidden="true" style="color: var(--petal-base);"></i> 传奇之旅 · 即刻开启</h2>
+                <p style="margin-top: 1rem; color: var(--text-dim);">锦亚桃花会的大门永远敞开，期待你的加入。</p>
+                <div class="qq-box">
+                    <i class="fab fa-qq" aria-hidden="true" style="color: #1296db; margin-right: 10px;"></i><span id="qqNum">1030191253</span>
+                </div>
                 <br>
-                <button class="btn-copy" onclick="copyQQ()">复制 QQ 群号</button>
+                <button class="btn-copy" onclick="copyQQ()"><i class="far fa-copy" aria-hidden="true"></i> 复制 QQ 群号</button>
                 
-                <div style="margin-top: 2rem;">
-                    <a href="https://space.bilibili.com/3546576387574104" target="_blank" rel="noopener noreferrer" style="color: white; font-size: 1.5rem; margin: 0 10px;">
+                <div style="margin-top: 3rem;">
+                    <a href="https://space.bilibili.com/3546576387574104" target="_blank" rel="noopener noreferrer" class="social-link" title="关注B站官方账号">
                         <i class="fab fa-bilibili"></i>
                     </a>
-                    <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">全网同名：锦亚桃花会</p>
+                    <p style="font-size: 0.85rem; margin-top: 15px; opacity: 0.7; background: rgba(255,255,255,0.05); display: inline-block; padding: 5px 15px; border-radius: 20px;">
+                        <i class="fas fa-search" aria-hidden="true"></i> 全网同名搜：<strong>锦亚桃花会</strong>
+                    </p>
                 </div>
             </section>
         </main>
 
         <footer>
             <p>© 锦亚桃花会 · 跨游戏精英社区</p>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Unity · Innovation · Passion</p>
         </footer>
     </div>
 
     <script>
         /**
-         * 1. 优化后的 Canvas 桃花粒子动画
-         * 相比 DOM 动画，Canvas 渲染效率提升约 10 倍
+         * [关键修复] 高级 Canvas 桃花粒子系统
+         * 找回原网页的灵动感，并增加了风吹的正弦波效果
          */
         const canvas = document.getElementById('petalCanvas');
         const ctx = canvas.getContext('2d');
         let petals = [];
+
+        // 核心配置
+        const CONFIG = {
+            petalCount: 70,        // 粒子数量
+            minSize: 4,            // 最小尺寸
+            maxSize: 9,            // 最大尺寸
+            minSpeed: 0.8,         // 最小下落速度
+            maxSpeed: 2.0,         // 最大下落速度
+            windStrength: 0.5,      // 风力摆动幅度
+            color: '#ffb7c5'       // 桃花基础色
+        };
 
         function resize() {
             canvas.width = window.innerWidth;
@@ -279,82 +378,124 @@
 
         class Petal {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height - canvas.height;
-                this.size = Math.random() * 5 + 5;
-                this.speed = Math.random() * 1 + 1;
-                this.angle = Math.random() * 360;
-                this.spin = Math.random() * 2 - 1;
+                this.init(true);
             }
+
+            // 初始化粒子状态
+            init(firstTime = false) {
+                this.x = Math.random() * canvas.width;
+                // 首次生成分布在全屏，之后生成在屏幕上方
+                this.y = firstTime ? (Math.random() * canvas.height) : (Math.random() * -canvas.height);
+                this.size = Math.random() * (CONFIG.maxSize - CONFIG.minSize) + CONFIG.minSize;
+                this.speed = Math.random() * (CONFIG.maxSpeed - CONFIG.minSpeed) + CONFIG.minSpeed;
+                
+                // 摇摆和旋转逻辑
+                this.angle = Math.random() * 360;
+                this.spin = (Math.random() - 0.5) * 1.5; // 自身旋转速度
+                this.windOffset = Math.random() * 100; // 用于正弦波漂移的随机偏移
+                
+                // 随机透明度，增加层次感
+                this.opacity = Math.random() * 0.4 + 0.3; // 0.3 ~ 0.7
+            }
+
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.angle * Math.PI / 180);
+                ctx.globalAlpha = this.opacity;
+                
+                // 绘制椭圆形花瓣
                 ctx.beginPath();
-                ctx.ellipse(0, 0, this.size, this.size/2, 0, 0, Math.PI * 2);
-                ctx.fillStyle = '#ffb7c5aa';
+                // ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle)
+                ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, Math.PI * 2);
+                
+                // 填充桃花渐变色，增加立体感
+                const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
+                gradient.addColorStop(0, '#fff'); // 中心偏白
+                gradient.addColorStop(1, CONFIG.color);
+                ctx.fillStyle = gradient;
+                
                 ctx.fill();
                 ctx.restore();
             }
+
             update() {
                 this.y += this.speed;
-                this.x += Math.sin(this.y / 50);
-                this.angle += this.spin;
-                if (this.y > canvas.height) {
-                    this.y = -10;
-                    this.x = Math.random() * canvas.width;
+                // [关键效果] 增加风吹的摇摆感 (正弦波)
+                this.x += Math.sin((this.y + this.windOffset) / 80) * CONFIG.windStrength;
+                this.angle += this.spin; // 自身旋转
+
+                // 超出屏幕重新生成
+                if (this.y > canvas.height + 10) {
+                    this.init(false);
                 }
             }
         }
 
-        for (let i = 0; i < 50; i++) {
+        // 初始化粒子群
+        for (let i = 0; i < CONFIG.petalCount; i++) {
             petals.push(new Petal());
         }
 
+        // 动画主循环
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            petals.forEach(p => {
-                p.update();
-                p.draw();
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // 清空画布
+            
+            // 渲染并更新所有粒子
+            petals.forEach(petal => {
+                petal.update();
+                petal.draw();
             });
+            
             requestAnimationFrame(animate);
         }
         animate();
 
         /**
-         * 2. 安全的剪贴板复制功能
-         * 兼容 HTTP 和 HTTPS 环境
+         * 2. 健壮的剪贴板复制功能 (保留)
          */
         function copyQQ() {
             const qq = document.getElementById('qqNum').innerText;
             const btn = document.querySelector('.btn-copy');
 
+            // 优先使用现代 Clipboard API
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(qq).键，然后(showSuccess).catch(fallbackCopy);
+                navigator.clipboard.writeText(qq).then(showSuccess).catch(fallbackCopy);
             } else {
-                fallbackCopy(qq);
+                fallbackCopy(); // 降级方案
             }
 
             function showSuccess() {
-                const originalText = btn.innerText;
-                btn.innerText = "已复制到剪贴板！";
-                btn.style.background = "#4CAF50";
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> 已复制！';
+                btn.style.background = "#4CAF50"; // 变为绿色
+                btn.style.boxShadow = "0 5px 15px rgba(76,175,80,0.4)";
+                
                 setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = "";
+                    btn.innerHTML = originalContent;
+                    btn.style.background = ""; // 还原 CSS 样式
+                    btn.style.boxShadow = "";
                 }, 2000);
             }
 
+            // 兼容非 HTTPS 环境的传统复制方法
             function fallbackCopy() {
                 const textArea = document.createElement("textarea");
                 textArea.value = qq;
+                // 确保 textarea 在移动端不会导致页面跳动
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                textArea.style.top = '0';
                 document.body.appendChild(textArea);
+                textArea.focus();
                 textArea.select();
+                
                 try {
-                    document.execCommand('copy');
-                    showSuccess();
+                    const successful = document.execCommand('copy');
+                    if (successful) showSuccess();
+                    else alert('复制失败，请手动复制: ' + qq);
                 } catch (err) {
-                    alert('请手动复制: ' + qq);
+                    alert('浏览器不支持复制，请手动复制: ' + qq);
                 }
                 document.body.removeChild(textArea);
             }
